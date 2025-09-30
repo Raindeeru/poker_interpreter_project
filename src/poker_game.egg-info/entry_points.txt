@@ -1,0 +1,2 @@
+[console_scripts]
+poker = poker_game.main:main

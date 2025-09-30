@@ -1,0 +1,6 @@
+[project]
+name = "poker_game"
+version = "0.0.0"
+
+[project.scripts]
+poker = "poker_game.main:main"
