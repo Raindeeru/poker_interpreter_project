@@ -40,16 +40,16 @@ def update_screen(stdscr, screen: Screen):
     update_window_box(screen.sidebar)
 
     info = f"""
-MAIN_SCREEN_W, MAIN_SCREEN_H = {MAIN_SCREEN_W}, {MAIN_SCREEN_H}
-TERMINAL_W, TERMINAL_H       = {TERMINAL_W}, {TERMINAL_H}
-SIDEBAR_W, SIDEBAR_H         = {SIDEBAR_W}, {SIDEBAR_H}
+    MAIN_SCREEN_W, MAIN_SCREEN_H = {MAIN_SCREEN_W}, {MAIN_SCREEN_H}
+    TERMINAL_W, TERMINAL_H       = {TERMINAL_W}, {TERMINAL_H}
+    SIDEBAR_W, SIDEBAR_H         = {SIDEBAR_W}, {SIDEBAR_H}
 
-TOTAL_W, TOTAL_H             = {TOTAL_W}, {TOTAL_H}
+    TOTAL_W, TOTAL_H             = {TOTAL_W}, {TOTAL_H}
 
-MAIN_SCREEN_X, MAIN_SCREEN_Y = {MAIN_SCREEN_X}, {MAIN_SCREEN_Y}
-TERMINAL_X, TERMINAL_Y       = {TERMINAL_X}, {TERMINAL_Y}
-SIDEBAR_X, SIDEBAR_Y         = {SIDEBAR_X}, {SIDEBAR_Y}
-"""
+    MAIN_SCREEN_X, MAIN_SCREEN_Y = {MAIN_SCREEN_X}, {MAIN_SCREEN_Y}
+    TERMINAL_X, TERMINAL_Y       = {TERMINAL_X}, {TERMINAL_Y}
+    SIDEBAR_X, SIDEBAR_Y         = {SIDEBAR_X}, {SIDEBAR_Y}
+    """
 
     for i, line in enumerate(info.strip().splitlines()):
         screen.main_screen.addstr(1 + i, 1, line)  # safely inside box
