@@ -1,35 +1,26 @@
 import curses
 from curses import wrapper
+import ui.layout as layout
+import ui.input as input
 
 # mga shit dito imomove dapat sa ibang files, tinetesting ko lang
 # basta yung main file dapat esentially magstart lang magrun
 # tas yung input, yung program loop, dapat mga separate yan
 # para mas organized
+# gagawa tayo gamestate class, sa init mag iinit tayo ng object nun
 
 
 def run(stdscr):
-    win = curses.newwin(20, 20, 2, 2)
-    stdscr.nodelay(True)  # don't block on getkey
+    screen = layout.Screen()
 
     while True:
-        win.erase()
-        win.attron(curses.color_pair(1))
-        win.box()
-        win.attroff(curses.color_pair(1))
-
-        width, height = stdscr.getmaxyx()[1], stdscr.getmaxyx()[0]
-        size = width * height
-        win.addstr(1, 1, f"Width: {width}, Height: {height}, Size: {size}")
-
-        win.noutrefresh()
-        curses.doupdate()
+        layout.update_screen(stdscr, screen)
 
         try:
             key = stdscr.getkey()
             if key == "q":
                 break
         except curses.error:
-            # no input this frame
             pass
 
 
@@ -39,6 +30,8 @@ def init(stdscr):
     curses.start_color()
     curses.use_default_colors()
     curses.init_pair(1, curses.COLOR_WHITE, -1)
+
+    stdscr.nodelay(True)
 
     run(stdscr)
 
