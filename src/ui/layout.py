@@ -1,10 +1,9 @@
-# main screen 60 x 60
 import curses
 import ui.input as input
 
-MAIN_SCREEN_W, MAIN_SCREEN_H = 100, 20
-TERMINAL_W, TERMINAL_H = 100, 10
-SIDEBAR_W, SIDEBAR_H = 20, (MAIN_SCREEN_H + TERMINAL_H)
+MAIN_SCREEN_W, MAIN_SCREEN_H = 85, 20
+TERMINAL_W, TERMINAL_H = 85, 10
+SIDEBAR_W, SIDEBAR_H = 35, (MAIN_SCREEN_H + TERMINAL_H)
 
 TOTAL_W = MAIN_SCREEN_W + SIDEBAR_W
 TOTAL_H = MAIN_SCREEN_H + TERMINAL_H
@@ -12,6 +11,30 @@ TOTAL_H = MAIN_SCREEN_H + TERMINAL_H
 MAIN_SCREEN_X, MAIN_SCREEN_Y = 0, 0
 TERMINAL_X, TERMINAL_Y = 0, MAIN_SCREEN_H
 SIDEBAR_X, SIDEBAR_Y = MAIN_SCREEN_W, 0
+
+SMALL_SCREEN_MESSAGE = "Screen too Small! Resize terminal please"
+
+TEST_SCREEN = \
+'''
+                                                     │{`-√-`}│ │{`-√-`}│ │{`-√-`}│
+ Health:                                             │{,-o-,}│ │{,-o-,}│ │{,-o-,}│
+ Chips :                                             │{│≤│≥│}│ │{│≤│≥│}│ │{│≤│≥│}│
+                                                     │Θ`-√-`Θ│ │Θ`-√-`Θ│ │Θ`-√-`Θ│
+                                                     └───────┘ └───────┘ └───────┘
+                                                                                  
+                           ┌───────┐ ╔═══════╗ ┌───────┐                          
+                           │10     │ ║10   +2║ │Θ,-o-,Θ│                          
+                           │ Ω   Ω │ ║ Ω   Ω ║ │{│≤│≥│}│                          
+                           │ Ω Ω Ω │ ║ Ω Ω Ω ║ │{`-√-`}│                          
+                           │ Ω   Ω │ ║ Ω Ω Ω ║ │{,-o-,}│                          
+                           │ Ω   Ω │ ║ Ω   Ω ║ │{│≤│≥│}│                          
+                           │     10│ ║     10║ │Θ`-√-`Θ│                          
+                           └───────┘ ╚═══════╝ └───────┘                          
+┌───────┐ ╔═══════╗ ┌───────┐                                                     
+│10     │ ║10   +2║ │Θ,-o-,Θ│                                                     
+│ Ω   Ω │ ║ Ω   Ω ║ │{│≤│≥│}│                                                     
+│ Ω Ω Ω │ ║ Ω Ω Ω ║ │{`-√-`}│                                                     
+'''
 
 
 class Screen:
@@ -23,12 +46,13 @@ class Screen:
 
 def update_screen(stdscr, screen: Screen):
     width, height = stdscr.getmaxyx()[1], stdscr.getmaxyx()[0]
+
     if width < TOTAL_W or height < TOTAL_H + 1:
         stdscr.erase()
         stdscr.attron(curses.color_pair(1))
         stdscr.box()
         stdscr.attroff(curses.color_pair(1))
-        stdscr.addstr(height//2, 1, "Beh and liit masyado ng screen mo ayusin mo naman")
+        stdscr.addstr(height//2, 1, SMALL_SCREEN_MESSAGE)
         stdscr.noutrefresh()
         curses.doupdate()
         return Screen()
@@ -40,32 +64,23 @@ def update_screen(stdscr, screen: Screen):
     update_window_box(screen.terminal)
     update_window_box(screen.sidebar)
 
+    # Dito natin iuupdate yung ui based sa game state
+    # I display yung cards
+    # output ng last commands sa screen, sa terminal, sa sidebar
+    # mga ganun
 
-    info = f"""
-    MAIN_SCREEN_W, MAIN_SCREEN_H = {MAIN_SCREEN_W}, {MAIN_SCREEN_H}
-    TERMINAL_W, TERMINAL_H       = {TERMINAL_W}, {TERMINAL_H}
-    SIDEBAR_W, SIDEBAR_H         = {SIDEBAR_W}, {SIDEBAR_H}
+    for i, line in enumerate(TEST_SCREEN.splitlines()):
+        screen.main_screen.addstr(i, 1, line)
 
-    TOTAL_W, TOTAL_H             = {TOTAL_W}, {TOTAL_H}
-
-    MAIN_SCREEN_X, MAIN_SCREEN_Y = {MAIN_SCREEN_X}, {MAIN_SCREEN_Y}
-    TERMINAL_X, TERMINAL_Y       = {TERMINAL_X}, {TERMINAL_Y}
-    SIDEBAR_X, SIDEBAR_Y         = {SIDEBAR_X}, {SIDEBAR_Y}
-    """
-
-    for i, line in enumerate(info.strip().splitlines()):
-        screen.main_screen.addstr(1 + i, 1, line)  # safely inside box
     screen.main_screen.noutrefresh()
 
     screen.terminal.hline(TERMINAL_H - 3, 1, ord("-"), TERMINAL_W-2)
 
-    screen.terminal.move(TERMINAL_H - 2, 1)
-    screen.terminal.addstr(f"> {input.input_str}")
+    show_terminal_input(screen.terminal)
 
     screen.terminal.noutrefresh()
 
     return screen
-
 
 
 def create_main_screen():
@@ -80,6 +95,7 @@ def create_main_screen():
 
     return screen
 
+
 def create_terminal():
     screen = curses.newwin(TERMINAL_H,
                            TERMINAL_W,
@@ -91,6 +107,7 @@ def create_terminal():
     screen.attroff(curses.color_pair(1))
 
     return screen
+
 
 def create_sidebar():
     screen = curses.newwin(SIDEBAR_H,
@@ -104,9 +121,15 @@ def create_sidebar():
 
     return screen
 
+
 def update_window_box(window):
     window.erase()
     window.attron(curses.color_pair(1))
     window.box()
     window.attroff(curses.color_pair(1))
     window.noutrefresh()
+
+
+def show_terminal_input(terminal):
+    terminal.move(TERMINAL_H - 2, 1)
+    terminal.addstr(f"> {input.input_str}")
