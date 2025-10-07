@@ -22,7 +22,8 @@ class Screen:
 
 def update_screen(stdscr, screen: Screen):
     width, height = stdscr.getmaxyx()[1], stdscr.getmaxyx()[0]
-    if width <= 100 or height <= 30:
+    if width < TOTAL_W or height < TOTAL_H:
+    
         stdscr.erase()
         stdscr.attron(curses.color_pair(1))
         stdscr.box()
@@ -30,7 +31,7 @@ def update_screen(stdscr, screen: Screen):
         stdscr.addstr(height//2, 1, "Beh and liit masyado ng screen mo ayusin mo naman")
         stdscr.noutrefresh()
         curses.doupdate()
-        return
+        return Screen()
 
     stdscr.erase()
     stdscr.noutrefresh()
@@ -54,7 +55,8 @@ def update_screen(stdscr, screen: Screen):
     for i, line in enumerate(info.strip().splitlines()):
         screen.main_screen.addstr(1 + i, 1, line)  # safely inside box
     screen.main_screen.noutrefresh()
-    curses.doupdate()
+
+    return screen
 
 
 

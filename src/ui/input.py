@@ -1,8 +1,8 @@
 import curses
 
+input_str = ""
+
 
 def handle_input(key, terminal):
-    terminal.move(0, 0)
-    terminal.addstr(key)
-    terminal.noutrefresh
-    curses.doupdate()
+    global input_str
+    input_str += key

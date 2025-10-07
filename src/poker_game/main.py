@@ -14,14 +14,20 @@ def run(stdscr):
     screen = layout.Screen()
 
     while True:
-        layout.update_screen(stdscr, screen)
+        screen = layout.update_screen(stdscr, screen)
+        screen.terminal.move(1, 1)
+        screen.terminal.addstr(f"{input.input_str}")
+        screen.terminal.noutrefresh()
 
         try:
             key = stdscr.getkey()
             if key == "q":
                 break
+            input.handle_input(key, screen.terminal)
         except curses.error:
             pass
+
+        curses.doupdate()
 
 
 def init(stdscr):
