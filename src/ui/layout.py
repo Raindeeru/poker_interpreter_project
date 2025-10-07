@@ -1,5 +1,6 @@
 # main screen 60 x 60
 import curses
+import ui.input as input
 
 MAIN_SCREEN_W, MAIN_SCREEN_H = 100, 20
 TERMINAL_W, TERMINAL_H = 100, 10
@@ -22,8 +23,7 @@ class Screen:
 
 def update_screen(stdscr, screen: Screen):
     width, height = stdscr.getmaxyx()[1], stdscr.getmaxyx()[0]
-    if width < TOTAL_W or height < TOTAL_H:
-    
+    if width < TOTAL_W or height < TOTAL_H + 1:
         stdscr.erase()
         stdscr.attron(curses.color_pair(1))
         stdscr.box()
@@ -40,6 +40,7 @@ def update_screen(stdscr, screen: Screen):
     update_window_box(screen.terminal)
     update_window_box(screen.sidebar)
 
+
     info = f"""
     MAIN_SCREEN_W, MAIN_SCREEN_H = {MAIN_SCREEN_W}, {MAIN_SCREEN_H}
     TERMINAL_W, TERMINAL_H       = {TERMINAL_W}, {TERMINAL_H}
@@ -55,6 +56,13 @@ def update_screen(stdscr, screen: Screen):
     for i, line in enumerate(info.strip().splitlines()):
         screen.main_screen.addstr(1 + i, 1, line)  # safely inside box
     screen.main_screen.noutrefresh()
+
+    screen.terminal.hline(TERMINAL_H - 3, 1, ord("-"), TERMINAL_W-2)
+
+    screen.terminal.move(TERMINAL_H - 2, 1)
+    screen.terminal.addstr(f"> {input.input_str}")
+
+    screen.terminal.noutrefresh()
 
     return screen
 

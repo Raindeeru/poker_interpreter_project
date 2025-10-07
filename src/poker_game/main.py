@@ -15,9 +15,6 @@ def run(stdscr):
 
     while True:
         screen = layout.update_screen(stdscr, screen)
-        screen.terminal.move(1, 1)
-        screen.terminal.addstr(f"{input.input_str}")
-        screen.terminal.noutrefresh()
 
         try:
             key = stdscr.getkey()
