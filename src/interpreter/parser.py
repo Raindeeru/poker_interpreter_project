@@ -37,6 +37,7 @@ rules = [
 def shift_reduce(tokens):
     stack = []
     input_tokens = list(tokens) + [('EOF', '', 0, 0)]
+    epsilon_apllied = set()
     pos = 0
 
     while pos < len(input_tokens):
@@ -55,6 +56,7 @@ def shift_reduce(tokens):
               
                 elif pattern == [] and lhs not in stack:
                     stack.append(lhs)
+                    epsilon_apllied.add(lhs)
                     reduced = True
                     break
 

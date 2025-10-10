@@ -7,7 +7,11 @@ while True:
         break
 
     lexer.input(data)
+    stack = shift_reduce(lexer)
+    UserWarning
     for tok in lexer:
         print(tok)
+
+    print(stack)
 
 
