@@ -11,6 +11,7 @@ tokens = (
     'ACTION',
     'TO',
     'OF',
+    'WITH',
 )
 
 t_ignore = ' \t'
@@ -33,7 +34,7 @@ def t_CARD_ID(t):
     return t
 
 def t_ITEM_ID(t):
-    r'\bI\d+\b'
+    r'\bi\d+\b'
     return t
 
 
@@ -57,6 +58,10 @@ def t_TO(t):
 
 def t_OF(t):
     r'\bof\b'
+    return t
+
+def t_WITH(t):
+    r'\bwith\b'
     return t
 
 def t_error(t):
