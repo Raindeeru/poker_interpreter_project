@@ -25,11 +25,11 @@ def t_NUMBER(t):
     return t
 
 def t_ALPHA_VAL(t):
-    r'\b[JQKA]\b'
+    r'\b[jqka]\b'
     return t
 
 def t_CARD_ID(t):
-    r'\b(?:[2-9]|10|[JQKA])[HDSC]\b'
+    r'\b(?:[2-9]|10|[jqka])[hdsc]\b'
     return t
 
 def t_ITEM_ID(t):
@@ -38,7 +38,7 @@ def t_ITEM_ID(t):
 
 
 def t_SUIT(t):
-    r'\b[HDSC]\b'
+    r'\b[hdsc]\b'
     return t
 
 def t_CHANGE_KEY(t):
