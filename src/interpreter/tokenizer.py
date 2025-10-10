@@ -33,7 +33,7 @@ def t_CARD_ID(t):
     return t
 
 def t_ITEM_ID(t):
-    r'\bI\d+\b'
+    r'\bi\d+\b'
     return t
 
 
