@@ -1,9 +1,10 @@
 import curses
-import interpreter.tokenizer as tk
+import string
+
+alphabet = list(string.ascii_letters + string.digits + " ")
 
 max_str_len = 80
 input_str = ""
-
 
 def handle_input(key, terminal):
     global input_str
@@ -16,7 +17,7 @@ def handle_input(key, terminal):
         # interpreter.interpret(input_str) or something like that
         input_str = ""
 
-    if key not in tk.alphabet:
+    if key not in alphabet:
         return
 
     # dapat hinahandle niya ng maayos mga input
