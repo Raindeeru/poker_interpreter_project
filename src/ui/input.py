@@ -9,7 +9,7 @@ input_str = ""
 def handle_input(key, terminal):
     global input_str
 
-    if key == "KEY_BACKSPACE":
+    if key in ('KEY_BACKSPACE', '\b', '\x7f'):
         input_str = input_str[:-1]
 
     if key == "\n":
