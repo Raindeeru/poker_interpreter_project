@@ -8,10 +8,8 @@ while True:
 
     lexer.input(data)
     stack = shift_reduce(lexer)
-    UserWarning
+
     for tok in lexer:
         print(tok)
 
     print(stack)
-
-

@@ -1,3 +1,5 @@
+from ply.lex import LexToken
+
 rules = [
     #START
     ('S', ['COMMAND', 'U']),
@@ -7,13 +9,13 @@ rules = [
     ('U', ['CARD_ID', 'TO', 'P']),
 
     #A
-    ('A', []),
+    ('A', ['']),
     ('A', ['NUMBER']),
     ('A', ['ITEM_ID']),
     ('A', ['CARD_ID', 'A']),
 
     #P
-    ('P', []),
+    ('P', ['']),
     ('P', ['ACTION']),
     ('P', ['ACTION', 'C']),
     ('P', ['ACTION', 'E']),
@@ -21,7 +23,7 @@ rules = [
     #C
     ('C', ['CHANGE_KEY', 'OF', 'CARD_ID', 'K']),
     #K
-    ('K', []),
+    ('K', ['']),
     ('K', ['TO', 'R']),
     #R
     ('R', ['NUMBER']),
@@ -34,14 +36,25 @@ rules = [
     ('F', ['NUMBER']),
 ]
 
+
 def shift_reduce(tokens):
     stack = []
-    input_tokens = list(tokens) + [('EOF', '', 0, 0)]
-    epsilon_apllied = set()
+
+    def make_eof_token():
+        t = LexToken()
+        t.type = 'EOF'
+        t.value = ''
+        t.lineno = 0
+        t.lexpos = 0
+        return t
+
+    input_tokens = list(tokens) + [make_eof_token()]
     pos = 0
+    epsilon_applied = set()
 
     while pos < len(input_tokens):
-        stack.append(input_tokens[pos][0])
+        print(input_tokens[pos])
+        stack.append(input_tokens[pos].type)
         pos += 1
 
         reduced = True
@@ -53,10 +66,10 @@ def shift_reduce(tokens):
                     stack[-len(pattern):] = [lhs]
                     reduced = True
                     break
-              
+
                 elif pattern == [] and lhs not in stack:
                     stack.append(lhs)
-                    epsilon_apllied.add(lhs)
+                    epsilon_applied.add(lhs)
                     reduced = True
                     break
 
