@@ -1,3 +1,76 @@
-import string
+import ply.lex as lex
 
-alphabet = list(string.ascii_letters + string.digits + " ")
+tokens = (
+    'COMMAND',
+    'NUMBER',
+    'ALPHA_VAL',
+    'CARD_ID',
+    'ITEM_ID',
+    'SUIT',
+    'CHANGE_KEY',
+    'ACTION',
+    'TO',
+    'OF',
+)
+
+t_ignore = ' \t'
+
+def t_COMMAND(t):
+    r'\b(start|bet|fold|call|all|raise|buy|inspect|play|quit|use)\b'
+    return t
+
+def t_NUMBER(t):
+    r'\b\d+\b'
+    t.value = int(t.value)
+    return t
+
+def t_ALPHA_VAL(t):
+    r'\b[JQKA]\b'
+    return t
+
+def t_CARD_ID(t):
+    r'\b(?:[2-9]|10|[JQKA])[HDSC]\b'
+    return t
+
+def t_ITEM_ID(t):
+    r'\bI\d+\b'
+    return t
+
+
+def t_SUIT(t):
+    r'\b[HDSC]\b'
+    return t
+
+def t_CHANGE_KEY(t):
+    r'\b(suit|value)\b'
+    return t
+
+
+def t_ACTION(t):
+    r'\b(change|reveal|exchange)\b'
+    return t
+
+
+def t_TO(t):
+    r'\bto\b'
+    return t
+
+def t_OF(t):
+    r'\bof\b'
+    return t
+
+def t_error(t):
+    print(f"Illegal character '{t.value[0]}' at position {t.lexpos}")
+    t.lexer.skip(1)
+    
+lexer = lex.lex()
+
+if __name__ == "__main__":
+    while True:
+        data = input("Enter command: ")
+        if data == "exit":
+            break
+        
+        lexer.input(data)
+        for tok in lexer:
+            print(tok)
