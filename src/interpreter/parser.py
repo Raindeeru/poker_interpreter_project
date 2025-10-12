@@ -31,7 +31,7 @@ class ItemID:
 
 
 @dataclass
-class Card_ID:
+class CardID:
     value: str
 
 
@@ -43,14 +43,14 @@ class Action:
 
 @dataclass
 class SpecialCardCommand:
-    special_card: Card_ID
+    special_card: CardID
     action: Action
 
 
 @dataclass
 class ChangeTarget:
     change_key: str
-    card_id: Card_ID
+    card_id: CardID
     change_value: str = 'random'
 
 
@@ -96,27 +96,27 @@ def p_u2(p):
 
 def p_u3(p):
     'U : CARD_ID A'
-    p[0] = [Card_ID(p[1])].extend(p[2])
+    p[0] = [CardID(value=p[1])] + p[2]
 
 
 def p_u4(p):
     'U : CARD_ID'
-    p[0] = Card_ID(p[1])
+    p[0] = CardID(value=p[1])
 
 
 def p_u5(p):
     'U : CARD_ID TO P'
-    p[0] = SpecialCardCommand(Card_ID(p[1]), p[3])
+    p[0] = SpecialCardCommand(CardID(p[1]), p[3])
 
 
 def p_a1(p):
     'A : CARD_ID A'
-    p[0] = [p[1]].extend(p[2])
+    p[0] = [CardID(value=p[1])] + p[2]
 
 
 def p_a2(p):
     'A : CARD_ID'
-    p[0] = [p[1]]
+    p[0] = [CardID(value=p[1])]
 
 
 def p_p1(p):
@@ -131,7 +131,6 @@ def p_p2(p):
 
 def p_p3(p):
     'P : ACTION E'
-    p[0] = (p[1], p[2])
     p[0] = Action(action=p[1], target=p[2])
 
 
@@ -167,7 +166,6 @@ def p_r3(p):
 
 def p_e(p):
     'E : F WITH F'
-    p[0] = (p[1], p[2], p[3])
     p[0] = ExchangeTarget(p[1], p[3])
 
 
@@ -178,7 +176,7 @@ def p_f1(p):
 
 def p_f2(p):
     'F : CARD_ID'
-    p[0] = Card_ID(value=p[1])
+    p[0] = CardID(value=p[1])
 
 
 parser = yacc.yacc(debug=True)
