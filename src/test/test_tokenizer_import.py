@@ -10,4 +10,3 @@ while True:
     for tok in lexer:
         print(tok)
 
-    
