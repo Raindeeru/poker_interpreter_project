@@ -1,5 +1,7 @@
-from interpreter.parser import shift_reduce
 from interpreter.tokenizer import lexer
+from interpreter.parser import parser
+
+print('Check Parser Debug file')
 
 while True:
     data = input("Enter command: ")
@@ -7,12 +9,8 @@ while True:
         break
 
     lexer.input(data)
-    tokens = list(lexer)
-    for tok in tokens:
+
+    for tok in lexer:
         print(tok)
-    stack = shift_reduce(tokens)
-
-
-    print(stack)
-
-#use 10h to change suit of qs to 10
+    out = parser.parse(data)
+    print(out)
