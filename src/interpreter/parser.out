@@ -11,46 +11,44 @@ Rule 5     U -> CARD_ID A
 Rule 6     U -> CARD_ID
 Rule 7     U -> CARD_ID TO P
 Rule 8     A -> CARD_ID A
-Rule 9     A -> B
-Rule 10    B -> CARD_ID
-Rule 11    P -> ACTION
-Rule 12    P -> ACTION C
-Rule 13    P -> ACTION E
-Rule 14    C -> CHANGE_KEY OF CARD_ID K
-Rule 15    C -> CHANGE_KEY OF CARD_ID
-Rule 16    K -> TO R
-Rule 17    R -> NUMBER
-Rule 18    R -> SUIT
-Rule 19    R -> ALPHA_VAL
-Rule 20    E -> F WITH F
-Rule 21    F -> NUMBER
-Rule 22    F -> CARD_ID
+Rule 9     A -> CARD_ID
+Rule 10    P -> ACTION
+Rule 11    P -> ACTION C
+Rule 12    P -> ACTION E
+Rule 13    C -> CHANGE_KEY OF CARD_ID K
+Rule 14    C -> CHANGE_KEY OF CARD_ID
+Rule 15    K -> TO R
+Rule 16    R -> NUMBER
+Rule 17    R -> SUIT
+Rule 18    R -> ALPHA_VAL
+Rule 19    E -> F WITH F
+Rule 20    F -> NUMBER
+Rule 21    F -> CARD_ID
 
 Terminals, with rules where they appear
 
-ACTION               : 11 12 13
-ALPHA_VAL            : 19
-CARD_ID              : 5 6 7 8 10 14 15 22
-CHANGE_KEY           : 14 15
+ACTION               : 10 11 12
+ALPHA_VAL            : 18
+CARD_ID              : 5 6 7 8 9 13 14 21
+CHANGE_KEY           : 13 14
 COMMAND              : 1 2
 ITEM_ID              : 4
-NUMBER               : 3 17 21
-OF                   : 14 15
-SUIT                 : 18
-TO                   : 7 16
-WITH                 : 20
+NUMBER               : 3 16 20
+OF                   : 13 14
+SUIT                 : 17
+TO                   : 7 15
+WITH                 : 19
 error                : 
 
 Nonterminals, with rules where they appear
 
 A                    : 5 8
-B                    : 9
-C                    : 12
-E                    : 13
-F                    : 20 20
-K                    : 14
+C                    : 11
+E                    : 12
+F                    : 19 19
+K                    : 13
 P                    : 7
-R                    : 16
+R                    : 15
 S                    : 0
 U                    : 1
 
@@ -116,29 +114,25 @@ state 6
     (6) U -> CARD_ID .
     (7) U -> CARD_ID . TO P
     (8) A -> . CARD_ID A
-    (9) A -> . B
-    (10) B -> . CARD_ID
+    (9) A -> . CARD_ID
 
     $end            reduce using rule 6 (U -> CARD_ID .)
     TO              shift and go to state 9
     CARD_ID         shift and go to state 7
 
     A                              shift and go to state 8
-    B                              shift and go to state 10
 
 state 7
 
     (8) A -> CARD_ID . A
-    (10) B -> CARD_ID .
+    (9) A -> CARD_ID .
     (8) A -> . CARD_ID A
-    (9) A -> . B
-    (10) B -> . CARD_ID
+    (9) A -> . CARD_ID
 
-    $end            reduce using rule 10 (B -> CARD_ID .)
+    $end            reduce using rule 9 (A -> CARD_ID .)
     CARD_ID         shift and go to state 7
 
-    A                              shift and go to state 11
-    B                              shift and go to state 10
+    A                              shift and go to state 10
 
 state 8
 
@@ -150,181 +144,174 @@ state 8
 state 9
 
     (7) U -> CARD_ID TO . P
-    (11) P -> . ACTION
-    (12) P -> . ACTION C
-    (13) P -> . ACTION E
+    (10) P -> . ACTION
+    (11) P -> . ACTION C
+    (12) P -> . ACTION E
 
-    ACTION          shift and go to state 13
+    ACTION          shift and go to state 12
 
-    P                              shift and go to state 12
+    P                              shift and go to state 11
 
 state 10
-
-    (9) A -> B .
-
-    $end            reduce using rule 9 (A -> B .)
-
-
-state 11
 
     (8) A -> CARD_ID A .
 
     $end            reduce using rule 8 (A -> CARD_ID A .)
 
 
-state 12
+state 11
 
     (7) U -> CARD_ID TO P .
 
     $end            reduce using rule 7 (U -> CARD_ID TO P .)
 
 
+state 12
+
+    (10) P -> ACTION .
+    (11) P -> ACTION . C
+    (12) P -> ACTION . E
+    (13) C -> . CHANGE_KEY OF CARD_ID K
+    (14) C -> . CHANGE_KEY OF CARD_ID
+    (19) E -> . F WITH F
+    (20) F -> . NUMBER
+    (21) F -> . CARD_ID
+
+    $end            reduce using rule 10 (P -> ACTION .)
+    CHANGE_KEY      shift and go to state 15
+    NUMBER          shift and go to state 18
+    CARD_ID         shift and go to state 16
+
+    C                              shift and go to state 13
+    E                              shift and go to state 14
+    F                              shift and go to state 17
+
 state 13
 
-    (11) P -> ACTION .
-    (12) P -> ACTION . C
-    (13) P -> ACTION . E
-    (14) C -> . CHANGE_KEY OF CARD_ID K
-    (15) C -> . CHANGE_KEY OF CARD_ID
-    (20) E -> . F WITH F
-    (21) F -> . NUMBER
-    (22) F -> . CARD_ID
+    (11) P -> ACTION C .
 
-    $end            reduce using rule 11 (P -> ACTION .)
-    CHANGE_KEY      shift and go to state 16
-    NUMBER          shift and go to state 19
-    CARD_ID         shift and go to state 17
+    $end            reduce using rule 11 (P -> ACTION C .)
 
-    C                              shift and go to state 14
-    E                              shift and go to state 15
-    F                              shift and go to state 18
 
 state 14
 
-    (12) P -> ACTION C .
+    (12) P -> ACTION E .
 
-    $end            reduce using rule 12 (P -> ACTION C .)
+    $end            reduce using rule 12 (P -> ACTION E .)
 
 
 state 15
 
-    (13) P -> ACTION E .
+    (13) C -> CHANGE_KEY . OF CARD_ID K
+    (14) C -> CHANGE_KEY . OF CARD_ID
 
-    $end            reduce using rule 13 (P -> ACTION E .)
+    OF              shift and go to state 19
 
 
 state 16
 
-    (14) C -> CHANGE_KEY . OF CARD_ID K
-    (15) C -> CHANGE_KEY . OF CARD_ID
+    (21) F -> CARD_ID .
 
-    OF              shift and go to state 20
+    WITH            reduce using rule 21 (F -> CARD_ID .)
+    $end            reduce using rule 21 (F -> CARD_ID .)
 
 
 state 17
 
-    (22) F -> CARD_ID .
+    (19) E -> F . WITH F
 
-    WITH            reduce using rule 22 (F -> CARD_ID .)
-    $end            reduce using rule 22 (F -> CARD_ID .)
+    WITH            shift and go to state 20
 
 
 state 18
 
-    (20) E -> F . WITH F
+    (20) F -> NUMBER .
 
-    WITH            shift and go to state 21
+    WITH            reduce using rule 20 (F -> NUMBER .)
+    $end            reduce using rule 20 (F -> NUMBER .)
 
 
 state 19
 
-    (21) F -> NUMBER .
+    (13) C -> CHANGE_KEY OF . CARD_ID K
+    (14) C -> CHANGE_KEY OF . CARD_ID
 
-    WITH            reduce using rule 21 (F -> NUMBER .)
-    $end            reduce using rule 21 (F -> NUMBER .)
+    CARD_ID         shift and go to state 21
 
 
 state 20
 
-    (14) C -> CHANGE_KEY OF . CARD_ID K
-    (15) C -> CHANGE_KEY OF . CARD_ID
+    (19) E -> F WITH . F
+    (20) F -> . NUMBER
+    (21) F -> . CARD_ID
 
-    CARD_ID         shift and go to state 22
+    NUMBER          shift and go to state 18
+    CARD_ID         shift and go to state 16
 
+    F                              shift and go to state 22
 
 state 21
 
-    (20) E -> F WITH . F
-    (21) F -> . NUMBER
-    (22) F -> . CARD_ID
+    (13) C -> CHANGE_KEY OF CARD_ID . K
+    (14) C -> CHANGE_KEY OF CARD_ID .
+    (15) K -> . TO R
 
-    NUMBER          shift and go to state 19
-    CARD_ID         shift and go to state 17
+    $end            reduce using rule 14 (C -> CHANGE_KEY OF CARD_ID .)
+    TO              shift and go to state 24
 
-    F                              shift and go to state 23
+    K                              shift and go to state 23
 
 state 22
 
-    (14) C -> CHANGE_KEY OF CARD_ID . K
-    (15) C -> CHANGE_KEY OF CARD_ID .
-    (16) K -> . TO R
+    (19) E -> F WITH F .
 
-    $end            reduce using rule 15 (C -> CHANGE_KEY OF CARD_ID .)
-    TO              shift and go to state 25
+    $end            reduce using rule 19 (E -> F WITH F .)
 
-    K                              shift and go to state 24
 
 state 23
 
-    (20) E -> F WITH F .
+    (13) C -> CHANGE_KEY OF CARD_ID K .
 
-    $end            reduce using rule 20 (E -> F WITH F .)
+    $end            reduce using rule 13 (C -> CHANGE_KEY OF CARD_ID K .)
 
 
 state 24
 
-    (14) C -> CHANGE_KEY OF CARD_ID K .
+    (15) K -> TO . R
+    (16) R -> . NUMBER
+    (17) R -> . SUIT
+    (18) R -> . ALPHA_VAL
 
-    $end            reduce using rule 14 (C -> CHANGE_KEY OF CARD_ID K .)
+    NUMBER          shift and go to state 26
+    SUIT            shift and go to state 27
+    ALPHA_VAL       shift and go to state 28
 
+    R                              shift and go to state 25
 
 state 25
 
-    (16) K -> TO . R
-    (17) R -> . NUMBER
-    (18) R -> . SUIT
-    (19) R -> . ALPHA_VAL
+    (15) K -> TO R .
 
-    NUMBER          shift and go to state 27
-    SUIT            shift and go to state 28
-    ALPHA_VAL       shift and go to state 29
+    $end            reduce using rule 15 (K -> TO R .)
 
-    R                              shift and go to state 26
 
 state 26
 
-    (16) K -> TO R .
+    (16) R -> NUMBER .
 
-    $end            reduce using rule 16 (K -> TO R .)
+    $end            reduce using rule 16 (R -> NUMBER .)
 
 
 state 27
 
-    (17) R -> NUMBER .
+    (17) R -> SUIT .
 
-    $end            reduce using rule 17 (R -> NUMBER .)
+    $end            reduce using rule 17 (R -> SUIT .)
 
 
 state 28
 
-    (18) R -> SUIT .
+    (18) R -> ALPHA_VAL .
 
-    $end            reduce using rule 18 (R -> SUIT .)
-
-
-state 29
-
-    (19) R -> ALPHA_VAL .
-
-    $end            reduce using rule 19 (R -> ALPHA_VAL .)
+    $end            reduce using rule 18 (R -> ALPHA_VAL .)
 
