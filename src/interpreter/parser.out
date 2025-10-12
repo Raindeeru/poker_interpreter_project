@@ -1,0 +1,300 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Grammar
+
+Rule 0     S' -> S
+Rule 1     S -> COMMAND U
+Rule 2     S -> COMMAND
+Rule 3     U -> NUMBER
+Rule 4     U -> ITEM_ID
+Rule 5     U -> CARD_ID U
+Rule 6     U -> CARD_ID
+Rule 7     U -> CARD_ID TO P
+Rule 8     P -> ACTION
+Rule 9     P -> ACTION C
+Rule 10    P -> ACTION E
+Rule 11    C -> CHANGE_KEY OF CARD_ID K
+Rule 12    C -> CHANGE_KEY OF CARD_ID
+Rule 13    K -> TO R
+Rule 14    R -> NUMBER
+Rule 15    R -> SUIT
+Rule 16    R -> ALPHA_VAL
+Rule 17    E -> F WITH F
+Rule 18    F -> NUMBER
+Rule 19    F -> CARD_ID
+
+Terminals, with rules where they appear
+
+ACTION               : 8 9 10
+ALPHA_VAL            : 16
+CARD_ID              : 5 6 7 11 12 19
+CHANGE_KEY           : 11 12
+COMMAND              : 1 2
+ITEM_ID              : 4
+NUMBER               : 3 14 18
+OF                   : 11 12
+SUIT                 : 15
+TO                   : 7 13
+WITH                 : 17
+error                : 
+
+Nonterminals, with rules where they appear
+
+C                    : 9
+E                    : 10
+F                    : 17 17
+K                    : 11
+P                    : 7
+R                    : 13
+S                    : 0
+U                    : 1 5
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . S
+    (1) S -> . COMMAND U
+    (2) S -> . COMMAND
+
+    COMMAND         shift and go to state 2
+
+    S                              shift and go to state 1
+
+state 1
+
+    (0) S' -> S .
+
+
+
+state 2
+
+    (1) S -> COMMAND . U
+    (2) S -> COMMAND .
+    (3) U -> . NUMBER
+    (4) U -> . ITEM_ID
+    (5) U -> . CARD_ID U
+    (6) U -> . CARD_ID
+    (7) U -> . CARD_ID TO P
+
+    $end            reduce using rule 2 (S -> COMMAND .)
+    NUMBER          shift and go to state 4
+    ITEM_ID         shift and go to state 5
+    CARD_ID         shift and go to state 6
+
+    U                              shift and go to state 3
+
+state 3
+
+    (1) S -> COMMAND U .
+
+    $end            reduce using rule 1 (S -> COMMAND U .)
+
+
+state 4
+
+    (3) U -> NUMBER .
+
+    $end            reduce using rule 3 (U -> NUMBER .)
+
+
+state 5
+
+    (4) U -> ITEM_ID .
+
+    $end            reduce using rule 4 (U -> ITEM_ID .)
+
+
+state 6
+
+    (5) U -> CARD_ID . U
+    (6) U -> CARD_ID .
+    (7) U -> CARD_ID . TO P
+    (3) U -> . NUMBER
+    (4) U -> . ITEM_ID
+    (5) U -> . CARD_ID U
+    (6) U -> . CARD_ID
+    (7) U -> . CARD_ID TO P
+
+    $end            reduce using rule 6 (U -> CARD_ID .)
+    TO              shift and go to state 8
+    NUMBER          shift and go to state 4
+    ITEM_ID         shift and go to state 5
+    CARD_ID         shift and go to state 6
+
+    U                              shift and go to state 7
+
+state 7
+
+    (5) U -> CARD_ID U .
+
+    $end            reduce using rule 5 (U -> CARD_ID U .)
+
+
+state 8
+
+    (7) U -> CARD_ID TO . P
+    (8) P -> . ACTION
+    (9) P -> . ACTION C
+    (10) P -> . ACTION E
+
+    ACTION          shift and go to state 10
+
+    P                              shift and go to state 9
+
+state 9
+
+    (7) U -> CARD_ID TO P .
+
+    $end            reduce using rule 7 (U -> CARD_ID TO P .)
+
+
+state 10
+
+    (8) P -> ACTION .
+    (9) P -> ACTION . C
+    (10) P -> ACTION . E
+    (11) C -> . CHANGE_KEY OF CARD_ID K
+    (12) C -> . CHANGE_KEY OF CARD_ID
+    (17) E -> . F WITH F
+    (18) F -> . NUMBER
+    (19) F -> . CARD_ID
+
+    $end            reduce using rule 8 (P -> ACTION .)
+    CHANGE_KEY      shift and go to state 13
+    NUMBER          shift and go to state 16
+    CARD_ID         shift and go to state 14
+
+    C                              shift and go to state 11
+    E                              shift and go to state 12
+    F                              shift and go to state 15
+
+state 11
+
+    (9) P -> ACTION C .
+
+    $end            reduce using rule 9 (P -> ACTION C .)
+
+
+state 12
+
+    (10) P -> ACTION E .
+
+    $end            reduce using rule 10 (P -> ACTION E .)
+
+
+state 13
+
+    (11) C -> CHANGE_KEY . OF CARD_ID K
+    (12) C -> CHANGE_KEY . OF CARD_ID
+
+    OF              shift and go to state 17
+
+
+state 14
+
+    (19) F -> CARD_ID .
+
+    WITH            reduce using rule 19 (F -> CARD_ID .)
+    $end            reduce using rule 19 (F -> CARD_ID .)
+
+
+state 15
+
+    (17) E -> F . WITH F
+
+    WITH            shift and go to state 18
+
+
+state 16
+
+    (18) F -> NUMBER .
+
+    WITH            reduce using rule 18 (F -> NUMBER .)
+    $end            reduce using rule 18 (F -> NUMBER .)
+
+
+state 17
+
+    (11) C -> CHANGE_KEY OF . CARD_ID K
+    (12) C -> CHANGE_KEY OF . CARD_ID
+
+    CARD_ID         shift and go to state 19
+
+
+state 18
+
+    (17) E -> F WITH . F
+    (18) F -> . NUMBER
+    (19) F -> . CARD_ID
+
+    NUMBER          shift and go to state 16
+    CARD_ID         shift and go to state 14
+
+    F                              shift and go to state 20
+
+state 19
+
+    (11) C -> CHANGE_KEY OF CARD_ID . K
+    (12) C -> CHANGE_KEY OF CARD_ID .
+    (13) K -> . TO R
+
+    $end            reduce using rule 12 (C -> CHANGE_KEY OF CARD_ID .)
+    TO              shift and go to state 22
+
+    K                              shift and go to state 21
+
+state 20
+
+    (17) E -> F WITH F .
+
+    $end            reduce using rule 17 (E -> F WITH F .)
+
+
+state 21
+
+    (11) C -> CHANGE_KEY OF CARD_ID K .
+
+    $end            reduce using rule 11 (C -> CHANGE_KEY OF CARD_ID K .)
+
+
+state 22
+
+    (13) K -> TO . R
+    (14) R -> . NUMBER
+    (15) R -> . SUIT
+    (16) R -> . ALPHA_VAL
+
+    NUMBER          shift and go to state 24
+    SUIT            shift and go to state 25
+    ALPHA_VAL       shift and go to state 26
+
+    R                              shift and go to state 23
+
+state 23
+
+    (13) K -> TO R .
+
+    $end            reduce using rule 13 (K -> TO R .)
+
+
+state 24
+
+    (14) R -> NUMBER .
+
+    $end            reduce using rule 14 (R -> NUMBER .)
+
+
+state 25
+
+    (15) R -> SUIT .
+
+    $end            reduce using rule 15 (R -> SUIT .)
+
+
+state 26
+
+    (16) R -> ALPHA_VAL .
+
+    $end            reduce using rule 16 (R -> ALPHA_VAL .)
+
