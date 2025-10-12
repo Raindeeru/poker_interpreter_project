@@ -9,13 +9,13 @@ rules = [
     ('U', ['CARD_ID', 'TO', 'P']),
 
     #A
-    ('A', ['']),
+    ('A', []),
     ('A', ['NUMBER']),
     ('A', ['ITEM_ID']),
     ('A', ['CARD_ID', 'A']),
 
     #P
-    ('P', ['']),
+    ('P', []),
     ('P', ['ACTION']),
     ('P', ['ACTION', 'C']),
     ('P', ['ACTION', 'E']),
@@ -23,7 +23,7 @@ rules = [
     #C
     ('C', ['CHANGE_KEY', 'OF', 'CARD_ID', 'K']),
     #K
-    ('K', ['']),
+    ('K', []),
     ('K', ['TO', 'R']),
     #R
     ('R', ['NUMBER']),
@@ -50,7 +50,6 @@ def shift_reduce(tokens):
 
     input_tokens = list(tokens) + [make_eof_token()]
     pos = 0
-    epsilon_applied = set()
 
     while pos < len(input_tokens):
         print(input_tokens[pos])
@@ -66,11 +65,4 @@ def shift_reduce(tokens):
                     stack[-len(pattern):] = [lhs]
                     reduced = True
                     break
-
-                elif pattern == [] and lhs not in stack:
-                    stack.append(lhs)
-                    epsilon_applied.add(lhs)
-                    reduced = True
-                    break
-
     return stack

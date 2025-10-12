@@ -7,9 +7,12 @@ while True:
         break
 
     lexer.input(data)
-    stack = shift_reduce(lexer)
-
-    for tok in lexer:
+    tokens = list(lexer)
+    for tok in tokens:
         print(tok)
+    stack = shift_reduce(tokens)
+
 
     print(stack)
+
+#use 10h to change suit of qs to 10
