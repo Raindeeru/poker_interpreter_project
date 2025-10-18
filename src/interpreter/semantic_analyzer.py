@@ -15,34 +15,41 @@ def check_quit_valid(target):
         return (False, "Quit has targets!")
 
 
-def check_value_change(value):
-    valid_suit = ['h', 'd', 'c', 's']
-    
-    if not isinstance(value, p.Suit):
-        return (False, "Invalid suit used in change action")
-    if value.value not in valid_suit:
-        return (False, f"Invalid suit '{value.value}' used in change action")
-    else:
-        return (True, "Valid command")
 
 def check_card_id_valid(target):
     if not isinstance(target.card_id, p.CardID):
         return (False, "Invalid CardID used in change action")
     else:
-        return check_value_change(target.change_value)
+        return (True, "Galing mo!")
         
         
 def check_change_valid(target):
-    valid_keys = ["suit"]
+    valid_keys = ["suit","value"]
+    valid_suits = ['h', 'd', 'c', 's']
+    valid_values = ['a', 2, 3, 4, 5, 6, 7, 8, 9, 10, 'j', 'q', 'k']
     
     if not isinstance(target, p.ChangeTarget):
         return (False, "Invalid target for change action")
     
     if target.change_key not in valid_keys:
         return (False, f"Invalid key '{target.change_key}'. Must be 'suit'.")
-    else:
-        return check_card_id_valid(target)
-   
+    
+    if target.change_value == "random":
+        return True
+    
+    match target.change_key:
+        case "suit":
+            if target.change_value.value not in valid_suits:
+                return (False, f"Invalid suit '{target.change_value.value}' used in change action")
+            
+            return check_card_id_valid(target)
+        case "value":
+            if target.change_value.num not in valid_values:
+                return (False, f"Invalid value used in change action")
+            
+            return check_card_id_valid(target)
+        case _:
+            return (False, "Invalid change key used in change action")
 
 
 def check_action_valid(action):
