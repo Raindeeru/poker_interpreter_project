@@ -17,4 +17,4 @@ while True:
     print(x)
     print(out)
 
-    #use 5h to change suit of 9c 
+    #use 5h to change suit of 9c use 
