@@ -2,8 +2,11 @@ import curses
 from curses import wrapper
 import ui.layout as layout
 import ui.input as input
+import state
 
 # gagawa tayo gamestate class, sa init mag iinit tayo ng object nun
+
+game_state = state.State()
 
 def run(stdscr):
     screen = layout.Screen()
