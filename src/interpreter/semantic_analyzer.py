@@ -14,41 +14,54 @@ def check_quit_valid(target):
     else:
         return (False, "Quit has targets!")
 
+
+def check_value_change(value):
+    valid_suit = ['h', 'd', 'c', 's']
+    
+    if not isinstance(value, p.Suit):
+        return (False, "Invalid suit used in change action")
+    if value.value not in valid_suit:
+        return (False, f"Invalid suit '{value.value}' used in change action")
+    else:
+        return (True, "Valid command")
+
+def check_card_id_valid(target):
+    if not isinstance(target.card_id, p.CardID):
+        return (False, "Invalid CardID used in change action")
+    else:
+        return check_value_change(target.change_value)
+        
+        
+def check_change_valid(target):
+    valid_keys = ["suit"]
+    
+    if not isinstance(target, p.ChangeTarget):
+        return (False, "Invalid target for change action")
+    
+    if target.change_key not in valid_keys:
+        return (False, f"Invalid key '{target.change_key}'. Must be 'suit'.")
+    else:
+        return check_card_id_valid(target)
+   
+
+
 def check_action_valid(action):
     if not isinstance(action, p.Action):
-        return (False, "Invalid Action structure")
-    if action.action != "change":
-        return (False, f"Unsupported Action: '{action.action}'")
-    return (True, "Valid action")
+        return (False, "Invalid Action Used")
+    
+    if action.action == "change":
+        return check_change_valid(action.target)
+    
+    return (False, f"Invalid action '{action.action}' used in special card command")
 
 
-#CHANGE
-def check_change_valid(change: p.ChangeTarget):
-    valid_keys = ["suit"]
-    if change.change_key not in valid_keys:
-        return (False, f"Invalid key '{change.change_key}'. Must be 'suit'.")
-    if not isinstance(change.card_id, p.CardID):
-        return (False, "Invalid target card ID in change command.")
-    if change.change_value != 'random':
-        if not isinstance(change.change_value, (p.Suit, p.AlphabetValue, p.Number)):
-            return (False, f"Invalid change value: {change.change_value}.")
-    return (True, "Valid change target")
-
-
-#USE
 def check_use_valid(target):
     if not isinstance(target, p.SpecialCardCommand):
         return (False, "Use command must target valid card")
-
-    result = check_action_valid(target.action)
-    if result is not True:
-        return result
-
-    result = check_change_valid(target.action.target)
-    if result[0] is False:
-        return result
-
-    return (True, "Valid use command")
+    elif not isinstance(target.special_card, p.CardID):
+        return (False, "Special card must be a valid CardID")
+    else:
+        return check_action_valid(target.action)
 
 
 def valid_semantics(ast):
