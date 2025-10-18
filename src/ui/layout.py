@@ -1,4 +1,5 @@
 import curses
+import ui.terminal as term
 import ui.input as input
 
 MAIN_SCREEN_W, MAIN_SCREEN_H = 85, 20
@@ -61,8 +62,8 @@ def update_screen(stdscr, screen: Screen):
     stdscr.noutrefresh()
 
     update_window_box(screen.main_screen)
-    update_window_box(screen.terminal)
     update_window_box(screen.sidebar)
+    update_window_box(screen.terminal)
 
     # Dito natin iuupdate yung ui based sa game state
     # I display yung cards
@@ -74,8 +75,7 @@ def update_screen(stdscr, screen: Screen):
 
     screen.main_screen.noutrefresh()
 
-    screen.terminal.hline(TERMINAL_H - 3, 1, ord("-"), TERMINAL_W-2)
-
+    show_terminal_output(screen.terminal)
     show_terminal_input(screen.terminal)
 
     screen.terminal.noutrefresh()
@@ -130,6 +130,13 @@ def update_window_box(window):
     window.noutrefresh()
 
 
+def show_terminal_output(terminal):
+    for i, line in enumerate(term.terminal_history):
+        terminal.move(i + 1, 1)
+        terminal.addstr(line)
+
+
 def show_terminal_input(terminal):
+    terminal.hline(TERMINAL_H - 3, 1, ord("-"), TERMINAL_W-2)
     terminal.move(TERMINAL_H - 2, 1)
     terminal.addstr(f"> {input.input_str}")
