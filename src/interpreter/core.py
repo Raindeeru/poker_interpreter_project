@@ -23,3 +23,4 @@ def interpret_command(input: str, state: State):
     if not valid[0]:
         return valid[1]
 
+    return "Valid Command"

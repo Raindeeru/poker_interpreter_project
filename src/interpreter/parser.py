@@ -178,6 +178,9 @@ def p_f2(p):
     'F : CARD_ID'
     p[0] = CardID(value=p[1])
 
+def p_error(p):
+    pass
+
 
 parser = yacc.yacc(debug=True)
 # use 5h to change suit of 5h 

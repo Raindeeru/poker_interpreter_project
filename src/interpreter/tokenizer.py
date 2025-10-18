@@ -76,7 +76,6 @@ def t_WITH(t):
 
 def t_error(t):
     global error
-    print(f"Illegal character '{t.value[0]}' at position {t.lexpos}")
     error = TokError(value=t.value[0], position=t.lexpos)
     error_found
     t.lexer.skip(1)
