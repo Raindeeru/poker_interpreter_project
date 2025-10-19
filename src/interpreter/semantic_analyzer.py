@@ -20,14 +20,12 @@ def check_quit_valid(target):
 #use [card identifier] to change values of  [card identifier] to [{random} | int(1-10) | value(J,Q,K,A)]
 #use [card identifier] to reveal int(0-4)
 
-
 def check_card_id_valid(target):
     if not isinstance(target.card_id, p.CardID):
         return (False, "Invalid CardID used in change action")
     else:
         return (True, "Command is Valid!")
         
-
 def check_change_valid(target):
     valid_keys = ["suit","value"]
     valid_suits = ['h', 'd', 'c', 's']
@@ -65,6 +63,21 @@ def check_reveal_valid(target):
     else:  
         return (True, "Reveal Command is Valid!")
     
+def check_exchange_valid(target):
+    if not isinstance(target, p.ExchangeTarget):
+        return (False, "Not a valid target!")
+    elif isinstance(target.target1, p.Number ) and isinstance(target.target2, p.CardID):
+        if target.target1.num not in [0, 1, 2, 3, 4]:
+            return (False, "Exchange target must be an integer between 0 and 4") 
+        return (True, "Exchange command is Valid!")
+    
+    elif isinstance(target.target1, p.CardID ) and isinstance(target.target2, p.Number):
+        if target.target2.num not in [0, 1, 2, 3, 4]:
+            return (False, "Exchange target must be an integer between 0 and 4") 
+        return (True, "Exchange command is Valid!")
+    else:
+        return (False, "Not a valid target!")
+
 
 def check_action_valid(action):
     if not isinstance(action, p.Action):
@@ -73,7 +86,7 @@ def check_action_valid(action):
     if action.action == "change":
         return check_change_valid(action.target)
     elif action.action == "exchange":
-        return None
+        return check_exchange_valid(action.target)
     elif action.action == "reveal":
         return check_reveal_valid(action.target)
     else:
@@ -98,6 +111,5 @@ def valid_semantics(ast):
     if ast.command == "use":
         return check_use_valid(ast.target)
     
-
     pass
 
