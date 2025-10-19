@@ -180,6 +180,7 @@ def valid_semantics(ast):
     #may error
     if ast.command == "all":
         return check_all_valid(ast.target)
+    #may error    
     if ast.commnf == "start":
         return check_start_valid(ast.target)
     pass
