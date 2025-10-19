@@ -1,6 +1,7 @@
 import curses
 import ui.layout as layout
 from pathlib import Path
+import interpreter.parser as p
 
 ART = Path(__file__).parent / "art"
 
@@ -8,6 +9,8 @@ card_border = None
 special_card_border = None
 
 count = 0
+
+cards = {}
 
 
 def load_art():
@@ -19,6 +22,14 @@ def load_art():
 
     card_border = parts[0]
     special_card_border = parts[1]
+
+    for suit in ["s", "c", "h", "d"]:
+        card_value = {}
+        for value in ["a", 2, 3, 4, 5, 6, 7, 8, 9, 10, "j", "q", "k"]:
+
+            card_value[value] = str(value) + " of " + suit
+
+        cards[suit] = card_value
 
 
 load_art()
@@ -42,14 +53,24 @@ def draw_art(pad, y, x, art):
         pad.addstr(y + i, x, line)
 
 
+def draw_card(pad, suit, value, y, x):
+    global card_border
+    global cards
+    card_art = cards[suit][value]
+    draw_art(pad, y, x, card_border)
+    draw_art(pad, y+1, x+1, card_art)
+
+
 def update_screen_pad(pad):
     global count
     global card_border
     count += 1
     pad.erase()
 
-    draw_art(pad, 0, layout.MAIN_SCREEN_W - ((count//1000) % layout.MAIN_SCREEN_W), card_border)
-    draw_art(pad, 5, (count//1000) % layout.MAIN_SCREEN_W, special_card_border)
+    draw_art(pad, 0, layout.MAIN_SCREEN_W - ((count//800) % layout.MAIN_SCREEN_W), card_border)
+    draw_art(pad, (count//1000) % layout.MAIN_SCREEN_H, (count//1000) % layout.MAIN_SCREEN_W, special_card_border)
+    draw_card(pad, "h", "a", 4, layout.MAIN_SCREEN_W - ((count//1000) % layout.MAIN_SCREEN_W))
+    draw_art(pad, 4, (count//500) % layout.MAIN_SCREEN_W, special_card_border)
 
     pad.noutrefresh(0, 0,
                     1, 1,
