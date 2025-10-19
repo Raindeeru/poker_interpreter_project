@@ -1,4 +1,14 @@
 import ply.lex as lex
+from dataclasses import dataclass
+
+
+@dataclass
+class TokError:
+    value: object
+    position: int
+
+error = None
+error_found = False
 
 tokens = (
     'COMMAND',
@@ -65,9 +75,11 @@ def t_WITH(t):
     return t
 
 def t_error(t):
-    print(f"Illegal character '{t.value[0]}' at position {t.lexpos}")
+    global error
+    error = TokError(value=t.value[0], position=t.lexpos)
+    error_found
     t.lexer.skip(1)
-    
+
 lexer = lex.lex()
 
 if __name__ == "__main__":

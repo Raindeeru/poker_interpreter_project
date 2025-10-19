@@ -1,5 +1,7 @@
 import curses
 import string
+from interpreter.core import interpret_command
+from ui.terminal import add_terminal_output
 
 alphabet = list(string.ascii_letters + string.digits + " ")
 
@@ -15,6 +17,8 @@ def handle_input(key, terminal):
     if key == "\n":
         # dito na magsesend ng string sa interpreter
         # interpreter.interpret(input_str) or something like that
+        out = interpret_command(input_str, None)
+        add_terminal_output(out)
         input_str = ""
 
     if key not in alphabet:

@@ -136,12 +136,12 @@ def p_p3(p):
 
 def p_c1(p):
     'C : CHANGE_KEY OF CARD_ID K'
-    p[0] = ChangeTarget(change_key=p[1], card_id=p[3], change_value=p[4])
+    p[0] = ChangeTarget(change_key=p[1], card_id=CardID(value=p[3]), change_value=p[4])
 
 
 def p_c2(p):
     'C : CHANGE_KEY OF CARD_ID'
-    p[0] = ChangeTarget(change_key=p[1], card_id=p[3])
+    p[0] = ChangeTarget(change_key=p[1], card_id=CardID(value=p[3]))
 
 
 def p_k(p):
@@ -178,7 +178,10 @@ def p_f2(p):
     'F : CARD_ID'
     p[0] = CardID(value=p[1])
 
+def p_error(p):
+    pass
+
 
 parser = yacc.yacc(debug=True)
-# use 5h to change suit of 5h to s
+# use 5h to change suit of 5h 
 
