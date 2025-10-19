@@ -7,12 +7,62 @@ def check_bet_valid(target):
     else:
         return (False, "Wrong target on the bet command! Must be a number.")
 
-
 def check_quit_valid(target):
     if target is None:
         return True
     else:
         return (False, "Quit has targets!")
+    
+def check_start_valid(target):
+    if target is None:
+        return (True, "Game started!")
+    else:
+        return (False, "Invalid start command!")
+
+def check_fold_valid(target):
+    if target is None:
+        return (True, "valid command")
+    else:
+        return (False, "Invalid fold command!")
+  
+def check_all_valid(target):
+    if target is None:
+        return (True, "valid command")
+    else:
+        return (False, "Invalid all command!")
+    
+def check_call_valid(target):
+    if isinstance(target, p.Number):
+        return (True, "Valid call command")
+    else:
+        return (False, "Invalid call command")
+    
+def check_buy_valid(target):
+    if isinstance(target, p.Number):
+        return (True, "Valid buy command")
+    else:
+        return (False, "Invalid bet command")
+    
+def check_raise_valid(target):
+    if isinstance(target, p.Number):
+        return (True, "Valid raise command")
+    else:
+        return (False, "Invalid raise command")
+
+def check_play_valid(target):
+    if isinstance(target, list) and len(target) == 2:
+        if isinstance(target[0], p.CardID) and isinstance(target[1], p.CardID):
+            return (True, "Command is Valid!")
+        else:
+            return (False, "Invalid Play Command")
+    else: 
+        return (False, "Invalid Play Command! you must input 2 Cards")
+    
+def check_inspect_valid(target):
+    if isinstance(target, p.CardID):
+        return (True, "Valid inspect Commad!")
+    else:
+        return (False, "Invalid inspect Command!")
 
 #####################################################################################################################
 #Error checks for the commands
@@ -20,14 +70,12 @@ def check_quit_valid(target):
 #use [card identifier] to change values of  [card identifier] to [{random} | int(1-10) | value(J,Q,K,A)]
 #use [card identifier] to reveal int(0-4)
 
-
 def check_card_id_valid(target):
     if not isinstance(target.card_id, p.CardID):
         return (False, "Invalid CardID used in change action")
     else:
         return (True, "Command is Valid!")
         
-
 def check_change_valid(target):
     valid_keys = ["suit","value"]
     valid_suits = ['h', 'd', 'c', 's']
@@ -65,6 +113,21 @@ def check_reveal_valid(target):
     else:  
         return (True, "Reveal Command is Valid!")
     
+def check_exchange_valid(target):
+    if not isinstance(target, p.ExchangeTarget):
+        return (False, "Not a valid target!")
+    elif isinstance(target.target1, p.Number ) and isinstance(target.target2, p.CardID):
+        if target.target1.num not in [0, 1, 2, 3, 4]:
+            return (False, "Exchange target must be an integer between 0 and 4") 
+        return (True, "Exchange command is Valid!")
+    
+    elif isinstance(target.target1, p.CardID ) and isinstance(target.target2, p.Number):
+        if target.target2.num not in [0, 1, 2, 3, 4]:
+            return (False, "Exchange target must be an integer between 0 and 4") 
+        return (True, "Exchange command is Valid!")
+    else:
+        return (False, "Not a valid target!")
+
 
 def check_action_valid(action):
     if not isinstance(action, p.Action):
@@ -73,7 +136,7 @@ def check_action_valid(action):
     if action.action == "change":
         return check_change_valid(action.target)
     elif action.action == "exchange":
-        return None
+        return check_exchange_valid(action.target)
     elif action.action == "reveal":
         return check_reveal_valid(action.target)
     else:
@@ -94,10 +157,24 @@ def check_use_valid(target):
 def valid_semantics(ast):
     if ast.command == "bet":
         return check_bet_valid(ast.target)
-    
-    if ast.command == "use":
+    elif ast.command == "use":
         return check_use_valid(ast.target)
-    
-
-    pass
+    elif ast.command == "play":
+        return check_play_valid(ast.target)
+    elif ast.command == "inspect":
+        return check_inspect_valid(ast.target)
+    elif ast.command == "buy":
+        return check_buy_valid(ast.target)
+    elif ast.command == "raise":
+        return check_raise_valid(ast.target)
+    elif ast.command == "call":
+        return check_call_valid(ast.target)
+    elif ast.command == "fold":
+        return check_fold_valid(ast.target) 
+    elif ast.command == "all":
+        return check_all_valid(ast.target)
+    elif ast.command == "start":
+        return check_start_valid(ast.target)
+    else:
+        return (False, "Not a Valid Command")
 
