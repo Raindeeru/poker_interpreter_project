@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'ACTION ALPHA_VAL CARD_ID CHANGE_KEY COMMAND ITEM_ID NUMBER OF SUIT TO WITHS :  COMMAND US : COMMANDU : NUMBERU : ITEM_IDU : CARD_ID AU : CARD_IDU : CARD_ID TO PA : CARD_ID AA : CARD_IDP : ACTIONP : ACTION CP : ACTION EC : CHANGE_KEY OF CARD_ID KC : CHANGE_KEY OF CARD_IDK : TO RR : NUMBERR : SUITR : ALPHA_VALE : F WITH FF : NUMBERF : CARD_ID'
+_lr_signature = 'ACTION ALPHA_VAL CARD_ID CHANGE_KEY COMMAND ITEM_ID NUMBER OF SUIT TO WITHS :  COMMAND US : COMMANDU : NUMBERU : ITEM_IDU : CARD_ID AU : CARD_IDU : CARD_ID TO PA : CARD_ID AA : CARD_IDP : ACTIONP : ACTION CP : ACTION EP : ACTION VC : CHANGE_KEY OF CARD_ID KC : CHANGE_KEY OF CARD_IDK : TO RR : NUMBERR : SUITR : ALPHA_VALE : F WITH FF : NUMBERF : CARD_IDV : NUMBER'
     
-_lr_action_items = {'COMMAND':([0,],[2,]),'$end':([1,2,3,4,5,6,7,8,10,11,12,13,14,16,18,21,22,23,25,26,27,28,],[0,-2,-1,-3,-4,-6,-9,-5,-8,-7,-10,-11,-12,-21,-20,-14,-19,-13,-15,-16,-17,-18,]),'NUMBER':([2,12,20,24,],[4,18,18,26,]),'ITEM_ID':([2,],[5,]),'CARD_ID':([2,6,7,12,19,20,],[6,7,7,16,21,16,]),'TO':([6,21,],[9,24,]),'ACTION':([9,],[12,]),'CHANGE_KEY':([12,],[15,]),'OF':([15,],[19,]),'WITH':([16,17,18,],[-21,20,-20,]),'SUIT':([24,],[27,]),'ALPHA_VAL':([24,],[28,]),}
+_lr_action_items = {'COMMAND':([0,],[2,]),'$end':([1,2,3,4,5,6,7,8,10,11,12,13,14,15,17,19,22,23,24,25,27,28,29,30,],[0,-2,-1,-3,-4,-6,-9,-5,-8,-7,-10,-11,-12,-13,-22,-23,-15,-20,-21,-14,-16,-17,-18,-19,]),'NUMBER':([2,12,21,26,],[4,19,24,28,]),'ITEM_ID':([2,],[5,]),'CARD_ID':([2,6,7,12,20,21,],[6,7,7,17,22,17,]),'TO':([6,22,],[9,26,]),'ACTION':([9,],[12,]),'CHANGE_KEY':([12,],[16,]),'OF':([16,],[20,]),'WITH':([17,18,19,],[-22,21,-21,]),'SUIT':([26,],[29,]),'ALPHA_VAL':([26,],[30,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'S':([0,],[1,]),'U':([2,],[3,]),'A':([6,7,],[8,10,]),'P':([9,],[11,]),'C':([12,],[13,]),'E':([12,],[14,]),'F':([12,20,],[17,22,]),'K':([21,],[23,]),'R':([24,],[25,]),}
+_lr_goto_items = {'S':([0,],[1,]),'U':([2,],[3,]),'A':([6,7,],[8,10,]),'P':([9,],[11,]),'C':([12,],[13,]),'E':([12,],[14,]),'V':([12,],[15,]),'F':([12,21,],[18,23,]),'K':([22,],[25,]),'R':([26,],[27,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,25 +27,27 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> S","S'",1,None,None,None),
-  ('S -> COMMAND U','S',2,'p_s1','parser.py',78),
-  ('S -> COMMAND','S',1,'p_s2','parser.py',83),
-  ('U -> NUMBER','U',1,'p_u1','parser.py',88),
-  ('U -> ITEM_ID','U',1,'p_u2','parser.py',93),
-  ('U -> CARD_ID A','U',2,'p_u3','parser.py',98),
-  ('U -> CARD_ID','U',1,'p_u4','parser.py',103),
-  ('U -> CARD_ID TO P','U',3,'p_u5','parser.py',108),
-  ('A -> CARD_ID A','A',2,'p_a1','parser.py',113),
-  ('A -> CARD_ID','A',1,'p_a2','parser.py',118),
-  ('P -> ACTION','P',1,'p_p1','parser.py',123),
-  ('P -> ACTION C','P',2,'p_p2','parser.py',128),
-  ('P -> ACTION E','P',2,'p_p3','parser.py',133),
-  ('C -> CHANGE_KEY OF CARD_ID K','C',4,'p_c1','parser.py',139),
-  ('C -> CHANGE_KEY OF CARD_ID','C',3,'p_c2','parser.py',144),
-  ('K -> TO R','K',2,'p_k','parser.py',149),
-  ('R -> NUMBER','R',1,'p_r1','parser.py',154),
-  ('R -> SUIT','R',1,'p_r2','parser.py',159),
-  ('R -> ALPHA_VAL','R',1,'p_r3','parser.py',164),
-  ('E -> F WITH F','E',3,'p_e','parser.py',169),
-  ('F -> NUMBER','F',1,'p_f1','parser.py',175),
-  ('F -> CARD_ID','F',1,'p_f2','parser.py',180),
+  ('S -> COMMAND U','S',2,'p_s1','parser.py',79),
+  ('S -> COMMAND','S',1,'p_s2','parser.py',84),
+  ('U -> NUMBER','U',1,'p_u1','parser.py',89),
+  ('U -> ITEM_ID','U',1,'p_u2','parser.py',94),
+  ('U -> CARD_ID A','U',2,'p_u3','parser.py',99),
+  ('U -> CARD_ID','U',1,'p_u4','parser.py',104),
+  ('U -> CARD_ID TO P','U',3,'p_u5','parser.py',109),
+  ('A -> CARD_ID A','A',2,'p_a1','parser.py',114),
+  ('A -> CARD_ID','A',1,'p_a2','parser.py',119),
+  ('P -> ACTION','P',1,'p_p1','parser.py',124),
+  ('P -> ACTION C','P',2,'p_p2','parser.py',129),
+  ('P -> ACTION E','P',2,'p_p3','parser.py',134),
+  ('P -> ACTION V','P',2,'p_p4','parser.py',139),
+  ('C -> CHANGE_KEY OF CARD_ID K','C',4,'p_c1','parser.py',144),
+  ('C -> CHANGE_KEY OF CARD_ID','C',3,'p_c2','parser.py',149),
+  ('K -> TO R','K',2,'p_k','parser.py',154),
+  ('R -> NUMBER','R',1,'p_r1','parser.py',159),
+  ('R -> SUIT','R',1,'p_r2','parser.py',164),
+  ('R -> ALPHA_VAL','R',1,'p_r3','parser.py',169),
+  ('E -> F WITH F','E',3,'p_e','parser.py',174),
+  ('F -> NUMBER','F',1,'p_f1','parser.py',179),
+  ('F -> CARD_ID','F',1,'p_f2','parser.py',184),
+  ('V -> NUMBER','V',1,'p_v','parser.py',189),
 ]

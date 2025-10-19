@@ -15,6 +15,8 @@ def handle_input(key, terminal):
         input_str = input_str[:-1]
 
     if key == "\n":
+        if not input_str:
+            return
         # dito na magsesend ng string sa interpreter
         # interpreter.interpret(input_str) or something like that
         out = interpret_command(input_str, None)

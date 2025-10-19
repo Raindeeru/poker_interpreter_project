@@ -1,6 +1,7 @@
 import curses
 import ui.terminal as term
 import ui.input as input
+import ui.main_screen as ms
 
 MAIN_SCREEN_W, MAIN_SCREEN_H = 85, 20
 TERMINAL_W, TERMINAL_H = 85, 10
@@ -43,6 +44,7 @@ class Screen:
         self.main_screen = create_main_screen()
         self.terminal = create_terminal()
         self.sidebar = create_sidebar()
+        self.ms_pad = ms.draw_screen_pad()
 
 
 def update_screen(stdscr, screen: Screen):
@@ -74,6 +76,7 @@ def update_screen(stdscr, screen: Screen):
         screen.main_screen.addstr(i, 1, line)
 
     screen.main_screen.noutrefresh()
+    ms.update_screen_pad(screen.ms_pad)
 
     show_terminal_output(screen.terminal)
     show_terminal_input(screen.terminal)

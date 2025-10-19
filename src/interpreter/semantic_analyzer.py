@@ -14,15 +14,20 @@ def check_quit_valid(target):
     else:
         return (False, "Quit has targets!")
 
+#####################################################################################################################
+#Error checks for the commands
+#use [card identifier] to change suit of [card identifier] to [{random} | specific suit(H,D,S,C)]
+#use [card identifier] to change values of  [card identifier] to [{random} | int(1-10) | value(J,Q,K,A)]
+#use [card identifier] to reveal int(0-4)
 
 
 def check_card_id_valid(target):
     if not isinstance(target.card_id, p.CardID):
         return (False, "Invalid CardID used in change action")
     else:
-        return (True, "Galing mo!")
+        return (True, "Command is Valid!")
         
-        
+
 def check_change_valid(target):
     valid_keys = ["suit","value"]
     valid_suits = ['h', 'd', 'c', 's']
@@ -52,14 +57,27 @@ def check_change_valid(target):
             return (False, "Invalid change key used in change action")
 
 
+def check_reveal_valid(target):
+    if not isinstance(target, p.Number):
+        return (False, "Invalid target for reveal action")
+    elif target.num not in [0, 1, 2, 3, 4]:
+        return (False, "Reveal target must be an integer between 0 and 4") 
+    else:  
+        return (True, "Reveal Command is Valid!")
+    
+
 def check_action_valid(action):
     if not isinstance(action, p.Action):
         return (False, "Invalid Action Used")
     
     if action.action == "change":
         return check_change_valid(action.target)
-    
-    return (False, f"Invalid action '{action.action}' used in special card command")
+    elif action.action == "exchange":
+        return None
+    elif action.action == "reveal":
+        return check_reveal_valid(action.target)
+    else:
+        return (False, f"Invalid action '{action.action}' used in special card command")
 
 
 def check_use_valid(target):
@@ -69,6 +87,8 @@ def check_use_valid(target):
         return (False, "Special card must be a valid CardID")
     else:
         return check_action_valid(target.action)
+    
+######################################################################################################################
 
 
 def valid_semantics(ast):

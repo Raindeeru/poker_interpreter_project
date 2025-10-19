@@ -13,7 +13,9 @@ def interpret_command(input: str, state: State):
     parsed = parser.parse(input)
 
     if t.error:
-        return str(t.error)
+        error = t.error
+        t.error = None
+        return str(error)
 
     if not parsed:
         return "Syntax Error"

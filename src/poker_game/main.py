@@ -12,8 +12,6 @@ def run(stdscr):
     screen = layout.Screen()
 
     while True:
-        screen = layout.update_screen(stdscr, screen)
-
         try:
             key = stdscr.getkey()
             if key == "q":
@@ -22,6 +20,7 @@ def run(stdscr):
         except curses.error:
             pass
 
+        screen = layout.update_screen(stdscr, screen)
         curses.doupdate()
 
 
