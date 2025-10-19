@@ -65,8 +65,9 @@ Grammar:
 S -> command U | command .
 U -> number | item_id | card_id A | card_id | card_id to P .
 A -> card_id A | card_id .
-P -> action | action C | act E .
+P -> action | action C | act E | act V.
 C -> change_key of card_id K| change_key of card_id .
+V -> card_id.
 K -> to R .
 R -> number | suit | alpha_val .
 E -> F with F .
@@ -134,6 +135,11 @@ def p_p3(p):
     p[0] = Action(action=p[1], target=p[2])
 
 
+def p_p4(p):
+    'P : ACTION V'
+    p[0] = Action(action=p[1], target=p[2])
+
+
 def p_c1(p):
     'C : CHANGE_KEY OF CARD_ID K'
     p[0] = ChangeTarget(change_key=p[1], card_id=CardID(value=p[3]), change_value=p[4])
@@ -177,6 +183,12 @@ def p_f1(p):
 def p_f2(p):
     'F : CARD_ID'
     p[0] = CardID(value=p[1])
+
+
+def p_v(p):
+    'V : NUMBER'
+    p[0] = Number(num=p[1])
+
 
 def p_error(p):
     pass
