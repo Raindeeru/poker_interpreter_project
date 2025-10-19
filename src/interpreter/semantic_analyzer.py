@@ -7,12 +7,66 @@ def check_bet_valid(target):
     else:
         return (False, "Wrong target on the bet command! Must be a number.")
 
-
 def check_quit_valid(target):
     if target is None:
         return True
     else:
+
         return (False, "Quit has targets!")
+    
+#may error
+def check_start_valid(target):
+    if target is None:
+        return (True, "Game started!")
+    else:
+        return (False, "Invalid start command!")
+
+#may error
+def check_fold_valid(target):
+    if target is None:
+        return True
+    else:
+        return (False, "Invalid fold command!")
+  
+#may error
+def check_all_valid(target):
+    if target is None:
+        return True
+    else:
+        return (False, "Invalid all command!")
+    
+def check_call_valid(target):
+    if isinstance(target, p.Number):
+        return (True, "Valid call command")
+    else:
+        return (False, "Invalid call command")
+    
+def check_buy_valid(target):
+    if isinstance(target, p.Number):
+        return (True, "Valid buy command")
+    else:
+        return (False, "Invalid bet command")
+    
+def check_raise_valid(target):
+    if isinstance(target, p.Number):
+        return (True, "Valid raise command")
+    else:
+        return (False, "Invalid raise command")
+
+def check_play_valid(target):
+    if isinstance(target, list) and len(target) == 2:
+        if isinstance(target[0], p.CardID) and isinstance(target[1], p.CardID):
+            return (True, "Command is Valid!")
+        else:
+            return (False, "Invalid Play Command")
+    else: 
+        return (False, "Invalid Play Command! you must input 2 Cards")
+    
+def check_inspect_valid(target):
+    if isinstance(target, p.CardID):
+        return (True, "Valid inspect Commad!")
+    else:
+        return (False, "Invalid inspect Command!")
 
 #####################################################################################################################
 #Error checks for the commands
@@ -107,9 +161,26 @@ def check_use_valid(target):
 def valid_semantics(ast):
     if ast.command == "bet":
         return check_bet_valid(ast.target)
-    
     if ast.command == "use":
         return check_use_valid(ast.target)
+    if ast.command == "play":
+        return check_play_valid(ast.target)
+    if ast.command == "inspect":
+        return check_inspect_valid(ast.target)
+    if ast.command == "buy":
+        return check_buy_valid(ast.target)
+    if ast.command == "raise":
+        return check_raise_valid(ast.target)
+    if ast.command == "call":
+        return check_call_valid(ast.target)
     
+    #may error
+    if ast.command == "fold":
+        return check_fold_valid(ast.target) 
+    #may error
+    if ast.command == "all":
+        return check_all_valid(ast.target)
+    if ast.commnf == "start":
+        return check_start_valid(ast.target)
     pass
 
