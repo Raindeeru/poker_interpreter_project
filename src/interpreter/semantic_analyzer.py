@@ -11,7 +11,6 @@ def check_quit_valid(target):
     if target is None:
         return True
     else:
-
         return (False, "Quit has targets!")
     
 def check_start_valid(target):
