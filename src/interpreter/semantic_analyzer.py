@@ -14,24 +14,21 @@ def check_quit_valid(target):
 
         return (False, "Quit has targets!")
     
-#may error
 def check_start_valid(target):
     if target is None:
         return (True, "Game started!")
     else:
         return (False, "Invalid start command!")
 
-#may error
 def check_fold_valid(target):
     if target is None:
-        return True
+        return (True, "valid command")
     else:
         return (False, "Invalid fold command!")
   
-#may error
 def check_all_valid(target):
     if target is None:
-        return True
+        return (True, "valid command")
     else:
         return (False, "Invalid all command!")
     
@@ -161,27 +158,24 @@ def check_use_valid(target):
 def valid_semantics(ast):
     if ast.command == "bet":
         return check_bet_valid(ast.target)
-    if ast.command == "use":
+    elif ast.command == "use":
         return check_use_valid(ast.target)
-    if ast.command == "play":
+    elif ast.command == "play":
         return check_play_valid(ast.target)
-    if ast.command == "inspect":
+    elif ast.command == "inspect":
         return check_inspect_valid(ast.target)
-    if ast.command == "buy":
+    elif ast.command == "buy":
         return check_buy_valid(ast.target)
-    if ast.command == "raise":
+    elif ast.command == "raise":
         return check_raise_valid(ast.target)
-    if ast.command == "call":
+    elif ast.command == "call":
         return check_call_valid(ast.target)
-    
-    #may error
-    if ast.command == "fold":
+    elif ast.command == "fold":
         return check_fold_valid(ast.target) 
-    #may error
-    if ast.command == "all":
+    elif ast.command == "all":
         return check_all_valid(ast.target)
-    #may error    
-    if ast.commnf == "start":
+    elif ast.command == "start":
         return check_start_valid(ast.target)
-    pass
+    else:
+        return (False, "Not a Valid Command")
 
