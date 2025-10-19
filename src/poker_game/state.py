@@ -20,4 +20,4 @@ class State:
     enemy_chips: int = 0
 
     # di ko alam rn pano to, pero probably gagamitin for the ai
-    # enemy_condition: str 
+    # enemy_condition: str
