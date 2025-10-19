@@ -10,15 +10,24 @@ class State:
     in_game: bool = False
 
     # Siguro dito yung laman ng list is dict ng {cardid:CardId, cardType: str}
-    player_cards = []
-    enemy_cards = []  # Dito siguro mas isa pa na laman yung dict kung
+    player_deck = []
+    player_hand = []
+    enemy_hand = []
+    enemy_deck = []  # Dito siguro mas isa pa na laman yung dict kung
     community_cards = [] # revealed siya or hindi
 
     player_health: int = 0
     enemy_health: int = 0
 
+    #Betting
+    enemy_last_bet: int = 0
+    player_last_bet: int = 0
+
+    #Pera
     player_chips: int = 0
     enemy_chips: int = 0
 
+    shop_items = []
+    pot: int = 0
     # di ko alam rn pano to, pero probably gagamitin for the ai
     # enemy_state: str
