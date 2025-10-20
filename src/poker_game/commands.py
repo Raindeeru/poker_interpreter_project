@@ -1,8 +1,11 @@
 from poker_game.state import State
 from poker_game.card import Card
 
+import copy
+import random
+
 #This populates enemy, player and community deck
-def Give_Cards(state: State):
+def Give_Cards_Initial(state: State):
     card_value = ["a", 2, 3, 4, 5, 6, 7, 8, 9, 10, "j", "q", "k"]
     card_suit = ["d", "h", "s", "c"]
    
@@ -11,8 +14,60 @@ def Give_Cards(state: State):
     for card in card_value:
         for suit in card_suit:
             deck.append(Card(suit=suit, value=card, special=None, revealed=False))
+
+
+    state.player_deck = copy.deepcopy(deck)
+    state.enemy_deck = copy.deepcopy(deck)
+    state.community_deck = copy.deepcopy(deck)
+
+    random.shuffle(state.player_deck)
+    random.shuffle(state.enemy_deck)
+    random.shuffle(state.community_deck)
+
+    #Selects the 3 community cards at the start of the game
+    for _ in range(3):
+        state.community_cards.append(state.community_deck.pop(0))
+
+    #Gives the player 3 random cards
+    while len(state.player_hand) != 3:
+        if state.player_deck[0] not in state.community_cards:
+            state.player_hand.append(state.player_deck.pop(0))
+        else:
+            state.player_deck.append(state.player_deck.pop(0))
+
+    #Gives the enemy 3 random cards
+    while len(state.enemy_hand) != 3:
+        if state.enemy_deck[0] not in state.community_cards:
+            state.enemy_hand.append(state.enemy_deck.pop(0))
+        else:
+            state.enemy_deck.append(state.enemy_deck.pop(0))
+
+    state.player_health = 1000
+    state.enemy_health = 1000
+    
+    state.player_chips = 1000
+    state.enemy_chips = 1000
+
+    return state
+    
+
+    
+
+
+
+
+
+
+
+       
+
+    
+
+    
+
+
+    
             
-    print(deck)
 
     
 def Start(state: State):    
