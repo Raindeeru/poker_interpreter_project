@@ -71,6 +71,12 @@ def Fold(state: State):
     state.enemy_chips += state.pot
     state.player_hand 
     state.pot = 0
+    state.round_state = 3
+    print(state.round_state)
+    print(state.pot)
+    print(state.enemy_chips)
+    Play(state, True)
+    return state
 
 def Call(state: State):
     state.pot += state.enemy_last_bet
@@ -95,8 +101,15 @@ def Buy(state: State, shop_index:int):
 def Inspect(state: State):
     pass
 
-def Play(state: State):
-    pass
+def Play(state: State, folded=False):
+    if not folded:
+        pass
+    if folded:
+        state.player_play = []
+
+        print(state.player_play)
+        
+        
 
 def Quit(state: State):
     pass

@@ -1,4 +1,4 @@
-from poker_game.commands import Give_Cards_Initial, Bet, Fold
+from poker_game.commands import Give_Cards_Initial, Bet, Fold, Play
 from poker_game.state import State
 
 test_state = State()

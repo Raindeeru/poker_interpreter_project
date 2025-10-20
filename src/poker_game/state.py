@@ -17,7 +17,7 @@ class State:
                          # Dito siguro mas isa pa na laman yung dict kung
     community_cards = [] # revealed siya or hindi
     community_deck = []
-    
+
     player_health: int = 0
     enemy_health: int = 0
 
@@ -33,7 +33,7 @@ class State:
     player_play = []
     enemy_play = []
 
-    round_state: int
+    round_state: int = 0
 
     shop_items = []
     pot: int = 0
