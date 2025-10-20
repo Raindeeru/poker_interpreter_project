@@ -29,6 +29,12 @@ class State:
     player_chips: int = 0
     enemy_chips: int = 0
 
+    #Cards in play
+    player_play = []
+    enemy_play = []
+
+    round_state: int
+
     shop_items = []
     pot: int = 0
     # di ko alam rn pano to, pero probably gagamitin for the ai
