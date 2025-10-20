@@ -17,28 +17,6 @@ SIDEBAR_X, SIDEBAR_Y = MAIN_SCREEN_W, 0
 
 SMALL_SCREEN_MESSAGE = "Screen too Small! Resize terminal please"
 
-TEST_SCREEN = \
-'''
-                                                     │{`-√-`}│ │{`-√-`}│ │{`-√-`}│
- Health:                                             │{,-o-,}│ │{,-o-,}│ │{,-o-,}│
- Chips :                                             │{│≤│≥│}│ │{│≤│≥│}│ │{│≤│≥│}│
-                                                     │Θ`-√-`Θ│ │Θ`-√-`Θ│ │Θ`-√-`Θ│
-                                                     └───────┘ └───────┘ └───────┘
-                                                                                  
-                           ┌───────┐ ╔═══════╗ ┌───────┐                          
-                           │10     │ ║10   +2║ │Θ,-o-,Θ│                          
-                           │ Ω   Ω │ ║ Ω   Ω ║ │{│≤│≥│}│                          
-                           │ Ω Ω Ω │ ║ Ω Ω Ω ║ │{`-√-`}│                          
-                           │ Ω   Ω │ ║ Ω Ω Ω ║ │{,-o-,}│                          
-                           │ Ω   Ω │ ║ Ω   Ω ║ │{│≤│≥│}│                          
-                           │     10│ ║     10║ │Θ`-√-`Θ│                          
-                           └───────┘ ╚═══════╝ └───────┘                          
-┌───────┐ ╔═══════╗ ┌───────┐                                                     
-│10     │ ║10   +2║ │Θ,-o-,Θ│                                                     
-│ Ω   Ω │ ║ Ω   Ω ║ │{│≤│≥│}│                                                     
-│ Ω Ω Ω │ ║ Ω Ω Ω ║ │{`-√-`}│                                                     
-'''
-
 
 class Screen:
     def __init__(self):
@@ -72,9 +50,6 @@ def update_screen(stdscr, screen: Screen, state: State):
     # I display yung cards
     # output ng last commands sa screen, sa terminal, sa sidebar
     # mga ganun
-
-    for i, line in enumerate(TEST_SCREEN.splitlines()):
-        screen.main_screen.addstr(i, 1, line)
 
     screen.main_screen.noutrefresh()
     ms.update_screen_pad(screen.ms_pad, state)
