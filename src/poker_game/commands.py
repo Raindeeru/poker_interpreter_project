@@ -87,13 +87,24 @@ def Call(state: State):
     return state
 
 def All(state: State):
-    state.pot += state.player_chips
-    state.player_chips = 0
+    if state.enemy_last_bet = 0 or state.player_chips >= state.enemy_last_bet:
+        state.pot += state.player_chips
+        state.player_last_bet = state.player_chips
+        state.player_chips = 0
+    else:
+        state.pot += state.player_chips
+        state.player_last_bet = state.player_chips
+        state.enemy_chips += state.enemy_last_bet - state.player_last_bet
+        state.player_chips = 0
+
     return state
 
 def Raise(state: State, raise_val:int):
-    state.pot += state.enemy_last_bet + raise_val
-    state.player_chips -= state.enemy_last_bet + raise_val
+    if state.player_chips >= raise_val + state.enemy_last_bet:
+        state.pot += state.enemy_last_bet + raise_val
+        state.player_chips -= state.enemy_last_bet + raise_val
+    else:
+        print("Insufficient funds to raise")
     return state
 
 def Buy(state: State, shop_index:int):
