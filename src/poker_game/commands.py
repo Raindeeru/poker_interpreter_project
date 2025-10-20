@@ -11,7 +11,7 @@ def Give_Cards(state: State):
     for card in card_value:
         for suit in card_suit:
             deck.append(Card(suit=suit, value=card, special=None, revealed=False))
-    
+            
     print(deck)
 
     
