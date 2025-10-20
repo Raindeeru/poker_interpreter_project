@@ -7,3 +7,4 @@ class Card:
     suit: str
     value: Union[int, str]
     special: str = None
+    revealed: bool
