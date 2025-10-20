@@ -1,8 +1,25 @@
 from poker_game.state import State
+from poker_game.card import Card
 
+#This populates enemy, player and community deck
+def Give_Cards(state: State):
+    card_value = ["a", 2, 3, 4, 5, 6, 7, 8, 9, 10, "j", "q", "k"]
+    card_suit = ["d", "h", "s", "c"]
+   
+    deck = []
 
-def Start(state: State):
+    for card in card_value:
+        for suit in card_suit:
+            deck.append(Card(suit=suit, value=card, special=None, revealed=False))
+    
+    print(deck)
+
+    
+def Start(state: State):    
     state.started = True
+    card = Card(suit="h", value=1, special=None, revealed=False)
+    print(card)
+
     return state
 
 def Bet(state: State, bet:int):
@@ -42,3 +59,4 @@ def Play(state: State):
 
 def Quit(state: State):
     pass
+

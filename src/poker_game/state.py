@@ -16,7 +16,8 @@ class State:
     enemy_hand = []
                          # Dito siguro mas isa pa na laman yung dict kung
     community_cards = [] # revealed siya or hindi
-
+    community_deck = []
+    
     player_health: int = 0
     enemy_health: int = 0
 
