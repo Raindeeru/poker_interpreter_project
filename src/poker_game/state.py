@@ -11,10 +11,12 @@ class State:
 
     # Siguro dito yung laman ng list is dict ng {cardid:CardId, cardType: str}
     player_deck = []
+    enemy_deck = []
     player_hand = []
     enemy_hand = []
-    enemy_deck = []  # Dito siguro mas isa pa na laman yung dict kung
+                         # Dito siguro mas isa pa na laman yung dict kung
     community_cards = [] # revealed siya or hindi
+    community_deck = []
 
     player_health: int = 0
     enemy_health: int = 0
@@ -26,6 +28,12 @@ class State:
     #Pera
     player_chips: int = 0
     enemy_chips: int = 0
+
+    #Cards in play
+    player_play = []
+    enemy_play = []
+
+    round_state: int = 0
 
     shop_items = []
     pot: int = 0
