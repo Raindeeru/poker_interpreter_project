@@ -50,25 +50,6 @@ def Give_Cards_Initial(state: State):
 
     return state
     
-
-    
-
-
-
-
-
-
-
-       
-
-    
-
-    
-
-
-    
-            
-
     
 def Start(state: State):    
     state.started = True
@@ -78,13 +59,18 @@ def Start(state: State):
     return state
 
 def Bet(state: State, bet:int):
-    state.player_chips -= bet
-    state.pot += bet
-    state.player_last_bet = bet
-    return state
+    if bet <= state.player_chips:
+        state.player_chips -= bet
+        state.pot += bet
+        state.player_last_bet = bet
+        return state
+    else:
+        print("Insufficient Chips")
 
 def Fold(state: State):
-    pass
+    state.enemy_chips += state.pot
+    state.player_hand 
+    state.pot = 0
 
 def Call(state: State):
     state.pot += state.enemy_last_bet
