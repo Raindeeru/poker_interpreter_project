@@ -71,12 +71,19 @@ def draw_start_screen(pad):
     global count
     global card_border
 
-    draw_art(pad, 0, layout.MAIN_SCREEN_W - ((count//800) % layout.MAIN_SCREEN_W), card_border)
-    draw_art(pad, (count//1000) % layout.MAIN_SCREEN_H, (count//1000) % layout.MAIN_SCREEN_W, special_card_border)
-    draw_card(pad, "h", "a", 4, layout.MAIN_SCREEN_W - ((count//1000) % layout.MAIN_SCREEN_W))
-    draw_art(pad, 4, (count//500) % layout.MAIN_SCREEN_W, special_card_border)
 
+    draw_card(pad, "h", "a", 5, (count // 500) % layout.MAIN_SCREEN_W)
+    draw_card(pad, "s", 10, 10, layout.MAIN_SCREEN_W - ((count // 700) % layout.MAIN_SCREEN_W))
+    draw_card(pad, "d", "k", (count // 600) % layout.MAIN_SCREEN_H, 15)
     draw_art(pad, 2, 10, start_screen)
+    draw_card(pad, "c", 3, layout.MAIN_SCREEN_H - ((count // 800) % layout.MAIN_SCREEN_H), 25)
+    draw_card(pad, "h", 7, (count // 800) % layout.MAIN_SCREEN_H, (count // 900) % layout.MAIN_SCREEN_W)
+    draw_card(pad, "s", "q", layout.MAIN_SCREEN_H - ((count // 1000) % layout.MAIN_SCREEN_H),
+                           layout.MAIN_SCREEN_W - ((count // 1000) % layout.MAIN_SCREEN_W))
+
+    if (count // 5000) % 2 == 0:
+        draw_art(pad, 15, 30, "Type \"Start\" to play")
+
 
 
 def update_screen_pad(pad, state: State):
