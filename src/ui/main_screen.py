@@ -3,8 +3,11 @@ import ui.layout as layout
 from pathlib import Path
 import interpreter.parser as p
 from poker_game.state import State
+import math
 
 ART = Path(__file__).parent / "art"
+
+OUT_OF_SCREEN_LENGTH = 20
 
 card_border = None
 special_card_border = None
@@ -14,6 +17,36 @@ start_screen = None
 count = 0
 
 cards = {}
+
+
+def draw_art(pad, y, x, art):
+    for i, line in enumerate(art.splitlines()):
+        pad.addstr(y + i, x, line)
+
+def draw_on_screen(pad, x, y, art):
+    x += OUT_OF_SCREEN_LENGTH
+    y += OUT_OF_SCREEN_LENGTH
+    draw_art(pad, y, x, art)
+
+
+def game_space_to_screen_space(x, y):
+    center_x = (layout.MAIN_SCREEN_W + 2*OUT_OF_SCREEN_LENGTH)//2
+    center_y = (layout.MAIN_SCREEN_H + 2*OUT_OF_SCREEN_LENGTH)//2
+
+    return center_x + x, center_y - y
+
+
+def draw_on_game(pad, x, y, art):
+    x, y = game_space_to_screen_space(x, y)
+    draw_art(pad, y, x, art)
+
+
+def draw_card(pad, suit, value, y, x):
+    global card_border
+    global cards
+    card_art = cards[suit][value]
+    draw_on_game(pad, x, y, card_border)
+    draw_on_game(pad, x+1, y+1, card_art)
 
 
 def load_art():
@@ -42,48 +75,33 @@ load_art()
 
 
 def draw_screen_pad():
-    pad = curses.newpad(100, 100)
+    pad = curses.newpad(layout.MAIN_SCREEN_H + 2*OUT_OF_SCREEN_LENGTH,
+                        layout.MAIN_SCREEN_W + 2*OUT_OF_SCREEN_LENGTH)
 
     for i in range(100):
         pad.addch((i % 26) + ord("a"))
 
-    pad.noutrefresh(0, 0,
+    pad.noutrefresh(OUT_OF_SCREEN_LENGTH, OUT_OF_SCREEN_LENGTH,
                     1, 1,
                     layout.MAIN_SCREEN_H-2, layout.MAIN_SCREEN_W-2)
 
     return pad
 
 
-def draw_art(pad, y, x, art):
-    for i, line in enumerate(art.splitlines()):
-        pad.addstr(y + i, x, line)
-
-
-def draw_card(pad, suit, value, y, x):
-    global card_border
-    global cards
-    card_art = cards[suit][value]
-    draw_art(pad, y, x, card_border)
-    draw_art(pad, y+1, x+1, card_art)
 
 
 def draw_start_screen(pad):
     global count
     global card_border
 
+    pad.border()
 
-    draw_card(pad, "h", "a", 5, (count // 500) % layout.MAIN_SCREEN_W)
-    draw_card(pad, "s", 10, 10, layout.MAIN_SCREEN_W - ((count // 700) % layout.MAIN_SCREEN_W))
-    draw_card(pad, "d", "k", (count // 600) % layout.MAIN_SCREEN_H, 15)
-    draw_art(pad, 2, 10, start_screen)
-    draw_card(pad, "c", 3, layout.MAIN_SCREEN_H - ((count // 800) % layout.MAIN_SCREEN_H), 25)
-    draw_card(pad, "h", 7, (count // 800) % layout.MAIN_SCREEN_H, (count // 900) % layout.MAIN_SCREEN_W)
-    draw_card(pad, "s", "q", layout.MAIN_SCREEN_H - ((count // 1000) % layout.MAIN_SCREEN_H),
-                           layout.MAIN_SCREEN_W - ((count // 1000) % layout.MAIN_SCREEN_W))
-
-    if (count // 5000) % 2 == 0:
-        draw_art(pad, 15, 30, "Type \"Start\" to play")
-
+    for x in [x * 0.1 for x in range(0, 10)]:
+        y = int(math.sin(x))
+        try:
+            draw_on_game(pad, x*10, y*10, f"({x}, {y})")
+        except:
+            continue
 
 
 def update_screen_pad(pad, state: State):
@@ -99,7 +117,7 @@ def update_screen_pad(pad, state: State):
         pad.addstr(0, 0, "Game Started!")
         pass
 
-    pad.noutrefresh(0, 0,
+    pad.noutrefresh(OUT_OF_SCREEN_LENGTH, OUT_OF_SCREEN_LENGTH,
                     1, 1,
                     layout.MAIN_SCREEN_H-2, layout.MAIN_SCREEN_W-2)
 
