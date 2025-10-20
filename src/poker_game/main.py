@@ -8,6 +8,7 @@ import poker_game.state
 
 game_state = poker_game.state.State()
 
+
 def run(stdscr):
     screen = layout.Screen()
 
@@ -16,11 +17,11 @@ def run(stdscr):
             key = stdscr.getkey()
             if key == "q":
                 break
-            input.handle_input(key, screen.terminal)
+            input.handle_input(key, screen.terminal, game_state)
         except curses.error:
             pass
 
-        screen = layout.update_screen(stdscr, screen)
+        screen = layout.update_screen(stdscr, screen, game_state)
         curses.doupdate()
 
 

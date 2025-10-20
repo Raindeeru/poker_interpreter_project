@@ -2,6 +2,7 @@ import curses
 import ui.terminal as term
 import ui.input as input
 import ui.main_screen as ms
+from poker_game.state import State
 
 MAIN_SCREEN_W, MAIN_SCREEN_H = 85, 20
 TERMINAL_W, TERMINAL_H = 85, 10
@@ -47,7 +48,7 @@ class Screen:
         self.ms_pad = ms.draw_screen_pad()
 
 
-def update_screen(stdscr, screen: Screen):
+def update_screen(stdscr, screen: Screen, state: State):
     width, height = stdscr.getmaxyx()[1], stdscr.getmaxyx()[0]
 
     if width < TOTAL_W or height < TOTAL_H + 1:
@@ -76,7 +77,7 @@ def update_screen(stdscr, screen: Screen):
         screen.main_screen.addstr(i, 1, line)
 
     screen.main_screen.noutrefresh()
-    ms.update_screen_pad(screen.ms_pad)
+    ms.update_screen_pad(screen.ms_pad, state)
 
     show_terminal_output(screen.terminal)
     show_terminal_input(screen.terminal)
