@@ -66,7 +66,7 @@ def Start(state: State):
     return state
 
 def Bet(state: State, bet:int):
-    if bet <= state.player_chips:
+    if state.enemy_last_bet == 0 and bet <= state.player_chips:
         state.player_chips -= bet
         state.pot += bet
         state.player_last_bet = bet
@@ -86,30 +86,39 @@ def Fold(state: State):
     return state
 
 def Call(state: State):
+    state.enemy_last_bet = 100
     if state.player_chips >= state.enemy_last_bet:
+        state.player_last_bet = state.enemy_last_bet
         state.pot += state.player_last_bet
         state.player_chips -= state.player_last_bet
+        
+        print(state.enemy_last_bet)
+        print(state.pot)
+        print(state.player_last_bet)
+        print(state.player_chips)
     else:
         print("Insufficient Chips")
+
     return state
 
 def All(state: State):
-    if state.enemy_last_bet == 0 or state.player_chips >= state.enemy_last_bet:
+    if state.enemy_last_bet == 0 or state.player_chips + state.player_last_bet >= state.enemy_last_bet:
         state.pot += state.player_chips
-        state.player_last_bet = state.player_chips
+        state.player_last_bet += state.player_chips
         state.player_chips = 0
     else:
         state.pot += state.player_chips
-        state.player_last_bet = state.player_chips
+        state.player_last_bet += state.player_chips
         state.enemy_chips += state.enemy_last_bet - state.player_last_bet
         state.player_chips = 0
 
     return state
 
 def Raise(state: State, raise_val:int):
-    if state.player_chips >= raise_val + state.enemy_last_bet:
-        state.pot += state.enemy_last_bet + raise_val
-        state.player_chips -= state.enemy_last_bet + raise_val
+    if raise_val > state.enemy_last_bet and raise_val <= state.player_last_bet + state.player_chips:
+        state.pot += raise_val
+        state.player_chips -= raise_val
+        state.player_last_bet = raise_val 
     else:
         print("Insufficient funds to raise")
     return state
