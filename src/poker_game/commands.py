@@ -166,17 +166,28 @@ def Royal_Flush(play_in_hand):
         return False
 
 def Straight_Flush(play_in_hand):
+    print(len(play_in_hand))
     if check_same_suit(play_in_hand) and check_in_order(play_in_hand):
         return True
     else:
         return False
 
 def Four_of_a_Kind(play_in_hand):
-    pass
+    count = {}
+    print(len(play_in_hand))
+    for card in play_in_hand:  
+        value = card.value   
+        count[value] = count.get(value, 0) + 1
+        if count[value] == 4:  
+            return True
+    return False
 
 def Full_House(play_in_hand):
-    pass
-
+    unique = set(card.value for card in play_in_hand)
+    if len(unique) == 2:
+        return True
+    else:
+        return False
 
 def Flush(play_in_hand):
     if check_same_suit(play_in_hand):
@@ -191,16 +202,31 @@ def Straight(play_in_hand):
         return False
 
 def Three_of_a_Kind(play_in_hand):
-    pass
+    count = {}
+    print(len(play_in_hand))
+    for card in play_in_hand:  
+        value = card.value   
+        count[value] = count.get(value, 0) + 1
+        if count[value] == 3:  
+            return True
+    return False
 
 def Two_Pair(play_in_hand):
-    pass
+    unique = set(card.value for card in play_in_hand)
+    if len(unique) == 3:
+        return True
+    else:
+        return False
 
 def Pair(play_in_hand):
-    pass
+    unique = set(card.value for card in play_in_hand)
+    if len(unique) == 4:
+        return True
+    else:
+        return False
 
 def Find_Best_Pattern(state: State):
-    holder = state.player_hand + state.community_cards
+    holder = state.player_play + state.community_cards
     play_in_hand = copy.deepcopy(holder)
     
     #Convert alpha values
