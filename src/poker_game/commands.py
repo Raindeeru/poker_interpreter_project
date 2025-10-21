@@ -24,6 +24,9 @@ def Give_Cards_Initial(state: State):
     random.shuffle(state.enemy_deck)
     random.shuffle(state.community_deck)
 
+    for card in state.player_deck:
+        card.revealed = True
+
     #Selects the 3 community cards at the start of the game
     for _ in range(3):
         state.community_cards.append(state.community_deck.pop(0))
@@ -51,10 +54,11 @@ def Give_Cards_Initial(state: State):
     return state
     
     
+
 def Start(state: State):    
     state.started = True
-    card = Card(suit="h", value=1, special=None, revealed=False)
-    print(card)
+
+    state = Give_Cards_Initial(state)
 
     return state
 

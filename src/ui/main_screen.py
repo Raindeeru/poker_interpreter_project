@@ -3,6 +3,7 @@ import ui.layout as layout
 from pathlib import Path
 import interpreter.parser as p
 from poker_game.state import State
+from poker_game.card import Card
 import math
 import random
 
@@ -15,6 +16,7 @@ FULL_LENGTH = 0
 
 card_border = None
 special_card_border = None
+card_back = None
 
 start_screen = None
 
@@ -76,11 +78,27 @@ def draw_card(pad, value, suit, x, y):
     draw_on_game_centered(pad, x, y, card_border)
     draw_on_game(pad, left + 1, top - 1, card_art)
 
+def draw_unrevealed_card(pad, x, y):
+    global card_border
+    global cards
+    global card_back
+    w, h = get_art_dimensions(pad, x, y, card_border)
+    draw_on_game_centered(pad, x, y, card_border)
+    draw_on_game_centered(pad, x, y, card_back)
+
+
+def get_and_draw_card(pad, card: Card, x, y):
+    if card.revealed:
+        draw_card(pad, card.value, card.suit, x, y)
+    else:
+        draw_unrevealed_card(pad, x, y)
+
 
 def load_art():
     global card_border
     global special_card_border
     global start_screen
+    global card_back
     content = (ART/"borders.txt").read_text(encoding="utf-8")
 
     parts = content.split('#')
@@ -88,7 +106,7 @@ def load_art():
     card_border = parts[0]
     special_card_border = parts[1]
 
-    for suit in ["s", "c", "h", "d"]:
+    for suit in ["d", "h", "s", "c"]:
         card_value = {}
         for value in ["a", 2, 3, 4, 5, 6, 7, 8, 9, 10, "j", "q", "k"]:
 
@@ -97,6 +115,7 @@ def load_art():
         cards[suit] = card_value
 
     start_screen = (ART/"start_screen.txt").read_text(encoding="utf-8")
+    card_back = "LIKOD"
 
 
 load_art()
@@ -240,6 +259,18 @@ def draw_start_screen(pad):
         draw_on_game_centered(pad, 0, -8, "Type \"START\" to play")
 
 
+def draw_game_screen(pad, state: State):
+    #community cards
+    community_card_positions = [
+            (-10, 0),
+            (0, 0),
+            (10, 0),
+            ]
+    for i, card in enumerate(state.community_cards):
+        get_and_draw_card(pad, card,
+                          community_card_positions[i][0],
+                          community_card_positions[i][1])
+
 
 def update_screen_pad(pad, state: State):
     global count
@@ -252,12 +283,11 @@ def update_screen_pad(pad, state: State):
         draw_start_screen(pad)
     else:
         # dito na irerender yung in game stuff
-        pad.addstr(0, 0, "Game Started!")
+        draw_game_screen(pad, state)
         pass
 
     #Debug Lines
-    draw_on_screen(pad, 0, 0, "Test Debug String")
-    draw_cartesian_plane(pad)
+    # draw_cartesian_plane(pad)
 
     pad.noutrefresh(OUT_OF_SCREEN_LENGTH//2, OUT_OF_SCREEN_LENGTH//2,
                     1, 1,
