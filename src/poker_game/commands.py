@@ -125,6 +125,80 @@ def Buy(state: State, shop_index:int):
     # state.player_deck.append(state.shop_items[shop_index].card)
     pass
 
+def check_same_suit(play_in_hand):
+    if all(card.suit == play_in_hand[2].suit for card in play_in_hand):
+        return True
+    else:
+        return False
+
+def check_in_order(play_in_hand):
+    values = [card.value for card in play_in_hand]
+    values = sorted(values)
+
+    def is_consecutive(lst):
+        return all(b - a == 1 for a, b in zip(lst, lst[1:]))
+
+    if 14 in values:
+
+        if is_consecutive(values):
+            return True
+
+        values_low_ace = [1 if v == 14 else v for v in values]
+        values_low_ace.sort()
+        return is_consecutive(values_low_ace)
+    else:
+
+        return is_consecutive(values)
+
+def check_royal_flush_order(play_in_hand):
+    values = [card.value for card in play_in_hand]
+
+    if all(v in values for v in range(10, 15)):
+        return True
+    else:
+        return False
+
+def Royal_Flush(play_in_hand):
+    if check_same_suit(play_in_hand) and check_royal_flush_order(play_in_hand):
+        return True
+    else:
+        return False
+
+
+def Find_Best_Pattern(state: State):
+    holder = state.player_hand + state.community_cards
+    play_in_hand = copy.deepcopy(holder)
+    
+    #Convert alpha values
+    alpha_convert = {
+        "j" : 11,
+        "q" : 12,
+        "k" : 13,
+        "a" : 14
+    }
+
+    for card in play_in_hand:
+        if not isinstance(card.value, int):
+            print(alpha_convert[card.value])
+            card.value = alpha_convert[card.value]
+        else:
+            continue
+
+    #Sort hand
+    play_in_hand = sorted(play_in_hand, key=lambda card: card.value)
+
+    #For debugging
+    for i in play_in_hand:
+        print(i)
+
+    if Royal_Flush(play_in_hand):
+        print("Royal Flush")
+    else:
+        print("No found pattern")
+
+    # return state
+
+
 def Inspect(state: State):
     pass
 
