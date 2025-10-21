@@ -125,6 +125,7 @@ def Buy(state: State, shop_index:int):
     # state.player_deck.append(state.shop_items[shop_index].card)
     pass
 
+##################################################################################
 def check_same_suit(play_in_hand):
     if all(card.suit == play_in_hand[2].suit for card in play_in_hand):
         return True
@@ -164,6 +165,39 @@ def Royal_Flush(play_in_hand):
     else:
         return False
 
+def Straight_Flush(play_in_hand):
+    if check_same_suit(play_in_hand) and check_in_order(play_in_hand):
+        return True
+    else:
+        return False
+
+def Four_of_a_Kind(play_in_hand):
+    pass
+
+def Full_House(play_in_hand):
+    pass
+
+
+def Flush(play_in_hand):
+    if check_same_suit(play_in_hand):
+        return True
+    else:
+        return False
+
+def Straight(play_in_hand):
+    if check_in_order(play_in_hand):
+        return True
+    else:
+        return False
+
+def Three_of_a_Kind(play_in_hand):
+    pass
+
+def Two_Pair(play_in_hand):
+    pass
+
+def Pair(play_in_hand):
+    pass
 
 def Find_Best_Pattern(state: State):
     holder = state.player_hand + state.community_cards
@@ -191,13 +225,41 @@ def Find_Best_Pattern(state: State):
     for i in play_in_hand:
         print(i)
 
-    if Royal_Flush(play_in_hand):
+    if play_in_hand == []:
+        print("Folded")
+
+    elif Royal_Flush(play_in_hand):
         print("Royal Flush")
+
+    elif Straight_Flush(play_in_hand):
+        print("Straight Flush")
+
+    elif Four_of_a_Kind(play_in_hand):
+        print("Four of a Kind")
+
+    elif Full_House(play_in_hand):
+        print("Full House")
+
+    elif Flush(play_in_hand):
+        print("Flush")
+
+    elif Straight(play_in_hand):
+        print("Straight")
+
+    elif Three_of_a_Kind(play_in_hand):
+        print("Three of a Kind")
+
+    elif Two_Pair(play_in_hand):
+        print("Two Pair")
+
+    elif Pair(play_in_hand):
+        print("Pair")
     else:
-        print("No found pattern")
+        print("High Card")
 
     # return state
 
+############################################################################################
 
 def Inspect(state: State):
     pass
