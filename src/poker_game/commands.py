@@ -8,13 +8,11 @@ import random
 def Give_Cards_Initial(state: State):
     card_value = ["a", 2, 3, 4, 5, 6, 7, 8, 9, 10, "j", "q", "k"]
     card_suit = ["d", "h", "s", "c"]
-   
     deck = []
 
     for card in card_value:
         for suit in card_suit:
             deck.append(Card(suit=suit, value=card, special=None, revealed=False))
-
 
     state.player_deck = copy.deepcopy(deck)
     state.enemy_deck = copy.deepcopy(deck)
@@ -53,8 +51,6 @@ def Give_Cards_Initial(state: State):
 
     return state
     
-    
-
 def Start(state: State):    
     state.started = True
 
@@ -296,9 +292,7 @@ def Play(state: State, folded=False):
     if folded:
         state.player_play = []
 
-        print(state.player_play)
-        
-        
+        print(state.player_play) 
 
 def Quit(state: State):
     pass
