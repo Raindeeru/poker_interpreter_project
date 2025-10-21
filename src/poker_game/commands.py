@@ -27,6 +27,9 @@ def Give_Cards_Initial(state: State):
     for card in state.player_deck:
         card.revealed = True
 
+    # Testing lang to para sa ui
+    # state.enemy_deck[1].revealed = True
+
     #Selects the 3 community cards at the start of the game
     for _ in range(3):
         state.community_cards.append(state.community_deck.pop(0))

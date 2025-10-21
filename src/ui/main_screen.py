@@ -75,8 +75,12 @@ def draw_card(pad, value, suit, x, y):
     w, h = get_art_dimensions(pad, x, y, card_border)
     top = y + (w//2) - 1
     left = x - (h//2) - 1
+    bottom = y - (w//2)
+    right = x + (h//2) + 1
     draw_on_game_centered(pad, x, y, card_border)
+
     draw_on_game(pad, left + 1, top - 1, card_art)
+    draw_on_game(pad, left + 1, bottom + 1, card_art)
 
 def draw_unrevealed_card(pad, x, y):
     global card_border
@@ -266,10 +270,26 @@ def draw_game_screen(pad, state: State):
             (0, 0),
             (10, 0),
             ]
+
+    next_player_card_pos = -35
+    next_enemy_card_pos = 35
+
+    player_hand_height = -8
+    enemy_hand_height = 8
+
     for i, card in enumerate(state.community_cards):
         get_and_draw_card(pad, card,
                           community_card_positions[i][0],
                           community_card_positions[i][1])
+
+    for i, card in enumerate(state.player_hand):
+        get_and_draw_card(pad, card, next_player_card_pos, player_hand_height)
+        next_player_card_pos += 10
+
+    for i, card in enumerate(state.enemy_hand):
+        get_and_draw_card(pad, card, next_enemy_card_pos, enemy_hand_height)
+        next_enemy_card_pos -= 10
+
 
 
 def update_screen_pad(pad, state: State):
@@ -287,7 +307,7 @@ def update_screen_pad(pad, state: State):
         pass
 
     #Debug Lines
-    # draw_cartesian_plane(pad)
+    draw_cartesian_plane(pad)
 
     pad.noutrefresh(OUT_OF_SCREEN_LENGTH//2, OUT_OF_SCREEN_LENGTH//2,
                     1, 1,
