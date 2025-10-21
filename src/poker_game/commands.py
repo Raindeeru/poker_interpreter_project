@@ -83,11 +83,19 @@ def Fold(state: State):
     return state
 
 def Call(state: State):
+    state.enemy_last_bet = 100
     if state.player_chips >= state.enemy_last_bet:
+        state.player_last_bet = state.enemy_last_bet
         state.pot += state.player_last_bet
         state.player_chips -= state.player_last_bet
+        
+        print(state.enemy_last_bet)
+        print(state.pot)
+        print(state.player_last_bet)
+        print(state.player_chips)
     else:
         print("Insufficient Chips")
+
     return state
 
 def All(state: State):
