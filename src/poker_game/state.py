@@ -34,6 +34,10 @@ class State:
     player_play = []
     enemy_play = []
 
+    #Damage Calculation
+    enemy_damage: int = 0
+    player_damage: int = 0
+
     round_state: int = 0
 
     #Folded meaning:
