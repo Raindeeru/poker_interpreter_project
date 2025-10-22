@@ -49,7 +49,7 @@ def interpret_command(input: str, state: State):
         case "raise":
             raise_val = ast.target.num
             state, is_success, out = commands.Raise(state, raise_val)
-            return is_succes, out
+            return is_success, out
         case "buy": 
             item_index = int(ast.target.item[1])
             return f"You bought Item {item_index}"
