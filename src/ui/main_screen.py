@@ -237,13 +237,15 @@ def draw_game_screen(pad, state: State):
     # HUD
 
     draw_on_screen(pad, 0, layout.MAIN_SCREEN_H//2-2, f"Health: {state.player_health}".ljust(15))
-
     draw_on_screen(pad, 0, layout.MAIN_SCREEN_H//2-1, f"Chips: {state.player_chips}".ljust(15))
+    draw_on_screen(pad, 0, layout.MAIN_SCREEN_H//2, f"Current Bet: {state.player_last_bet}".ljust(15))
 
-    draw_on_screen(pad, layout.MAIN_SCREEN_W - 15, layout.MAIN_SCREEN_H//2-2,
+    draw_on_screen(pad, layout.MAIN_SCREEN_W - 19, layout.MAIN_SCREEN_H//2-2,
                    f"Health: {state.enemy_health}".rjust(15))
-    draw_on_screen(pad, layout.MAIN_SCREEN_W - 15, layout.MAIN_SCREEN_H//2-1,
+    draw_on_screen(pad, layout.MAIN_SCREEN_W - 19, layout.MAIN_SCREEN_H//2-1,
                    f"Chips: {state.enemy_chips}".rjust(15))
+    draw_on_screen(pad, layout.MAIN_SCREEN_W - 19, layout.MAIN_SCREEN_H//2,
+                   f"Enemy Bet: {state.enemy_last_bet}".rjust(15))
 
     pot_center = len(str(f"Pot: {state.pot}"))//2
     draw_on_screen(pad, layout.MAIN_SCREEN_W//2 - pot_center, 3,
