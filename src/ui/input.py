@@ -21,7 +21,7 @@ def handle_input(key, terminal, state: State):
             return
         # dito na magsesend ng string sa interpreter
         # interpreter.interpret(input_str) or something like that
-        out = interpret_command(input_str, state)
+        is_success, out = interpret_command(input_str, state)
         add_terminal_output(out)
         input_str = ""
 

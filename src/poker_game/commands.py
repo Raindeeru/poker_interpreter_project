@@ -55,16 +55,18 @@ def Give_Cards_Initial(state: State):
     return(state, True, "Successfull gave Initial Cards!")
     
 def Start(state: State):    
+    if state.started:
+        return (state, False, "You're already in the Game")
     state.started = True
     state = Give_Cards_Initial(state)
 
-    return(state, True, "Start Command Successful!")
+    return(state, True, "Started a game of Gayagoy Gamblers! Goodluck")
 
 def Bet(state: State, bet:int):
     if  bet <= state.player_chips:
         state.player_chips -= bet
         state.player_last_bet = bet
-        return(state, True, "Bet Command Successful!")
+        return(state, True, f"You bet {bet}")
     else:
         return(state, False, "Insufficient Chips!")
         
@@ -91,13 +93,13 @@ def All(state: State):
         state.player_last_bet += state.player_chips
         state.enemy_chips += state.enemy_last_bet - state.player_last_bet
         state.player_chips = 0
-    return(state, True, "All Command SuccessfuL!")
+    return(state, True, "You went All in")
 
 def Raise(state: State, raise_val:int):
     if raise_val > state.enemy_last_bet and raise_val <= state.player_last_bet + state.player_chips:
         state.player_chips -= raise_val
         state.player_last_bet = raise_val 
-        return(state, True, "Raise Command Successful!")
+        return(state, True, f"You raised by {raise_val}")
     else:
         return(state, False,"Insufficient funds to raise")
 
