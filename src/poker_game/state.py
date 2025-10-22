@@ -1,6 +1,7 @@
 # yung game state to, ito yung minamanipulate natin dapat pag nagcocommand
 # yung state ng cards, kalaban, yung command history andito
 from dataclasses import dataclass
+from poker_game.enemy import Enemy
 
 
 @dataclass
@@ -45,3 +46,4 @@ class State:
     pot: int = 0
     # di ko alam rn pano to, pero probably gagamitin for the ai
     # enemy_state: str
+    enemy: Enemy

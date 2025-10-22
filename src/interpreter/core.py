@@ -17,15 +17,15 @@ def interpret_command(input: str, state: State):
     if t.error:
         error = t.error
         t.error = None
-        return str(error)
+        return False, str(error)
 
     if not ast:
-        return "Syntax Error"
+        return False, "Syntax Error"
 
     valid = s.valid_semantics(ast)
 
     if not valid[0]:
-        return valid[1]
+        return False, valid[1]
 
     command = ast.command
 
@@ -35,7 +35,7 @@ def interpret_command(input: str, state: State):
             return is_success, out
         case "bet":
             bet_amt = ast.target.num
-            state, is_success, out  = commands.Bet(state, bet_amt)
+            state, is_success, out = commands.Bet(state, bet_amt)
             return is_success, out
         case "fold":
             state, is_success, out = commands.Fold(state)
@@ -50,23 +50,25 @@ def interpret_command(input: str, state: State):
             raise_val = ast.target.num
             state, is_success, out = commands.Raise(state, raise_val)
             return is_success, out
-        case "buy": 
+        case "buy":
             item_index = int(ast.target.item[1])
-            return f"You bought Item {item_index}"
+            return True, f"You bought Item {item_index}"
             pass
         case "inspect":
-            return "You inspected a card"
-            pass
+            # Inspect return false because it should be ignored by the enemy 
+            # and game
+            return False, "You inspected a card"
         case "play":
-            return "You played your hand"
+            return True, "You played your hand"
             pass
-        case "quit ":
-            return "Goodbye"
+        case "quit":
+            state, is_success, out = commands.Quit(state)
+            return is_success, out
             pass
         case "use":
             special_command = ast.target.command
-            return "You used a special command"
+            return False, "You used a special command"
             pass
         case _:
             # if tapos na lahat ng commands, dapat unreachble toh
-            return "Unknown Valid Command"
+            return False, "Unknown Valid Command"

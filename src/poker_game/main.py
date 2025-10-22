@@ -14,14 +14,20 @@ def run(stdscr):
     screen = layout.Screen()
 
     while True:
+        # handle player input
+        command_success = False
         try:
             key = stdscr.getkey()
-            if key == "q":
+            command_success = input.handle_input(key, screen.terminal, game_state)
+            if game_state.exited:
                 break
-            input.handle_input(key, screen.terminal, game_state)
         except curses.error:
             pass
-        
+
+        if command_success:
+            # update enemy and game
+            pass
+
         screen = layout.update_screen(stdscr, screen, game_state)
         curses.doupdate()
 

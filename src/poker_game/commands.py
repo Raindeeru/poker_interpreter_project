@@ -109,5 +109,6 @@ def Buy(state: State, shop_index:int):
     pass
 
 def Quit(state: State):
-    pass
+    state.exited = True
+    return state, True, f"Goodbye!"
 

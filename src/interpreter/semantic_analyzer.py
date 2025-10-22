@@ -7,30 +7,35 @@ def check_bet_valid(target):
     else:
         return (False, "Wrong target on the bet command! Must be a number.")
 
+
 def check_quit_valid(target):
     if target is None:
-        return True
+        return (True, "Quitted")
     else:
         return (False, "Quit has targets!")
-    
+
+
 def check_start_valid(target):
     if target is None:
         return (True, "Game started!")
     else:
         return (False, "Invalid start command!")
 
+
 def check_fold_valid(target):
     if target is None:
         return (True, "valid command")
     else:
         return (False, "Invalid fold command!")
-  
+
+
 def check_all_valid(target):
     if target is None:
         return (True, "valid command")
     else:
         return (False, "Invalid all command!")
-    
+
+
 def check_call_valid(target):
     if isinstance(target, p.Number):
         return (True, "Valid call command")
@@ -175,6 +180,8 @@ def valid_semantics(ast):
         return check_all_valid(ast.target)
     elif ast.command == "start":
         return check_start_valid(ast.target)
+    elif ast.command == "quit":
+        return check_quit_valid(ast.target)
     else:
         return (False, "Not a Valid Command")
 

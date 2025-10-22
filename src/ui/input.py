@@ -15,20 +15,22 @@ def handle_input(key, terminal, state: State):
 
     if key in ('KEY_BACKSPACE', '\b', '\x7f'):
         input_str = input_str[:-1]
+        return False
 
     if key == "\n":
         if not input_str:
-            return
+            return False
         # dito na magsesend ng string sa interpreter
         # interpreter.interpret(input_str) or something like that
         is_success, out = interpret_command(input_str, state)
         add_terminal_output(out)
         input_str = ""
+        return is_success
 
     if key not in alphabet:
-        return
+        return False
 
     # dapat hinahandle niya ng maayos mga input
     if len(input_str) >= max_str_len:
-        return
+        return False
     input_str += key
