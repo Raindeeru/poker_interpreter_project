@@ -38,10 +38,10 @@ def check_call_valid(target):
         return (False, "Invalid call command")
     
 def check_buy_valid(target):
-    if isinstance(target, p.Number):
+    if isinstance(target, p.ItemID):
         return (True, "Valid buy command")
     else:
-        return (False, "Invalid bet command")
+        return (False, "Invalid buy command")
     
 def check_raise_valid(target):
     if isinstance(target, p.Number):
