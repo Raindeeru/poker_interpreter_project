@@ -3,6 +3,7 @@ from curses import wrapper
 import ui.layout as layout
 import ui.input as input
 import poker_game.state
+import poker_game.game_handler as g
 
 # gagawa tayo gamestate class, sa init mag iinit tayo ng object nun
 
@@ -20,7 +21,7 @@ def run(stdscr):
             input.handle_input(key, screen.terminal, game_state)
         except curses.error:
             pass
-
+        
         screen = layout.update_screen(stdscr, screen, game_state)
         curses.doupdate()
 
