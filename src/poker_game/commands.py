@@ -52,72 +52,54 @@ def Give_Cards_Initial(state: State):
     state.player_chips = 1000
     state.enemy_chips = 1000
 
-    return state
+    return(state, True, "Successfull gave Initial Cards!")
     
 def Start(state: State):    
     state.started = True
-
     state = Give_Cards_Initial(state)
 
-    return state
+    return(state, True, "Start Command Successful!")
 
 def Bet(state: State, bet:int):
-    if state.enemy_last_bet == 0 and bet <= state.player_chips:
+    if  bet <= state.player_chips:
         state.player_chips -= bet
-        state.pot += bet
         state.player_last_bet = bet
-        return state
+        return(state, True, "Bet Command Successful!")
     else:
-        print("Insufficient Chips")
+        return(state, False, "Insufficient Chips!")
+        
 
 def Fold(state: State):
-    state.enemy_chips += state.pot
-    state.player_hand 
-    state.pot = 0
     state.round_state = 3
-    print(state.round_state)
-    print(state.pot)
-    print(state.enemy_chips)
-    Play(state, True)
-    return state
+    state.folded = 1
+    return(state, True, "Fold Successful!")
+    
 
 def Call(state: State):
-    state.enemy_last_bet = 100
     if state.player_chips >= state.enemy_last_bet:
         state.player_last_bet = state.enemy_last_bet
-        state.pot += state.player_last_bet
         state.player_chips -= state.player_last_bet
-        
-        print(state.enemy_last_bet)
-        print(state.pot)
-        print(state.player_last_bet)
-        print(state.player_chips)
+        return(state, True, "Call Successful")
     else:
-        print("Insufficient Chips")
-
-    return state
+        return(state, False, "Insufficient Chips!")
 
 def All(state: State):
     if state.enemy_last_bet == 0 or state.player_chips + state.player_last_bet >= state.enemy_last_bet:
-        state.pot += state.player_chips
         state.player_last_bet += state.player_chips
         state.player_chips = 0
     else:
-        state.pot += state.player_chips
         state.player_last_bet += state.player_chips
         state.enemy_chips += state.enemy_last_bet - state.player_last_bet
         state.player_chips = 0
-
-    return state
+    return(state, True, "All Command SuccessfuL!")
 
 def Raise(state: State, raise_val:int):
     if raise_val > state.enemy_last_bet and raise_val <= state.player_last_bet + state.player_chips:
-        state.pot += raise_val
         state.player_chips -= raise_val
         state.player_last_bet = raise_val 
+        return(state, True, "Raise Command Successful!")
     else:
-        print("Insufficient funds to raise")
-    return state
+        return(state, False,"Insufficient funds to raise")
 
 def Buy(state: State, shop_index:int):
     # state.player_chips -= state.shop_items[shop_index].price
@@ -285,17 +267,6 @@ def Find_Best_Pattern(state: State):
     # return state
 
 ############################################################################################
-
-def Inspect(state: State):
-    pass
-
-def Play(state: State, folded=False):
-    if not folded:
-        pass
-    if folded:
-        state.player_play = []
-
-        print(state.player_play) 
 
 def Quit(state: State):
     pass
