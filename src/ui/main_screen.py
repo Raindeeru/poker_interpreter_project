@@ -6,7 +6,6 @@ from poker_game.state import State
 from poker_game.card import Card
 import math
 import random
-
 ART = Path(__file__).parent / "art"
 
 OUT_OF_SCREEN_LENGTH = 40
@@ -23,6 +22,18 @@ start_screen = None
 count = 0
 
 cards = {}
+
+
+def random_display_card():
+    values = ["a", "2", "3", "4", "5", "6", "7", "8", "9", "10", "j", "q", "k"]
+    suits = ["h", "d", "s", "c"]
+    speed = range(100, 200)
+    offset = range(-50, 50)
+
+    return random.choice(values), random.choice(suits), random.choice(speed), random.choice(offset)
+
+
+display_cards = [random_display_card() for x in range(50)]
 
 
 def draw_art(pad, x, y, art):
@@ -179,75 +190,8 @@ def draw_start_screen(pad):
 
     points = [int(5 * math.sin(x / 10)) for x in xs]
 
-    for x, y in zip(xs, points):
-        if y in range(-(layout.MAIN_SCREEN_H + OUT_OF_SCREEN_LENGTH)//2,
-                      (layout.MAIN_SCREEN_H + OUT_OF_SCREEN_LENGTH)//2):
-            try:
-                draw_on_game_centered(pad, x, y, "X")
-            except:
-                pass
-
     center = FULL_WIDTH // 2
-
-    def random_card():
-        values = ["a", "2", "3", "4", "5", "6", "7", "8", "9", "10", "j", "q", "k"]
-        suits = ["h", "d", "s", "c"]
-        return random.choice(values), random.choice(suits)
-
-    cards = [
-        ("a", "h", 100, 0),
-        ("k", "s", 150, 20),
-        ("5", "d", 200, -40),
-        ("j", "c", 300, 60),
-        ("3", "h", 120, -10),
-        ("q", "d", 250, 40),
-        ("7", "s", 180, -55),
-        ("9", "c", 350, 70),
-        ("2", "h", 160, 15),
-        ("10", "d", 220, -25),
-        ("4", "s", 280, 50),
-        ("6", "c", 320, -65),
-        ("8", "h", 190, 35),
-        ("k", "d", 260, -50),
-        ("a", "s", 300, 55),
-        ("j", "h", 330, -20),
-        ("5", "c", 210, 45),
-        ("q", "s", 240, -35),
-        ("9", "d", 270, 65),
-        ("2", "c", 310, -60),
-        ("10", "h", 340, 10),
-        ("3", "s", 130, -30),
-        ("k", "c", 290, 25),
-        ("a", "d", 370, -45),
-        ("7", "h", 180, 55),
-        ("q", "c", 260, -20),
-        ("4", "d", 150, 50),
-        ("6", "h", 310, -70),
-        ("9", "s", 200, 65),
-        ("5", "h", 280, -35),
-        ("j", "d", 230, 40),
-        ("8", "s", 190, -60),
-        ("10", "c", 330, 75),
-        ("2", "d", 170, -50),
-        ("a", "c", 220, 35),
-        ("q", "h", 250, -45),
-        ("7", "d", 300, 55),
-        ("3", "c", 140, -25),
-        ("9", "h", 270, 65),
-        ("k", "h", 240, -40),
-        ("5", "s", 310, 50),
-        ("j", "s", 280, -60),
-        ("4", "c", 160, 30),
-        ("10", "s", 350, -70),
-        ("8", "c", 200, 45),
-        ("a", "h", 230, -55),
-        ("q", "d", 270, 60),
-        ("6", "s", 180, -30),
-        ("2", "h", 320, 70),
-        ("k", "s", 260, -65),
-    ]
-
-    for i, (val, suit, speed, offset) in enumerate(cards):
+    for i, (val, suit, speed, offset) in enumerate(display_cards):
         try:
             x_pos = (((count // speed) + offset) % FULL_WIDTH) - center
             list_index = x_pos + center
@@ -271,11 +215,11 @@ def draw_game_screen(pad, state: State):
             (10, 0),
             ]
 
-    next_player_card_pos = -35
-    next_enemy_card_pos = 35
+    next_player_card_pos = -layout.MAIN_SCREEN_W//2 + 8
+    next_enemy_card_pos = layout.MAIN_SCREEN_W//2 - 8
 
-    player_hand_height = -8
-    enemy_hand_height = 8
+    player_hand_height = -layout.MAIN_SCREEN_H//2 + 2
+    enemy_hand_height = layout.MAIN_SCREEN_H//2 - 2
 
     for i, card in enumerate(state.community_cards):
         get_and_draw_card(pad, card,
@@ -289,6 +233,21 @@ def draw_game_screen(pad, state: State):
     for i, card in enumerate(state.enemy_hand):
         get_and_draw_card(pad, card, next_enemy_card_pos, enemy_hand_height)
         next_enemy_card_pos -= 10
+
+    # HUD
+
+    draw_on_screen(pad, 0, layout.MAIN_SCREEN_H//2-2, f"Health: {state.player_health}".ljust(15))
+
+    draw_on_screen(pad, 0, layout.MAIN_SCREEN_H//2-1, f"Chips: {state.player_chips}".ljust(15))
+
+    draw_on_screen(pad, layout.MAIN_SCREEN_W - 15, layout.MAIN_SCREEN_H//2-2,
+                   f"Health: {state.enemy_health}".rjust(15))
+    draw_on_screen(pad, layout.MAIN_SCREEN_W - 15, layout.MAIN_SCREEN_H//2-1,
+                   f"Chips: {state.enemy_chips}".rjust(15))
+
+    pot_center = len(str(f"Pot: {state.pot}"))//2
+    draw_on_screen(pad, layout.MAIN_SCREEN_W//2 - pot_center, 3,
+                   f"Pot: {state.pot}")
 
 
 
@@ -307,7 +266,7 @@ def update_screen_pad(pad, state: State):
         pass
 
     #Debug Lines
-    draw_cartesian_plane(pad)
+    # draw_cartesian_plane(pad)
 
     pad.noutrefresh(OUT_OF_SCREEN_LENGTH//2, OUT_OF_SCREEN_LENGTH//2,
                     1, 1,

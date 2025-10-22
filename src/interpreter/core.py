@@ -32,7 +32,45 @@ def interpret_command(input: str, state: State):
     match command:
         case "start":
             commands.Start(state)
-            return f"Game Started is {state.started}"
+            return "Started a game of Gayagoy Gamblers! Goodluck"
+        case "bet":
+            bet_amt = ast.target.num
+            commands.Bet(state, bet_amt)
+            return f"You bet {bet_amt}"
+        case "fold":
+            commands.Fold(state)
+            return "You Folded!"
+        case "call":
+            commands.Call(state)
+            return "You Called"
+            pass
+        case "all":
+            commands.All(state)
+            return "You went All In!"
+            pass
+        case "raise":
+            raise_val = ast.target
+            commands.Raise(state, raise_val)
+            return f"You raised by {raise_val}"
+            pass
+        case "buy": 
+            item_index = int(ast.target.item[1])
+            commands.Buy(state, item_index)
+            return f"You bought Item {item_index}"
+            pass
+        case "inspect":
+            return "You inspected a card"
+            pass
+        case "play":
+            return "You played your hand"
+            pass
+        case "quit ":
+            return "Goodbye"
+            pass
+        case "use":
+            special_command = ast.target.command
+            return "You used a special command"
+            pass
         case _:
             # if tapos na lahat ng commands, dapat unreachble toh
             return "Unknown Valid Command"
