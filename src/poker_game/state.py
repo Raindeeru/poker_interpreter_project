@@ -35,6 +35,12 @@ class State:
 
     round_state: int = 0
 
+    #Folded meaning:
+    # 0 - nothing happened
+    # 1 - player folded
+    # 2 - enemy folded
+    folded: int = 0
+
     shop_items = []
     pot: int = 0
     # di ko alam rn pano to, pero probably gagamitin for the ai
