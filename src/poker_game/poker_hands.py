@@ -130,46 +130,46 @@ def Find_Best_Pattern(state: State):
 
     if play_in_hand == []:
         print("Folded")
-        return (state, "Folded")
+        return (state, "Folded", play_in_hand)
 
     elif Royal_Flush(play_in_hand):
         print("Royal Flush")
-        return (state, "Royal_Flush")
+        return (state, "Royal_Flush", play_in_hand)
 
     elif Straight_Flush(play_in_hand):
         print("Straight Flush")
-        return (state, "Straight_Flush")
+        return (state, "Straight_Flush", play_in_hand)
 
     elif Four_of_a_Kind(play_in_hand):
         print("Four of a Kind")
-        return (state, "Four_of_a_Kind")
+        return (state, "Four_of_a_Kind", play_in_hand)
 
     elif Full_House(play_in_hand):
         print("Full House")
-        return (state, "Full_House")
+        return (state, "Full_House", play_in_hand)
 
     elif Flush(play_in_hand):
         print("Flush")
-        return (state, "Flush")
+        return (state, "Flush", play_in_hand)
 
     elif Straight(play_in_hand):
         print("Straight")
-        return (state, "Straight")
+        return (state, "Straight", play_in_hand)
 
     elif Three_of_a_Kind(play_in_hand):
         print("Three of a Kind")
-        return (state, "Three_of_a_Kind")
+        return (state, "Three_of_a_Kind", play_in_hand)
 
     elif Two_Pair(play_in_hand):
         print("Two Pair")
-        return (state, "Two_Pair")
+        return (state, "Two_Pair", play_in_hand)
 
     elif Pair(play_in_hand):
         print("Pair")
-        return (state, "Pair")
+        return (state, "Pair", play_in_hand)
 
     else:
         print("High Card")
-        return (state, "High_Card")
+        return (state, "High_Card", play_in_hand)
 
     # return state
