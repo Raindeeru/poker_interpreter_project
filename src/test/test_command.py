@@ -1,6 +1,8 @@
 from poker_game.commands import *
 from poker_game.state import State
 
+from poker_game.poker_hands import *
+
 test_state = State()
 test_state.player_play = [Card(suit="h", value=4, special=None, revealed=False),
                           Card(suit="h", value=2, special=None, revealed=False)]
