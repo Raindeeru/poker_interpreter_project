@@ -31,31 +31,27 @@ def interpret_command(input: str, state: State):
 
     match command:
         case "start":
-            commands.Start(state)
-            return "Started a game of Gayagoy Gamblers! Goodluck"
+            state, is_success, out = commands.Start(state)
+            return is_success, out
         case "bet":
             bet_amt = ast.target.num
-            commands.Bet(state, bet_amt)
-            return f"You bet {bet_amt}"
+            state, is_success, out  = commands.Bet(state, bet_amt)
+            return is_success, out
         case "fold":
-            commands.Fold(state)
-            return "You Folded!"
+            state, is_success, out = commands.Fold(state)
+            return is_success, out
         case "call":
-            commands.Call(state)
-            return "You Called"
-            pass
+            state, is_success, out = commands.Call(state)
+            return is_success, out
         case "all":
-            commands.All(state)
-            return "You went All In!"
-            pass
+            state, is_success, out = commands.All(state)
+            return is_success, out
         case "raise":
-            raise_val = ast.target
-            commands.Raise(state, raise_val)
-            return f"You raised by {raise_val}"
-            pass
+            raise_val = ast.target.num
+            state, is_success, out = commands.Raise(state, raise_val)
+            return is_success, out
         case "buy": 
             item_index = int(ast.target.item[1])
-            commands.Buy(state, item_index)
             return f"You bought Item {item_index}"
             pass
         case "inspect":

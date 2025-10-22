@@ -33,7 +33,17 @@ class State:
     player_play = []
     enemy_play = []
 
+    #Damage Calculation
+    enemy_damage: int = 0
+    player_damage: int = 0
+
     round_state: int = 0
+
+    #Folded meaning:
+    # 0 - nothing happened
+    # 1 - player folded
+    # 2 - enemy folded
+    folded: int = 0
 
     shop_items = []
     pot: int = 0
