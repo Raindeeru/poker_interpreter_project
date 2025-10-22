@@ -72,7 +72,19 @@ def calculate_Three_of_a_kind(state: State, cards_held):
     return (state)
 
 def calculate_Two_Pair(state: State, cards_held):
-    pass
+    count = {}
+    print(len(cards_held))
+    for card in cards_held:  
+        value = card.value   
+        count[value] = count.get(value, 0) + 1
+    pairs = []
+    for value in count:
+        if count[value] == 2:
+            pairs.append(value)
+    state.player_damage += (pairs[0] * 2) + (pairs[1] * 2)
+    state.player_damage = state.player_damage * 3
+    print(state.player_damage)
+    return (state)
 
 def calculate_Pair(state: State, cards_held):
     count = {}
