@@ -22,13 +22,6 @@ def run(stdscr):
         except curses.error:
             pass
         
-        g.update_enemy(state)
-
-        g.update_round(state)
-
-        g.update_game(state)
-
-
         screen = layout.update_screen(stdscr, screen, game_state)
         curses.doupdate()
 
