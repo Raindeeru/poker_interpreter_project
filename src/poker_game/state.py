@@ -2,6 +2,7 @@
 # yung state ng cards, kalaban, yung command history andito
 from dataclasses import dataclass
 
+
 @dataclass
 class State:
     started: bool = False
@@ -13,32 +14,31 @@ class State:
     enemy_deck = []
     player_hand = []
     enemy_hand = []
-                         # Dito siguro mas isa pa na laman yung dict kung
-    community_cards = [] # revealed siya or hindi
+    community_cards = []
     community_deck = []
 
     player_health: int = 0
     enemy_health: int = 0
 
-    #Betting
+    # Betting
     enemy_last_bet: int = 0
     player_last_bet: int = 0
 
-    #Pera
+    # Pera
     player_chips: int = 0
     enemy_chips: int = 0
 
-    #Cards in play
+    # Cards in play
     player_play = []
     enemy_play = []
 
-    #Damage Calculation
+    # Damage Calculation
     enemy_damage: int = 0
     player_damage: int = 0
 
     round_state: int = 0
 
-    #Folded meaning:
+    # Folded meaning:
     # 0 - nothing happened
     # 1 - player folded
     # 2 - enemy folded

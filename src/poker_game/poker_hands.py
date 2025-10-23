@@ -1,13 +1,9 @@
-from poker_game.state import State
-from poker_game.card import Card
-import copy
-
-
 def check_same_suit(play_in_hand):
     if all(card.suit == play_in_hand[2].suit for card in play_in_hand):
         return True
     else:
         return False
+
 
 def check_in_order(play_in_hand):
     values = [card.value for card in play_in_hand]
@@ -28,6 +24,7 @@ def check_in_order(play_in_hand):
 
         return is_consecutive(values)
 
+
 def check_royal_flush_order(play_in_hand):
     values = [card.value for card in play_in_hand]
 
@@ -36,11 +33,13 @@ def check_royal_flush_order(play_in_hand):
     else:
         return False
 
+
 def Royal_Flush(play_in_hand):
     if check_same_suit(play_in_hand) and check_royal_flush_order(play_in_hand):
         return True
     else:
         return False
+
 
 def Straight_Flush(play_in_hand):
     if check_same_suit(play_in_hand) and check_in_order(play_in_hand):
@@ -48,14 +47,16 @@ def Straight_Flush(play_in_hand):
     else:
         return False
 
+
 def Four_of_a_Kind(play_in_hand):
     count = {}
-    for card in play_in_hand:  
-        value = card.value   
+    for card in play_in_hand:
+        value = card.value
         count[value] = count.get(value, 0) + 1
-        if count[value] == 4:  
+        if count[value] == 4:
             return True
     return False
+
 
 def Full_House(play_in_hand):
     unique = set(card.value for card in play_in_hand)
@@ -64,11 +65,13 @@ def Full_House(play_in_hand):
     else:
         return False
 
+
 def Flush(play_in_hand):
     if check_same_suit(play_in_hand):
         return True
     else:
         return False
+
 
 def Straight(play_in_hand):
     if check_in_order(play_in_hand):
@@ -76,14 +79,16 @@ def Straight(play_in_hand):
     else:
         return False
 
+
 def Three_of_a_Kind(play_in_hand):
     count = {}
-    for card in play_in_hand:  
-        value = card.value   
+    for card in play_in_hand:
+        value = card.value
         count[value] = count.get(value, 0) + 1
-        if count[value] == 3:  
+        if count[value] == 3:
             return True
     return False
+
 
 def Two_Pair(play_in_hand):
     unique = set(card.value for card in play_in_hand)
@@ -91,6 +96,7 @@ def Two_Pair(play_in_hand):
         return True
     else:
         return False
+
 
 def Pair(play_in_hand):
     unique = set(card.value for card in play_in_hand)
