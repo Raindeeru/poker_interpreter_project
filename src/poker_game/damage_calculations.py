@@ -1,49 +1,56 @@
-from poker_game.poker_hands import *
+from poker_game.poker_hands import Find_Best_Pattern
+from poker_game.state import State
+import copy 
 
-def calculate_Royal_Flush(state: State, cards_held):
-    state.player_damage = 600
-    return (state)
 
-def calculate_Straight_Flush(state: State, cards_held):
+def calculate_Royal_Flush(cards_held):
+    return 600
+
+
+def calculate_Straight_Flush(cards_held):
+    damage = 0
     if cards_held[4].value == 14:
         cards_held[4].value = 1
 
     for card in cards_held:
-        state.player_damage += card.value
-        
-    state.player_damage = state.player_damage * 9
-    print(state.player_damage)
-    return (state)
+        damage += card.value
 
-def calculate_Four_of_a_Kind(state: State, cards_held):
+    damage *= 9
+    return damage
+
+
+def calculate_Four_of_a_Kind(cards_held):
+    damage = 0
     count = {}
-    print(len(cards_held))
-    for card in cards_held:  
-        value = card.value   
+    for card in cards_held:
+        value = card.value
         count[value] = count.get(value, 0) + 1
     for value in count:
         if count[value] == 4:
-            state.player_damage += value * 4
-            state.player_damage = state.player_damage * 8
-            print(state.player_damage)
+            damage += value * 4
+            damage *= 8
             break
-    return (state)
+    return damage
 
-def calculate_Full_House(state: State, cards_held):
+
+def calculate_Full_House(cards_held):
+    damage = 0
     for card in cards_held:
-        state.player_damage += card.value
-    state.player_damage = state.player_damage * 7
-    print(state.player_damage)
-    return (state)
+        damage += card.value
+    damage *= 7
+    return damage
 
-def calculate_Flush(state: State, cards_held):
+
+def calculate_Flush(cards_held):
+    damage = 0
     for card in cards_held:
-        state.player_damage += card.value
-    state.player_damage = state.player_damage * 6
-    print(state.player_damage)
-    return (state)
+        damage += card.value
+    damage *= 6
+    return damage
 
-def calculate_Straight(state: State, cards_held):
+
+def calculate_Straight(cards_held):
+    damage = 0
     for card in cards_held:
         if cards_held[0].value == 2 and cards_held[4].value == 14:
             cards_held[4].value = 1
@@ -51,99 +58,103 @@ def calculate_Straight(state: State, cards_held):
             break
 
     for card in cards_held:
-        state.player_damage += card.value
+        damage += card.value
 
-    state.player_damage = state.player_damage * 5
-    print(state.player_damage)
-    return (state)
+    damage *= 5
+    return damage
 
-def calculate_Three_of_a_kind(state: State, cards_held):
+
+def calculate_Three_of_a_kind(cards_held):
+    damage = 0
     count = {}
-    print(len(cards_held))
-    for card in cards_held:  
-        value = card.value   
+    for card in cards_held:
+        value = card.value
         count[value] = count.get(value, 0) + 1
     for value in count:
         if count[value] == 3:
-            state.player_damage += value * 3
-            state.player_damage = state.player_damage * 4
-            print(state.player_damage)
+            damage += value * 3
+            damage = damage * 4
             break
-    return (state)
+    return damage
 
-def calculate_Two_Pair(state: State, cards_held):
+
+def calculate_Two_Pair(cards_held):
+    damage = 0
     count = {}
-    print(len(cards_held))
-    for card in cards_held:  
-        value = card.value   
+    for card in cards_held:
+        value = card.value
         count[value] = count.get(value, 0) + 1
     pairs = []
     for value in count:
         if count[value] == 2:
             pairs.append(value)
-    state.player_damage += (pairs[0] * 2) + (pairs[1] * 2)
-    state.player_damage = state.player_damage * 3
-    print(state.player_damage)
-    return (state)
+    damage += (pairs[0] * 2) + (pairs[1] * 2)
+    damage *= 3
+    return damage
 
-def calculate_Pair(state: State, cards_held):
+
+def calculate_Pair(cards_held):
+    damage = 0
     count = {}
-    print(len(cards_held))
-    for card in cards_held:  
-        value = card.value   
+    for card in cards_held:
+        value = card.value
         count[value] = count.get(value, 0) + 1
     for value in count:
         if count[value] == 2:
-            state.player_damage += value * 2
-            state.player_damage = state.player_damage * 2
-            print(state.player_damage)
+            damage += value * 2
+            damage = damage * 2
             break
-    return (state)
+    return damage
 
-def calculate_High_Card(state: State, cards_held):
-    state.player_damage = cards_held[4].value
-    print(state.player_damage)
-    return (state)
 
-def damage_calculation(state: State):
+def calculate_High_Card(cards_held):
+    damage = cards_held[4].value
+    return damage
 
-    pattern_Found = Find_Best_Pattern(state)[1]
-    cards_held = Find_Best_Pattern(state)[2]
-    print(f"Pattern Found: {pattern_Found}")
-    print(f"Cards: {cards_held}")
 
-    if pattern_Found == "Royal_Flush":
-        return calculate_Royal_Flush(state, cards_held)
-    elif pattern_Found == "Straight_Flush":
+def damage_calculation(hand):
+    pattern_found = Find_Best_Pattern(hand)[0]
+    cards_held = Find_Best_Pattern(hand)[1]
 
-        return calculate_Straight_Flush(state, cards_held)
+    match pattern_found:
+        case "Royal_Flush":
+            return calculate_Royal_Flush(cards_held)
 
-    elif pattern_Found == "Four_of_a_Kind":
-        return calculate_Four_of_a_Kind(state, cards_held)
+        case "Straight_Flush":
+            return calculate_Straight_Flush(cards_held)
 
-    elif pattern_Found == "Full_House":
-        return calculate_Full_House(state, cards_held)
+        case "Four_of_a_Kind":
+            return calculate_Four_of_a_Kind(cards_held)
 
-    elif pattern_Found == "Flush":
-        return calculate_Flush(state, cards_held) 
+        case "Full_House":
+            return calculate_Full_House(cards_held)
 
-    elif pattern_Found == "Straight":
-        return calculate_Straight(state, cards_held)
+        case "Flush":
+            return calculate_Flush(cards_held)
 
-    elif pattern_Found == "Three_of_a_Kind":
-        return calculate_Three_of_a_kind(state, cards_held)
-    
-    elif pattern_Found == "Two_Pair":
-        return calculate_Two_Pair(state, cards_held) 
+        case "Straight":
+            return calculate_Straight(cards_held)
 
-    elif pattern_Found == "Pair":
-        return calculate_Pair(state, cards_held)
-    else:
-        return calculate_High_Card(state, cards_held)
-    
+        case "Three_of_a_Kind":
+            return calculate_Three_of_a_kind(cards_held)
 
-    
+        case "Two_Pair":
+            return calculate_Two_Pair(cards_held)
 
-    
+        case "Pair":
+            return calculate_Pair(cards_held)
 
-    
+        case _:
+            return calculate_High_Card(cards_held)
+
+
+def update_player_damage(state: State):
+    full_hand = copy.deepcopy(state.player_hand + state.community_cards)
+    damage = damage_calculation(full_hand)
+    state.player_damage = damage
+
+
+def update_enemy_damage(state: State):
+    full_hand = copy.deepcopy(state.enemy_hand + state.community_cards)
+    damage = damage_calculation(full_hand)
+    state.enemy_damage = damage

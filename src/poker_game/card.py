@@ -8,4 +8,3 @@ class Card:
     value: Union[int, str]
     revealed: bool
     special: str = None
-    

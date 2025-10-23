@@ -43,7 +43,6 @@ def Royal_Flush(play_in_hand):
         return False
 
 def Straight_Flush(play_in_hand):
-    print(len(play_in_hand))
     if check_same_suit(play_in_hand) and check_in_order(play_in_hand):
         return True
     else:
@@ -51,7 +50,6 @@ def Straight_Flush(play_in_hand):
 
 def Four_of_a_Kind(play_in_hand):
     count = {}
-    print(len(play_in_hand))
     for card in play_in_hand:  
         value = card.value   
         count[value] = count.get(value, 0) + 1
@@ -80,7 +78,6 @@ def Straight(play_in_hand):
 
 def Three_of_a_Kind(play_in_hand):
     count = {}
-    print(len(play_in_hand))
     for card in play_in_hand:  
         value = card.value   
         count[value] = count.get(value, 0) + 1
@@ -102,74 +99,60 @@ def Pair(play_in_hand):
     else:
         return False
 
-def Find_Best_Pattern(state: State):
-    holder = state.player_play + state.community_cards
-    play_in_hand = copy.deepcopy(holder)
-    
-    #Convert alpha values
+
+def Find_Best_Pattern(play_in_hand):
+    # Convert alpha values
     alpha_convert = {
-        "j" : 11,
-        "q" : 12,
-        "k" : 13,
-        "a" : 14
+        "j": 11,
+        "q": 12,
+        "k": 13,
+        "a": 14
     }
 
     for card in play_in_hand:
         if not isinstance(card.value, int):
-            print(alpha_convert[card.value])
             card.value = alpha_convert[card.value]
         else:
             continue
 
-    #Sort hand
+    # Sort hand
     play_in_hand = sorted(play_in_hand, key=lambda card: card.value)
 
-    #For debugging
-    for i in play_in_hand:
-        print(i)
+    # For debugging
+    # for i in play_in_hand:
+    # print(i)
 
     if play_in_hand == []:
-        print("Folded")
-        return (state, "Folded", play_in_hand)
+        return "Folded", play_in_hand
 
     elif Royal_Flush(play_in_hand):
-        print("Royal Flush")
-        return (state, "Royal_Flush", play_in_hand)
+        return "Royal_Flush", play_in_hand
 
     elif Straight_Flush(play_in_hand):
-        print("Straight Flush")
-        return (state, "Straight_Flush", play_in_hand)
+        return "Straight_Flush", play_in_hand
 
     elif Four_of_a_Kind(play_in_hand):
-        print("Four of a Kind")
-        return (state, "Four_of_a_Kind", play_in_hand)
+        return "Four_of_a_Kind", play_in_hand
 
     elif Full_House(play_in_hand):
-        print("Full House")
-        return (state, "Full_House", play_in_hand)
+        return "Full_House", play_in_hand
 
     elif Flush(play_in_hand):
-        print("Flush")
-        return (state, "Flush", play_in_hand)
+        return "Flush", play_in_hand
 
     elif Straight(play_in_hand):
-        print("Straight")
-        return (state, "Straight", play_in_hand)
+        return "Straight", play_in_hand
 
     elif Three_of_a_Kind(play_in_hand):
-        print("Three of a Kind")
-        return (state, "Three_of_a_Kind", play_in_hand)
+        return "Three_of_a_Kind", play_in_hand
 
     elif Two_Pair(play_in_hand):
-        print("Two Pair")
-        return (state, "Two_Pair", play_in_hand)
+        return "Two_Pair", play_in_hand
 
     elif Pair(play_in_hand):
-        print("Pair")
-        return (state, "Pair", play_in_hand)
+        return "Pair", play_in_hand
 
     else:
-        print("High Card")
-        return (state, "High_Card", play_in_hand)
+        return "High_Card", play_in_hand
 
     # return state

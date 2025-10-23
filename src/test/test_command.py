@@ -14,7 +14,8 @@ test_state.community_cards = [Card(suit="h", value=9, special=None, revealed=Fal
 
 # test = Find_Best_Pattern(test_state)
 
-damage_calculation(test_state)
+cards_in_play = test_state.player_play + test_state.community_cards
+print(damage_calculation(cards_in_play))
 
 # Give_Cards_Initial(test_state)
 # Fold(test_state)
