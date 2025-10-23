@@ -105,7 +105,7 @@ def All(state: State):
 def Raise(state: State, raise_val: int):
     if raise_val > state.enemy_last_bet and \
             raise_val <= state.player_last_bet + state.player_chips:
-        state.player_chips -= raise_val
+        state.player_chips -= raise_val - state.player_last_bet
         state.player_last_bet = raise_val
         return (state, True, f"You raised by {raise_val}")
     else:
