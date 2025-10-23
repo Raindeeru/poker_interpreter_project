@@ -1,6 +1,6 @@
 from poker_game.poker_hands import Find_Best_Pattern
 from poker_game.state import State
-import copy 
+import copy
 
 
 def calculate_Royal_Flush(cards_held):
