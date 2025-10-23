@@ -6,6 +6,7 @@ from poker_game.state import State
 from poker_game.card import Card
 import math
 import random
+import copy
 ART = Path(__file__).parent / "art"
 
 OUT_OF_SCREEN_LENGTH = 40
@@ -22,6 +23,39 @@ start_screen = None
 count = 0
 
 cards = {}
+
+def load_art():
+    global card_border
+    global special_card_border
+    global start_screen
+    global card_back
+    content = (ART/"borders.txt").read_text(encoding="utf-8")
+
+    parts = content.split('#')
+
+    card_border = parts[0]
+    special_card_border = parts[1]
+
+    base_card_full = (ART/"faces.txt").read_text(encoding="utf-8")
+    base_card_art = base_card_full.split('#')
+
+    suit_map = {
+            "d": "♦",
+            "h": "♥",
+            "s": "♠",
+            "c": "♣",
+            }
+
+    for suit in ["d", "h", "s", "c"]:
+        card_value = {}
+        for i, value in enumerate(["a", 2, 3, 4, 5, 6, 7, 8, 9, 10, "j", "q", "k"]):
+            suited = copy.deepcopy(base_card_art[i])
+            suited = suited.replace("X", suit_map[suit])
+            card_value[value] = suited 
+        cards[suit] = card_value
+
+    start_screen = (ART/"start_screen.txt").read_text(encoding="utf-8")
+    card_back = "LIKOD"
 
 
 def random_display_card():
@@ -89,9 +123,8 @@ def draw_card(pad, value, suit, x, y):
     bottom = y - (w//2)
     right = x + (h//2) + 1
     draw_on_game_centered(pad, x, y, card_border)
+    draw_on_game(pad, left+1, top-1, card_art)
 
-    draw_on_game(pad, left + 1, top - 1, card_art)
-    draw_on_game(pad, left + 1, bottom + 1, card_art)
 
 def draw_unrevealed_card(pad, x, y):
     global card_border
@@ -109,28 +142,6 @@ def get_and_draw_card(pad, card: Card, x, y):
         draw_unrevealed_card(pad, x, y)
 
 
-def load_art():
-    global card_border
-    global special_card_border
-    global start_screen
-    global card_back
-    content = (ART/"borders.txt").read_text(encoding="utf-8")
-
-    parts = content.split('#')
-
-    card_border = parts[0]
-    special_card_border = parts[1]
-
-    for suit in ["d", "h", "s", "c"]:
-        card_value = {}
-        for value in ["a", 2, 3, 4, 5, 6, 7, 8, 9, 10, "j", "q", "k"]:
-
-            card_value[value] = str(value) + " of " + suit
-
-        cards[suit] = card_value
-
-    start_screen = (ART/"start_screen.txt").read_text(encoding="utf-8")
-    card_back = "LIKOD"
 
 
 load_art()
@@ -267,7 +278,7 @@ def update_screen_pad(pad, state: State):
         draw_game_screen(pad, state)
         pass
 
-    #Debug Lines
+    # Debug Lines
     # draw_cartesian_plane(pad)
 
     pad.noutrefresh(OUT_OF_SCREEN_LENGTH//2, OUT_OF_SCREEN_LENGTH//2,
