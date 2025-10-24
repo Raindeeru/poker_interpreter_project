@@ -55,7 +55,7 @@ def load_art():
         cards[suit] = card_value
 
     start_screen = (ART/"start_screen.txt").read_text(encoding="utf-8")
-    card_back = "LIKOD"
+    card_back = parts[2]
 
 
 def random_display_card():
@@ -258,9 +258,9 @@ def draw_game_screen(pad, state: State):
     draw_on_screen(pad, layout.MAIN_SCREEN_W - 19, layout.MAIN_SCREEN_H//2,
                    f"Enemy Bet: {state.enemy_last_bet}".rjust(15))
 
-    pot_center = len(str(f"Pot: {state.pot}"))//2
+    pot_center = len(str(f"Pot: {state.enemy_last_bet + state.player_last_bet}"))//2
     draw_on_screen(pad, layout.MAIN_SCREEN_W//2 - pot_center, 3,
-                   f"Pot: {state.pot}")
+                   f"Pot: {state.enemy_last_bet + state.player_last_bet}")
 
 
 
