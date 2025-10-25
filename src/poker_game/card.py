@@ -8,3 +8,4 @@ class Card:
     value: Union[int, str]
     revealed: bool
     special: str = None
+    revealed_to_enemy: bool = False 
