@@ -117,6 +117,9 @@ def damage_calculation(hand):
     cards_held = Find_Best_Pattern(hand)[1]
 
     match pattern_found:
+        case "Folded":
+            return 0
+
         case "Royal_Flush":
             return calculate_Royal_Flush(cards_held)
 
