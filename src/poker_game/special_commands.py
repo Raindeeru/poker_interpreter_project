@@ -60,8 +60,20 @@ def Reveal(state: State, index: int, card: Card):
             f"Revealed {get_card_string(state.enemy_hand[index])}")
 
 
-def Exchange(state: State):
-    pass
+def Exchange(state: State, index: int, card: Card, special_card: Card):
+
+    if not check_if_special_card_exists(state, special_card):
+        return (state, False, "You don't have that special card")  
+    elif not check_if_card_in_hand(state, card):
+        return (state, False, "You do not have this card")
+    else:
+        print("before", state.player_hand)
+        print("before", state.enemy_hand)
+        player_index = next((i for i, c in enumerate(state.player_hand) if c.value == card.value))
+        temp = state.player_hand[player_index]
+        state.player_hand[player_index] = state.enemy_hand[index]
+        state.enemy_hand[index] = temp
+        return(state, True)
 
 
 def Change_Suit(state: State, card_special: Card, card_target: Card, suit=None):
