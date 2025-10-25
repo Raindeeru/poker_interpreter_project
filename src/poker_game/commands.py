@@ -4,6 +4,32 @@ from poker_game.card import Card
 import copy
 import random
 
+def get_card_string(card: Card):
+    value_map = {
+            "a": "Ace",
+            2: "2",
+            3: "3",
+            4: "4",
+            5: "5",
+            6: "6",
+            7: "7",
+            8: "8",
+            9: "9",
+            10: "10",
+            "j": "Jack",
+            "q": "Queen",
+            "k": "King",
+            }
+
+    suit_map = {
+            "d": "Diamonds",
+            "h": "Hearts",
+            "s": "Spades",
+            "c": "Clubs",
+            }
+
+    return f"{value_map[card.value]} of {suit_map[card.suit]}"
+
 
 # This populates enemy, player and community deck
 def Give_Cards_Initial(state: State):
@@ -136,6 +162,7 @@ def Play(state: State, card1:Card, card2:Card):
             return (state, False, "Card is not in Hand!")
 
     state.player_play = [card1, card2]
+    return state, True, f"You played {get_card_string(card1)} and {get_card_string(card2)}"
 
 
 def Buy(state: State, shop_index: int):
