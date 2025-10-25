@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from poker_game.state import State
 from poker_game.card import Card
 import random
+from ui.terminal import add_terminal_output
 import itertools
 
 @dataclass
@@ -18,11 +19,14 @@ class Enemy:
 
     def do_basic_move(self, aggro: int, state):
         if aggro < self.fold_threshold:
-            Fold(state)
+            state, success, out = Fold(state)
+            return success, out
         elif aggro > self.call_threshold:
-            Raise(state, 100)
+            state, success, out = Raise(state, 100)
+            return success, out
         else:
-            Call(state)
+            state, success, out = Call(state)
+            return success, out
 
     def decide_next_move(self, state: State):
         if state.round_state == 3:
@@ -35,7 +39,9 @@ class Enemy:
         if special_sample < self.special_probability:
             return
         # do basic move
-        self.do_basic_move(total_aggro, state)
+        success, out = self.do_basic_move(total_aggro, state)
+
+        add_terminal_output(out)
 
 
 def Bet(state: State, bet: int):

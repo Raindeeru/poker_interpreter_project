@@ -4,6 +4,7 @@ import ui.layout as layout
 import ui.input as input
 import poker_game.state
 import poker_game.game_handler as g
+from poker_game.enemy import Enemy
 
 # gagawa tayo gamestate class, sa init mag iinit tayo ng object nun
 
@@ -24,9 +25,9 @@ def run(stdscr):
         except curses.error:
             pass
 
-        if command_success:
+        if command_success and game_state.has_bet:
             # update enemy and game
-            pass
+            game_state.enemy.decide_next_move(game_state)
 
         screen = layout.update_screen(stdscr, screen, game_state)
         curses.doupdate()
@@ -40,6 +41,7 @@ def init(stdscr):
     curses.init_pair(1, curses.COLOR_WHITE, -1)
 
     stdscr.nodelay(True)
+    game_state.enemy = Enemy(name="Jeremy")
 
     run(stdscr)
 

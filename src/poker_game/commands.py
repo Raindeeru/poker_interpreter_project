@@ -75,6 +75,7 @@ def Bet(state: State, bet: int):
     if bet <= state.player_chips:
         state.player_chips -= bet
         state.player_last_bet = bet
+        state.has_bet = True
         return (state, True, f"You bet {bet}")
     else:
         return (state, False, "Insufficient Chips!")
