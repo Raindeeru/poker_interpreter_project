@@ -44,6 +44,8 @@ class State:
     # 2 - enemy folded
     folded: int = 0
 
+    has_bet:bool = False
+
     shop_items = []
     pot: int = 0
     # di ko alam rn pano to, pero probably gagamitin for the ai

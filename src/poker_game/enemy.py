@@ -2,27 +2,40 @@ from dataclasses import dataclass
 from poker_game.state import State
 from poker_game.card import Card
 import random
+import itertools
 
 @dataclass
 class Enemy:
     name: str
-    base_aggressiveness: int
-    fold_threshold: int
-    call_threshold: int
-    special_probability: float
+    base_aggressiveness: int = 150
+    fold_threshold: int = 100
+    call_threshold: int = 200
+    special_probability: float = 0
 
     base_hand_multiplier: int = 1
     base_pot_multiplier: int = 1
     base_round_multiplier: int = 1
 
+    def do_basic_move(self, aggro: int, state):
+        if aggro < self.fold_threshold:
+            Fold(state)
+        elif aggro > self.call_threshold:
+            Raise(state, 100)
+        else:
+            Call(state)
+
     def decide_next_move(self, state: State):
+        if state.round_state == 3:
+            # Dito Play lang pwede gawin
+            pass
+
         total_aggro = self.base_aggressiveness
 
         special_sample = random.random()
-        if special_sample <= self.special_probability:
+        if special_sample < self.special_probability:
             return
         # do basic move
-        return
+        self.do_basic_move(total_aggro, state)
 
 
 def Bet(state: State, bet: int):
