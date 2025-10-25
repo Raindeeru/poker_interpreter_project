@@ -119,6 +119,22 @@ def Raise(state: State, raise_val: int):
     else:
         return (state, False, "Insufficient funds to raise")
 
+def Play(state: State, card1:Card, card2:Card):
+    for i, c in enumerate(state.player_hand):
+        #ung c laman niya card specific sa hand
+        #ngayon icheck ko kung equal ung card na pinley ko sa nasa hand
+        if card1.value == c.value and card1.suit == card1.suit:
+
+   
+     
+
+
+        # if card1.value == card2.value and card1.suit == card2.suit:
+        #     return(state, False, "Play hand must be unique!")
+    
+    else:
+        return(False, "Card is not in hand!")
+    
 
 def Buy(state: State, shop_index: int):
     # state.player_chips -= state.shop_items[shop_index].price
