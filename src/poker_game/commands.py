@@ -120,21 +120,23 @@ def Raise(state: State, raise_val: int):
         return (state, False, "Insufficient funds to raise")
 
 def Play(state: State, card1:Card, card2:Card):
+    if card1 == card2:
+        return state, False, "You played two same cards"
+
     for i, c in enumerate(state.player_hand):
-        #ung c laman niya card specific sa hand
-        #ngayon icheck ko kung equal ung card na pinley ko sa nasa hand
-        if card1.value == c.value and card1.suit == card1.suit:
+        if card1.value == c.value and c.suit == card1.suit:
+            break
+        if i == len(state.player_hand) - 1:
+            return (state, False, "Card is not in Hand!")
 
-   
-     
+    for i, c in enumerate(state.player_hand):
+        if card2.value == c.value and c.suit == card2.suit:
+            break
+        if i == len(state.player_hand) - 1:
+            return (state, False, "Card is not in Hand!")
 
+    state.player_play = [card1, card2]
 
-        # if card1.value == card2.value and card1.suit == card2.suit:
-        #     return(state, False, "Play hand must be unique!")
-    
-    else:
-        return(False, "Card is not in hand!")
-    
 
 def Buy(state: State, shop_index: int):
     # state.player_chips -= state.shop_items[shop_index].price
