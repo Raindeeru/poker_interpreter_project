@@ -5,6 +5,7 @@ import ui.input as input
 import poker_game.state
 import poker_game.game_handler as g
 from poker_game.enemy import Enemy
+from ui.terminal import add_terminal_output
 
 # gagawa tayo gamestate class, sa init mag iinit tayo ng object nun
 
@@ -12,6 +13,7 @@ game_state = poker_game.state.State()
 
 
 def run(stdscr):
+    global game_state
     screen = layout.Screen()
 
     while True:
@@ -24,10 +26,24 @@ def run(stdscr):
                 break
         except curses.error:
             pass
+        
 
         if command_success and game_state.has_bet:
-            # update enemy and game
-            game_state.enemy.decide_next_move(game_state)
+            #check round state if its viable to change
+            check_update = g.update_round(game_state)
+            if check_update[1]:
+                add_terminal_output("changed something")
+                game_state = check_update[0]
+            else:
+                # update enemy and game
+                game_state.enemy.decide_next_move(game_state)
+                check_update = g.update_round(game_state)
+                
+                if check_update[1]:
+                    add_terminal_output("changed something")
+                    game_state = check_update[0]
+            
+            add_terminal_output(str(game_state.round_state))
 
         screen = layout.update_screen(stdscr, screen, game_state)
         curses.doupdate()
