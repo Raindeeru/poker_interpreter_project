@@ -100,7 +100,6 @@ def interpret_command(input: str, state: State):
                             value = int(value)
 
                         card = Card(suit=suit, value=value, revealed = False)
-                        return False, f"{card}, {index}"
                     else:
                         index = action_target.target1.num
                         card = action_target.target2.value
