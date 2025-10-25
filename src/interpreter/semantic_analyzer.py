@@ -102,9 +102,13 @@ def check_change_valid(target):
             
             return check_card_id_valid(target)
         case "value":
-            if target.change_value.num not in valid_values:
-                return (False, f"Invalid value used in change action")
-            
+            if not isinstance(target.change_value, p.AlphabetValue):
+                if target.change_value.num not in valid_values:
+                    return (False, f"Invalid value used in change action")
+            else:
+                if target.change_value.value not in valid_values:
+                    return (False, f"Invalid value used in change action")
+
             return check_card_id_valid(target)
         case _:
             return (False, "Invalid change key used in change action")
