@@ -113,6 +113,8 @@ def Raise(state: State, raise_val: int):
         state.player_chips -= raise_val - state.player_last_bet
         state.player_last_bet = raise_val
         return (state, True, f"You raised by {raise_val}")
+    elif raise_val <= state.enemy_last_bet:
+        return (state, False, f"Raise Commad Invalid! must be above {state.enemy_last_bet}")
     else:
         return (state, False, "Insufficient funds to raise")
 
