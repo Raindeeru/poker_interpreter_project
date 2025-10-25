@@ -274,9 +274,9 @@ def draw_game_screen(pad, state: State):
     draw_on_screen(pad, layout.MAIN_SCREEN_W - 19, layout.MAIN_SCREEN_H//2,
                    f"Enemy Bet: {state.enemy_last_bet}".rjust(15))
 
-    pot_center = len(str(f"Pot: {state.enemy_last_bet + state.player_last_bet}"))//2
+    pot_center = len(str(f"Pot: {state.pot}"))//2
     draw_on_screen(pad, layout.MAIN_SCREEN_W//2 - pot_center, 3,
-                   f"Pot: {state.enemy_last_bet + state.player_last_bet}")
+                   f"Pot: {state.pot}")
 
 
 
