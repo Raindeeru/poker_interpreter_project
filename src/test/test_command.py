@@ -12,7 +12,7 @@ test_state.player_hand = [Card(suit="h", value=9, special="change", revealed=Fal
                               Card(suit="c", value="a", special=None, revealed=False),
                               Card(suit="c", value="j", special=None, revealed=False)]
 
-test_state_new = Change_Value(test_state, Card(suit="h", value=9, special="change", revealed=False), Card(suit="c", value="j", special=None, revealed=False))
+state, success, out = Change_Value(test_state, Card(suit="h", value=9, special="change", revealed=False), Card(suit="c", value="j", special=None, revealed=False))
 
-print("debug_info", test_state_new[2])
-print("after command:", test_state_new[0].player_hand)
+print(out)
+

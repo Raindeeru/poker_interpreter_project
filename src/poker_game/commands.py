@@ -41,6 +41,11 @@ def Give_Cards_Initial(state: State):
         else:
             state.player_deck.append(state.player_deck.pop(0))
 
+    #Special Test
+    state.player_hand[0].special = "exchange"
+    state.player_hand[1].special = "reveal"
+    state.player_hand[2].special = "change"
+
     # Gives the enemy 3 random cards
     while len(state.enemy_hand) != 3:
         if state.enemy_deck[0] not in state.community_cards:

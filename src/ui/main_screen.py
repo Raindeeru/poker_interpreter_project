@@ -126,6 +126,19 @@ def draw_card(pad, value, suit, x, y):
     draw_on_game(pad, left+1, top-1, card_art)
 
 
+def draw_special_card(pad, value, suit, x, y, special_type):
+    global special_card_border
+    global cards
+    card_art = cards[suit][value]
+    w, h = get_art_dimensions(pad, x, y, special_card_border)
+    top = y + (w//2) - 1
+    left = x - (h//2) - 1
+    bottom = y - (w//2)
+    right = x + (h//2) + 1
+    draw_on_game_centered(pad, x, y, special_card_border)
+    draw_on_game(pad, left+1, top-1, card_art)
+    draw_on_game(pad, left, top, special_type[0].upper())
+
 def draw_unrevealed_card(pad, x, y):
     global card_border
     global cards
@@ -137,7 +150,10 @@ def draw_unrevealed_card(pad, x, y):
 
 def get_and_draw_card(pad, card: Card, x, y):
     if card.revealed:
-        draw_card(pad, card.value, card.suit, x, y)
+        if not card.special:
+            draw_card(pad, card.value, card.suit, x, y)
+        else:
+            draw_special_card(pad, card.value, card.suit, x, y, card.special)
     else:
         draw_unrevealed_card(pad, x, y)
 

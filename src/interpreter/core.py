@@ -9,6 +9,7 @@ import poker_game.special_commands as special_commands
 from interpreter.parser import CardID
 from interpreter.parser import AlphabetValue
 from interpreter.parser import Number
+import poker_game.special_commands as s_commands
 
 
 def interpret_command(input: str, state: State):
@@ -111,13 +112,18 @@ def interpret_command(input: str, state: State):
                             value = int(value)
 
                         card = Card(suit=suit, value=value, revealed = False)
-                        return False, f"{card}, {index}"
-                    pass
+
+                    state, is_success, out = s_commands.Exchange(
+                            state, index, card, special_card)
+                    return is_success, out
                 case "reveal":
+                    special_card.special = "reveal"
                     index = action_target.num
-                    return False, f"{index}"
-                    pass
+                    state, is_success, out = s_commands.Reveal(
+                            state, index, special_card)
+                    return is_success, out
                 case "change":
+                    special_card.special = "change"
                     card = action_target.card_id.value
                     value = card[:-1]  # everything except the last char
                     suit = card[-1]    # last char
@@ -128,20 +134,24 @@ def interpret_command(input: str, state: State):
                     card = Card(suit=suit, value=value, revealed = False)
 
                     change_value = None
-                    change_key = None
+                    change_key = action_target.change_key
 
                     if isinstance(action_target.change_value, Number):
                         change_value = action_target.change_value.num
                     else:
-                        change_value = action_target.change_value.value
-
-                    if change_value.isdigit():
-                        change_value = int(change_value)
+                        if action_target.change_value == "random":
+                            change_value = None
+                        else:
+                            change_value = action_target.change_value.value
 
                     if action_target.change_key == "suit":
-                        return False, f"{change_key} {change_value}"
+                        state, is_success, out = s_commands.Change_Suit(
+                                state, special_card, card, change_value)
+                        return is_success, out
                     else:
-                        return False, f"{change_key} {change_value}"
+                        state, is_success, out = s_commands.Change_Value(
+                                state, special_card, card, change_value)
+                        return is_success, out
 
             return False, "You used a special command"
             pass
