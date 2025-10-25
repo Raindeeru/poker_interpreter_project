@@ -4,7 +4,11 @@ from interpreter.tokenizer import lexer
 import interpreter.semantic_analyzer as s
 import interpreter.tokenizer as t
 import poker_game.commands as commands
+from poker_game.card import Card
 import poker_game.special_commands as special_commands
+from interpreter.parser import CardID
+from interpreter.parser import AlphabetValue
+from interpreter.parser import Number
 
 
 def interpret_command(input: str, state: State):
@@ -66,7 +70,79 @@ def interpret_command(input: str, state: State):
             return is_success, out
             pass
         case "use":
-            special_command = ast.target.command
+            special_card_command = ast.target
+            action = special_card_command.action
+            special_card = special_card_command.special_card
+            action_name = action.action
+            action_target = action.target
+
+            value = special_card.value[:-1] 
+            suit = special_card.value[-1]
+
+            if value.isdigit():
+                value = int(value)
+
+            special_card = Card(suit=suit, value=value, revealed = False)
+
+            match action_name:
+                case "exchange":
+                    special_card.special = "exchange"
+                    index = None
+                    card = None
+                    if isinstance(action_target.target1, CardID):
+                        index = action_target.target2.num
+                        card = action_target.target1.value
+                        value = card[:-1]  # everything except the last char
+                        suit = card[-1]    # last char
+
+                        if value.isdigit():
+                            value = int(value)
+
+                        card = Card(suit=suit, value=value, revealed = False)
+                        return False, f"{card}, {index}"
+                    else:
+                        index = action_target.target1.num
+                        card = action_target.target2.value
+
+                        value = card[:-1]  # everything except the last char
+                        suit = card[-1]    # last char
+
+                        if value.isdigit():
+                            value = int(value)
+
+                        card = Card(suit=suit, value=value, revealed = False)
+                        return False, f"{card}, {index}"
+                    pass
+                case "reveal":
+                    index = action_target.num
+                    return False, f"{index}"
+                    pass
+                case "change":
+                    card = action_target.card_id.value
+                    value = card[:-1]  # everything except the last char
+                    suit = card[-1]    # last char
+
+                    if value.isdigit():
+                        value = int(value)
+
+                    card = Card(suit=suit, value=value, revealed = False)
+
+                    change_value = None
+                    change_key = None
+
+                    if isinstance(action_target.change_value, Number):
+                        change_value = action_target.change_value.num
+                    else:
+                        change_value = action_target.change_value.value
+
+                    if change_value.isdigit():
+                        change_value = int(change_value)
+
+                    if action_target.change_key == "suit":
+                        return False, f"{change_key} {change_value}"
+                    else:
+                        return False, f"{change_key} {change_value}"
+
             return False, "You used a special command"
             pass
         case _:

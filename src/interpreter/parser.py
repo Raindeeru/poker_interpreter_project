@@ -67,7 +67,7 @@ U -> number | item_id | card_id A | card_id | card_id to P .
 A -> card_id A | card_id .
 P -> action | action C | act E | act V.
 C -> change_key of card_id K| change_key of card_id .
-V -> card_id.
+V -> number.
 K -> to R .
 R -> number | suit | alpha_val .
 E -> F with F .
