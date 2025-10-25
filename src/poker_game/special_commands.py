@@ -78,7 +78,9 @@ def Exchange(state: State, index: int, card: Card, special_card: Card):
         player_index = next((i for i, c in enumerate(state.player_hand) if c.value == card.value))
         temp = state.player_hand[player_index]
         state.player_hand[player_index] = state.enemy_hand[index]
+        state.player_hand[player_index].revealed = True
         state.enemy_hand[index] = temp
+        state.enemy_hand[index].revealed = False
         return(state, True, 
                f"You Exchanged your {get_card_string(card)} with the enemy's {get_card_string(state.enemy_hand[index])}")
 
