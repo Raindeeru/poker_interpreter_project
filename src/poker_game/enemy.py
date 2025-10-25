@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from poker_game.state import State
 from poker_game.card import Card
-from random import random
+import random
 
 @dataclass
 class Enemy:
@@ -18,7 +18,7 @@ class Enemy:
     def decide_next_move(self, state: State):
         total_aggro = self.base_aggressiveness
 
-        special_sample = random()
+        special_sample = random.random()
         if special_sample <= self.special_probability:
             return
         # do basic move
@@ -118,18 +118,19 @@ def check_if_card_in_hand(state: State, card: Card):
 
 def Reveal(state: State, index: int, card: Card):
     if not check_if_special_card_exists(state, card):
-        return (state, False, f"{state.enemy.name} don't have that special card")
-    if state.enemy_hand[index].revealed:
+        return (state, False, f"{state.enemy.name} doesn't have that special card")
+    if state.player_hand[index].revealed:
         return (state, False, "That Card is already revealed")
 
-    state.enemy_hand[index].revealed = True
+    state.player_hand[index].revealed_to_enemy = True
 
-    for index, c in enumerate(state.enemy_hand):
+    for i, c in enumerate(state.enemy_hand):
         if c.value == card.value and c.suit == card.suit:
             state.enemy_hand[index].special = None
-
+    
     return (state, False,
-            f"Revealed {get_card_string(state.enemy_hand[index])}")
+            f"Revealed {get_card_string(state.player_hand[index])}")
+            
 
 
 def Exchange(state: State, index: int, card: Card, special_card: Card):
@@ -139,19 +140,19 @@ def Exchange(state: State, index: int, card: Card, special_card: Card):
     elif not check_if_card_in_hand(state, card):
         return (state, False, "You do not have this card")
     else:
-        for index, c in enumerate(state.enemy_hand):
+        for i, c in enumerate(state.enemy_hand):
             if c.value == special_card.value and c.suit == special_card.suit:
-                state.enemy_hand[index].special = None
+                state.enemy_hand[i].special = None
         
-        enemy_index = next((i for i, c in enumerate(state.state.enemy_hand) if c.value == card.value))
+        enemy_index = next((i for i, c in enumerate(state.enemy_hand) if c.value == card.value))
         temp = state.enemy_hand[enemy_index]
         state.enemy_hand[enemy_index] = state.player_hand[index]
         state.enemy_hand[enemy_index].revealed = True
         state.player_hand[index] = temp
         state.player_hand[index].revealed = False
         return(state, True, 
-               f"{state.enemy.name} Exchange {get_card_string(card)} with the player's {get_card_string(state.player_hand[index])}")
-
+               f"{state.enemy.name} Exchange {get_card_string(card)} with the player's {get_card_string(state.enemy_hand[enemy_index])}")
+        
 
 def Change_Suit(state: State, card_special: Card, card_target: Card, suit=None):
     suits = ["d","h","s","c"]
