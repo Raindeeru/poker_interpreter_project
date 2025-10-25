@@ -129,3 +129,5 @@ def Buy(state: State, shop_index: int):
 def Quit(state: State):
     state.exited = True
     return state, True, "Goodbye!"
+
+
