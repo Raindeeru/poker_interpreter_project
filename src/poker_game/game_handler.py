@@ -4,10 +4,58 @@ from poker_game.poker_hands import Find_Best_Pattern
 from poker_game.damage_calculations import damage_calculation
 from poker_game.damage_calculations import update_enemy_damage
 from poker_game.damage_calculations import update_player_damage
+import random
 
 
 def reset(state: State):
-    pass
+    state.player_deck += state.player_hand
+    state.enemy_deck += state.enemy_hand
+    state.community_deck += state.community_cards
+
+    state.player_hand.clear()
+    state.enemy_hand.clear()
+    state.community_cards.clear()
+
+    random.shuffle(state.player_deck)
+    random.shuffle(state.enemy_deck)
+    random.shuffle(state.community_deck)
+
+    for card in state.player_deck:
+        card.revealed = True
+        card.revealed_to_enemy = False
+
+    for card in state.enemy_deck:
+        card.revealed_to_enemy = True
+        card.revealed = False
+
+    for card in state.community_deck:
+        card.revealed_to_enemy = False
+        card.revealed = False
+
+    for _ in range(3):
+        state.community_cards.append(state.community_deck.pop(0))
+
+    while len(state.player_hand) != 3:
+        if state.player_deck[0] not in state.community_cards:
+            state.player_hand.append(state.player_deck.pop(0))
+        else:
+            state.player_deck.append(state.player_deck.pop(0))
+
+    while len(state.enemy_hand) != 3:
+        if state.enemy_deck[0] not in state.community_cards:
+            state.enemy_hand.append(state.enemy_deck.pop(0))
+        else:
+            state.enemy_deck.append(state.enemy_deck.pop(0))
+
+    state.folded = 0
+    state.has_bet = False
+    state.player_all_in = False
+    state.enemy_all_in = False
+    state.win_check_available = False
+    state.pot = 0
+    state.round_state = 0
+    state.enemy_damage = 0
+    state.player_damage = 0
 
 
 def reveal_community(state: State):
@@ -111,4 +159,5 @@ def check_win(state: State):
         state.player_health -= abs(total_damage)
 
     state.win_check_available = False
+    reset(state)
     return f"You have {p_pattern} and the enemy has {e_pattern}", damage_string
