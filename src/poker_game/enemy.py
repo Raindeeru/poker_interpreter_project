@@ -33,7 +33,7 @@ class Enemy:
             state, success, out = Call(state)
             return success, out
 
-    def do_special_move(self, aggro: int, state):
+    def do_special_move(self, aggro: int, state: State):
         bet = state.player_last_bet + aggro
         if aggro < self.fold_threshold:
             state, success, out = Fold(state)
@@ -42,6 +42,8 @@ class Enemy:
             state, success, out = All(state)
             return success, out
         elif aggro > self.call_threshold:
+            if state.player_last_bet >= state.enemy_chips:
+                state, success, out = All(state)
             state, success, out = Raise(state, bet)
             return success, out
         else:
