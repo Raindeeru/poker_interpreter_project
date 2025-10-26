@@ -14,8 +14,8 @@ from copy import deepcopy
 
 round_to_move_map ={
         0: ['start', 'bet', 'all', 'fold'],
-        1: ['start', 'all', 'raise', 'fold'],
-        2: ['start', 'all', 'raise', 'fold'],
+        1: ['start', 'bet', 'all', 'raise', 'fold'],
+        2: ['start', 'bet', 'all', 'raise', 'fold'],
         3: ['start', 'play'],
         }
 
@@ -58,9 +58,13 @@ def interpret_command(input: str, state: State):
         valid_moves = ['start']
 
     valid_moves.append('quit')
+    
 
     if command not in valid_moves:
         return False, f"You can't {command} right now"
+    
+    if state.has_bet and "bet" in valid_moves:
+        valid_moves.remove('bet')
 
     match command:
         case "start":
