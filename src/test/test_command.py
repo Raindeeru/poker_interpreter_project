@@ -14,7 +14,12 @@ test_state.player_deck = [Card(suit="h", value=10, special="change", revealed=Fa
                               Card(suit="c", value=10, special=None, revealed=False),
                               Card(suit="s", value=2, special=None, revealed=False),
                               Card(suit="s", value=9, special=None, revealed=False)]
+test_state.player_chips = 200
 
 test_state = populate_shop(test_state)
 
-print(test_state.shop_items)
+print("Shop Items:", test_state.shop_items)
+
+test_state = Buy(test_state, 2)[0]
+
+print("Player_Deck", test_state.player_deck)
