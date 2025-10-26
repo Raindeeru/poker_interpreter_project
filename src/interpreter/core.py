@@ -13,10 +13,10 @@ import poker_game.special_commands as s_commands
 from copy import deepcopy
 
 round_to_move_map ={
-        0: ['start', 'call','bet', 'all', 'fold'],
-        1: ['start', 'call','bet', 'all', 'raise', 'fold'],
-        2: ['start', 'call','bet', 'all', 'raise', 'fold'],
-        3: ['start', 'play'],
+        0: ['start', 'use', 'call','bet', 'all', 'fold'],
+        1: ['start', 'use', 'call','bet', 'all', 'raise', 'fold'],
+        2: ['start', 'use', 'call','bet', 'all', 'raise', 'fold'],
+        3: ['start', 'use', 'play'],
         }
 
 def get_card_from_string(cardstr: str):

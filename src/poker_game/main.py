@@ -51,6 +51,8 @@ def run(stdscr):
             if game_state.started and check_final_win[1] == "won":
                 add_terminal_output(str(check_final_win[2]))
                 game_state.win_count += 1
+                game_state.in_shop = True
+                game_state.in_game = False
             elif game_state.started and check_final_win[1] == "lost":
                 add_terminal_output(str(check_final_win[2]))
                 game_state.game_lost = True
