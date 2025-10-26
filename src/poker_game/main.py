@@ -32,7 +32,6 @@ def run(stdscr):
             #check round state if its viable to change
             check_update = g.update_round(game_state)
             if check_update[1]:
-                add_terminal_output("changed something")
                 game_state = check_update[0]
             else:
                 # update enemy and game
@@ -40,10 +39,8 @@ def run(stdscr):
                 check_update = g.update_round(game_state)
                 
                 if check_update[1]:
-                    add_terminal_output("changed something")
                     game_state = check_update[0]
             
-            add_terminal_output(str(game_state.round_state))
 
         screen = layout.update_screen(stdscr, screen, game_state)
         curses.doupdate()

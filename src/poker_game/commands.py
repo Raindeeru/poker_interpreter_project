@@ -110,6 +110,7 @@ def Bet(state: State, bet: int):
 def Fold(state: State):
     state.round_state = 3
     state.folded = 1
+    state.has_bet = True
     return (state, True, "Fold Successful!")
 
 
@@ -131,6 +132,9 @@ def All(state: State):
         state.player_last_bet += state.player_chips
         state.enemy_chips += state.enemy_last_bet - state.player_last_bet
         state.player_chips = 0
+    state.player_all_in = True
+    state.round_state = 2
+    state.has_bet = True
     return (state, True, "You went All in")
 
 

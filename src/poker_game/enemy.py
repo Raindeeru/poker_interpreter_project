@@ -3,6 +3,7 @@ from poker_game.state import State
 from poker_game.card import Card
 import random
 from ui.terminal import add_terminal_output
+from poker_game.damage_calculations import damage_calculation
 import itertools
 
 @dataclass
@@ -21,6 +22,9 @@ class Enemy:
         if aggro < self.fold_threshold:
             state, success, out = Fold(state)
             return success, out
+        elif state.player_all_in:
+            state, success, out = All(state)
+            return success, out
         elif aggro > self.call_threshold:
             state, success, out = Raise(state, 100)
             return success, out
@@ -28,10 +32,45 @@ class Enemy:
             state, success, out = Call(state)
             return success, out
 
+    def calculate_best_hand(self, hand, community):
+        best = None
+        highest_damage = 0
+        for play in itertools.combinations(hand, 2):
+            cards = list(play) + community
+            current = damage_calculation(cards)
+            if best is None or current > highest_damage:
+                best = play
+                highest_damage = current
+        return best
+
+    def decide_play(self, state: State):
+        unique = []
+        seen = set()
+
+        for c in state.enemy_hand:
+            key = (c.suit, c.value)
+            if key not in seen:
+                seen.add(key)
+                unique.append(c)
+
+        if len(unique) < 2:
+            state, success, out = Fold(state)
+            return success, out
+
+        best_play = self.calculate_best_hand(unique, state.community_cards)
+
+        return False, str(best_play)
+        state, success, out = Play(state, best_play[0], best_play[1])
+        return success, out
+
+
+
     def decide_next_move(self, state: State):
         if state.round_state == 3:
             # Dito Play lang pwede gawin
-            pass
+            success, out = self.decide_play(state)
+            add_terminal_output(out)
+            return
 
         total_aggro = self.base_aggressiveness
 
@@ -78,6 +117,8 @@ def All(state: State):
         state.enemy_last_bet += state.enemy_chips
         state.player_chips += state.player_last_bet - state.enemy_last_bet
         state.enemy_chips = 0
+    state.enemy_all_in = True
+    state.round_state = 2
     return state, True, f"{state.enemy.name} went all in!"
 
 
@@ -90,6 +131,27 @@ def Raise(state: State, raise_val: int):
 
     else:
         return (state, False, "Insufficient funds to raise")
+
+
+def Play(state: State, card1:Card, card2:Card):
+    if card1 == card2:
+        return state, False, f"{state.enemy.name} played two same cards"
+
+    for i, c in enumerate(state.enemy_hand):
+        if card1.value == c.value and c.suit == card1.suit:
+            break
+        if i == len(state.enemy_hand) - 1:
+            return (state, False, "Card is not in Hand!")
+
+    for i, c in enumerate(state.enemy_hand):
+        if card2.value == c.value and c.suit == card2.suit:
+            break
+        if i == len(state.enemy_hand) - 1:
+            return (state, False, "Card is not in Hand!")
+
+    state.enemy_play = [card1, card2]
+    return state, True, f"{state.enemy.name} played {get_card_string(card1)} and {get_card_string(card2)}"
+
 
 def get_card_string(card: Card):
     value_map = {

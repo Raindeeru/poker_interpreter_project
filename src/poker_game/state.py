@@ -51,3 +51,6 @@ class State:
     # di ko alam rn pano to, pero probably gagamitin for the ai
     # enemy_state: str
     enemy = None
+
+    player_all_in:bool = False
+    enemy_all_in:bool = False

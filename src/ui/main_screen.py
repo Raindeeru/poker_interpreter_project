@@ -278,6 +278,8 @@ def draw_game_screen(pad, state: State):
     draw_on_screen(pad, layout.MAIN_SCREEN_W//2 - pot_center, 3,
                    f"Pot: {state.pot}")
 
+    draw_on_screen(pad, 0, 0, f"Round: {state.round_state}")
+
 
 
 def update_screen_pad(pad, state: State):

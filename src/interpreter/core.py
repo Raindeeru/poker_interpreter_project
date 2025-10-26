@@ -11,6 +11,17 @@ from interpreter.parser import AlphabetValue
 from interpreter.parser import Number
 import poker_game.special_commands as s_commands
 
+def get_card_from_string(cardstr: str):
+    value = cardstr[:-1]
+    suit = cardstr[-1]
+
+    if value.isdigit():
+        value = int(value)
+
+    card = Card(suit=suit, value=value, revealed = False)
+    return card
+
+
 
 def interpret_command(input: str, state: State):
     input = input.lower()
@@ -64,7 +75,10 @@ def interpret_command(input: str, state: State):
             # and game
             return False, "You inspected a card"
         case "play":
-            return True, "You played your hand"
+            cards_str = ast.target
+            cards = [get_card_from_string(c.value) for c in cards_str]
+            state, is_success, out = commands.Play(state, cards[0], cards[1])
+            return is_success, out
             pass
         case "quit":
             state, is_success, out = commands.Quit(state)
@@ -77,13 +91,7 @@ def interpret_command(input: str, state: State):
             action_name = action.action
             action_target = action.target
 
-            value = special_card.value[:-1] 
-            suit = special_card.value[-1]
-
-            if value.isdigit():
-                value = int(value)
-
-            special_card = Card(suit=suit, value=value, revealed = False)
+            special_card = get_card_from_string(special_card.value)
 
             match action_name:
                 case "exchange":
@@ -93,24 +101,13 @@ def interpret_command(input: str, state: State):
                     if isinstance(action_target.target1, CardID):
                         index = action_target.target2.num
                         card = action_target.target1.value
-                        value = card[:-1]  # everything except the last char
-                        suit = card[-1]    # last char
 
-                        if value.isdigit():
-                            value = int(value)
-
-                        card = Card(suit=suit, value=value, revealed = False)
+                        card = get_card_from_string(card)
                     else:
                         index = action_target.target1.num
                         card = action_target.target2.value
 
-                        value = card[:-1]  # everything except the last char
-                        suit = card[-1]    # last char
-
-                        if value.isdigit():
-                            value = int(value)
-
-                        card = Card(suit=suit, value=value, revealed = False)
+                        card = get_card_from_string(card)
 
                     state, is_success, out = s_commands.Exchange(
                             state, index, card, special_card)
@@ -124,13 +121,7 @@ def interpret_command(input: str, state: State):
                 case "change":
                     special_card.special = "change"
                     card = action_target.card_id.value
-                    value = card[:-1]  # everything except the last char
-                    suit = card[-1]    # last char
-
-                    if value.isdigit():
-                        value = int(value)
-
-                    card = Card(suit=suit, value=value, revealed = False)
+                    card = get_card_from_string(card)
 
                     change_value = None
                     change_key = action_target.change_key
