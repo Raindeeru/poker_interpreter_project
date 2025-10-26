@@ -67,3 +67,12 @@ class State:
     in_shop:bool = False
 
     has_checked: bool = False
+
+    last_winner: int = 0
+    last_winning_hand = None
+    last_player_hand = None
+    last_enemy_hand = None
+    last_player_pattern = None
+    last_enemy_pattern = None
+
+    view_prio:str = "hello"

@@ -1,0 +1,28 @@
+Welcome To Gayagoy Gamblers!
+
+To start the game use the
+'start' command 
+in the terminal
+
+Once In Game, you can use
+- bet
+- raise
+- fold
+- all (all in)
+You also have special commands
+if you have the correct card 
+using the 'use' command
+You have
+- reveal (R)
+- exchange (E)
+- change (C)
+
+
+
+
+
+
+
+
+
+A Gayagoy and Sons Project 

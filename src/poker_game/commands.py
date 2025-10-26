@@ -93,7 +93,8 @@ def Start(state: State):
         return (state, False, "You're already in the Game")
     state.started = True
     state.in_game = True
-    state = Give_Cards_Initial(state)
+    Give_Cards_Initial(state)
+    state.view_prio = 'enemy'
 
     return (state, True, "Started a game of Gayagoy Gamblers! Goodluck")
 
@@ -172,15 +173,25 @@ def Play(state: State, card1:Card, card2:Card):
     return state, True, f"You played {get_card_string(card1)} and {get_card_string(card2)}"
 
 
-def Buy(state: State, shop_index: int):
-    # state.player_chips -= state.shop_items[shop_index].price
-    # state.player_deck.append(state.shop_items[shop_index].card)
-    pass
+def Buy(state: State, item_index: int):
+    if state.shop_items[item_index].price <= state.player_chips:
+        state.player_chips -= state.shop_items[item_index].price
+        for card in state.player_deck:
+            if card.value == state.shop_items[item_index].card.value and \
+                card.suit == state.shop_items[item_index].card.suit:
+                    card.special = state.shop_items[item_index].effect
+                    
+        return (state, True, f"You have bought an Item")
+    else:
+        return (state, False, "Insufficient Chips to Buy This Item")
+        
 
-def Inspect(state: State, card:Card):
+
+def Inspect(state: State, card: Card):
     for i, c in enumerate(state.player_hand):
         if card.value == c.value and c.suit == card.suit:
             state.inspect_target = c
+            state.view_prio = 'inspect'
             return (state, False, f"Inspecting {get_card_string(c)}")
         if i == len(state.player_hand) - 1:
             return (state, False, "Can't Inspect a card you don't have")

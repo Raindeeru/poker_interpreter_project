@@ -85,7 +85,28 @@ def draw_card(state: State, number_of_cards: int):
     return state
 
 
+def handle_skip_to_round_3(state: State):
+            
+    for card in state.community_cards:
+        card.revealed = True
+        
+    while len(state.player_hand) != 5:
+        if state.player_deck[0] not in state.community_cards:
+            state.player_hand.append(state.player_deck.pop(0))
+        else:
+            state.player_deck.append(state.player_deck.pop(0))
+            
+    while len(state.enemy_hand) != 5:
+        if state.enemy_deck[0] not in state.community_cards:
+            state.enemy_hand.append(state.enemy_deck.pop(0))
+        else:
+            state.enemy_deck.append(state.enemy_deck.pop(0))
+
+    return (state, True)
+
+
 def update_round(state: State):
+    
     if state.round_state == 0 and \
         state.has_bet and \
             (state.player_last_bet == state.enemy_last_bet
@@ -99,7 +120,6 @@ def update_round(state: State):
         state = draw_card(state, 4)
 
         state.round_state = 1
-        
         state.has_bet = False
 
         return (state, True)
@@ -112,9 +132,7 @@ def update_round(state: State):
         state.player_last_bet, state.enemy_last_bet = 0, 0
 
         state.round_state = 2
-        
         state = draw_card(state, 5)
-        
         state.has_bet = False
 
         return (state, True)
@@ -156,9 +174,9 @@ def check_win(state: State):
     p_kicker = 0
     e_kicker = 0
 
-    p_pattern = 'a ' + Find_Best_Pattern(p_hand)[0] \
+    p_pattern = 'a ' + Find_Best_Pattern(p_hand)[0].replace('_', ' ') \
         if state.folded != 1 else 'Folded'
-    e_pattern = 'a ' + Find_Best_Pattern(e_hand)[0] \
+    e_pattern = 'a ' + Find_Best_Pattern(e_hand)[0].replace('_', ' ') \
         if state.folded != 2 else 'Folded'
     
     if state.folded != 1:
@@ -184,14 +202,27 @@ def check_win(state: State):
         indiv_damage_string = f"Enemy: {state.enemy_damage} Player: {state.player_damage}"
         state.enemy_health -= abs(total_damage)
         state.player_chips += state.pot
+        state.last_winner = 1
+        state.last_winning_hand = p_hand
     else:
         indiv_damage_string = f"Enemy: {state.enemy_damage} Player: {state.player_damage}"
         damage_string = f"{state.enemy.name} has Damaged You for {abs(total_damage)}"
         state.player_health -= abs(total_damage)
         state.enemy_chips += state.pot
+        state.last_winner = 2
+        state.last_winning_hand = e_hand
 
     state.game_finish_check_available = True
     state.win_check_available = False
+
+    state.last_enemy_hand = e_hand
+    state.last_player_hand = p_hand
+
+    state.last_player_pattern = Find_Best_Pattern(p_hand)[0].replace('_', ' ') \
+        if state.folded != 1 else 'Folded'
+
+    state.last_enemy_pattern = Find_Best_Pattern(e_hand)[0].replace('_', ' ') \
+        if state.folded != 2 else 'Folded'
     reset(state)
     return f"You have {p_pattern} and the enemy has {e_pattern}", damage_string, indiv_damage_string
 

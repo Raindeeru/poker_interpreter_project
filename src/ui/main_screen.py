@@ -265,6 +265,7 @@ def draw_game_screen(pad, state: State):
 
     for i, card in enumerate(state.enemy_hand):
         get_and_draw_card(pad, card, next_enemy_card_pos, enemy_hand_height)
+        draw_on_game_centered(pad, next_enemy_card_pos, enemy_hand_height, f"{i}")
         next_enemy_card_pos -= 10
 
     # HUD
