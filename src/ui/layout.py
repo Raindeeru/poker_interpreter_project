@@ -3,6 +3,7 @@ import ui.terminal as term
 import ui.input as input
 import ui.main_screen as ms
 from poker_game.state import State
+import ui.sidebar as sb
 
 MAIN_SCREEN_W, MAIN_SCREEN_H = 85, 20
 TERMINAL_W, TERMINAL_H = 85, 10
@@ -53,12 +54,12 @@ def update_screen(stdscr, screen: Screen, state: State):
 
     screen.main_screen.noutrefresh()
     ms.update_screen_pad(screen.ms_pad, state)
+    sb.update_sidebar(screen.sidebar, state)
 
     show_terminal_output(screen.terminal)
     show_terminal_input(screen.terminal)
 
     screen.terminal.noutrefresh()
-    screen.sidebar.noutrefresh()
 
     return screen
 

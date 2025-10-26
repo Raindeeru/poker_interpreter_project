@@ -67,3 +67,5 @@ class State:
     in_shop:bool = False
 
     has_checked: bool = False
+
+    view_prio:str = "hello"

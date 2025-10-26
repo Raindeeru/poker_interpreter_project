@@ -1,0 +1,7 @@
+Welcome To Gayagoy Gamblers!
+
+To start the game use the
+'start' command 
+in the terminal
+
+Once In Game, you can use

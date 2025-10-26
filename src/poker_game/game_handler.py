@@ -99,7 +99,6 @@ def update_round(state: State):
         state = draw_card(state, 4)
 
         state.round_state = 1
-        
         state.has_bet = False
 
         return (state, True)
@@ -112,9 +111,7 @@ def update_round(state: State):
         state.player_last_bet, state.enemy_last_bet = 0, 0
 
         state.round_state = 2
-        
         state = draw_card(state, 5)
-        
         state.has_bet = False
 
         return (state, True)
@@ -192,6 +189,7 @@ def check_win(state: State):
 
     state.game_finish_check_available = True
     state.win_check_available = False
+    state.view_prio = 'last_win'
     reset(state)
     return f"You have {p_pattern} and the enemy has {e_pattern}", damage_string, indiv_damage_string
 

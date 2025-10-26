@@ -93,7 +93,8 @@ def Start(state: State):
         return (state, False, "You're already in the Game")
     state.started = True
     state.in_game = True
-    state = Give_Cards_Initial(state)
+    Give_Cards_Initial(state)
+    state.view_prio = 'enemy'
 
     return (state, True, "Started a game of Gayagoy Gamblers! Goodluck")
 
@@ -177,10 +178,11 @@ def Buy(state: State, shop_index: int):
     # state.player_deck.append(state.shop_items[shop_index].card)
     pass
 
-def Inspect(state: State, card:Card):
+def Inspect(state: State, card: Card):
     for i, c in enumerate(state.player_hand):
         if card.value == c.value and c.suit == card.suit:
             state.inspect_target = c
+            state.view_prio = 'inspect'
             return (state, False, f"Inspecting {get_card_string(c)}")
         if i == len(state.player_hand) - 1:
             return (state, False, "Can't Inspect a card you don't have")
