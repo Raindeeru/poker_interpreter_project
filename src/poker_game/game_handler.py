@@ -57,6 +57,8 @@ def reset(state: State):
     state.round_state = 0
     state.enemy_damage = 0
     state.player_damage = 0
+    state.player_last_bet = 0
+    state.enemy_last_bet = 0
 
 
 def reveal_community(state: State):
