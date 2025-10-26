@@ -62,6 +62,7 @@ def reset(state: State):
 def reveal_community(state: State):
     for card in state.community_cards:
         card.revealed = True
+        card.revealed_to_enemy = True
     return state
 
 

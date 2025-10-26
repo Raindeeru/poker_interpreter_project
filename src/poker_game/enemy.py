@@ -11,14 +11,15 @@ class Enemy:
     name: str
     base_aggressiveness: int = 150
     fold_threshold: int = 100
-    call_threshold: int = 200
+    call_threshold: int = 170
     special_probability: float = 0
 
-    base_hand_multiplier: int = 1
-    base_pot_multiplier: int = 1
-    base_round_multiplier: int = 1
+    base_hand_multiplier: int = 10
+    base_pot_multiplier: int = 0.1
+    base_round_multiplier: int = 10
 
     def do_basic_move(self, aggro: int, state):
+        bet = state.player_last_bet + aggro
         if aggro < self.fold_threshold:
             state, success, out = Fold(state)
             return success, out
@@ -26,7 +27,22 @@ class Enemy:
             state, success, out = All(state)
             return success, out
         elif aggro > self.call_threshold:
-            state, success, out = Raise(state, 100)
+            state, success, out = Raise(state, bet)
+            return success, out
+        else:
+            state, success, out = Call(state)
+            return success, out
+
+    def do_special_move(self, aggro: int, state):
+        bet = state.player_last_bet + aggro
+        if aggro < self.fold_threshold:
+            state, success, out = Fold(state)
+            return success, out
+        elif state.player_all_in:
+            state, success, out = All(state)
+            return success, out
+        elif aggro > self.call_threshold:
+            state, success, out = Raise(state, bet)
             return success, out
         else:
             state, success, out = Call(state)
@@ -62,19 +78,31 @@ class Enemy:
         state, success, out = Play(state, best_play[0], best_play[1])
         return success, out
 
-
-
     def decide_next_move(self, state: State):
         if state.round_state == 3:
             success, out = self.decide_play(state)
             add_terminal_output(out)
             return
 
-        total_aggro = self.base_aggressiveness
+        visible_cards = state.enemy_hand + \
+            [card for card in state.community_cards
+                if card.revealed_to_enemy]
 
-        special_sample = random.random()
-        if special_sample < self.special_probability:
-            return
+        current_damage = 0
+
+        if len(visible_cards) >= 5:
+            best = self.calculate_best_hand(state.enemy_hand, state.community_cards)
+            current_damage += damage_calculation(best +  state.community_cards)
+
+
+        total_aggro = self.base_aggressiveness + current_damage \
+            - state.round_state * self.base_round_multiplier
+            
+
+        if any(card.special for card in state.enemy_hand):
+            special_sample = random.random()
+            if special_sample < self.special_probability:
+                return
         # do basic move
         success, out = self.do_basic_move(total_aggro, state)
 

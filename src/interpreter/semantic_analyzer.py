@@ -37,7 +37,7 @@ def check_all_valid(target):
 
 
 def check_call_valid(target):
-    if isinstance(target, p.Number):
+    if target is None:
         return (True, "Valid call command")
     else:
         return (False, "Invalid call command")
