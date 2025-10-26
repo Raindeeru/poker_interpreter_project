@@ -1,5 +1,6 @@
 # yung game state to, ito yung minamanipulate natin dapat pag nagcocommand
 # yung state ng cards, kalaban, yung command history andito
+from poker_game.card import Card
 from dataclasses import dataclass
 
 
@@ -54,3 +55,6 @@ class State:
 
     player_all_in:bool = False
     enemy_all_in:bool = False
+
+    inspect_target: Card = None
+    win_check_available: bool = False

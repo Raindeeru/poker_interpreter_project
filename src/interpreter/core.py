@@ -10,6 +10,14 @@ from interpreter.parser import CardID
 from interpreter.parser import AlphabetValue
 from interpreter.parser import Number
 import poker_game.special_commands as s_commands
+from copy import deepcopy
+
+round_to_move_map ={
+        0: ['start', 'bet', 'all', 'fold'],
+        1: ['start', 'all', 'raise', 'fold'],
+        2: ['start', 'all', 'raise', 'fold'],
+        3: ['start', 'play'],
+        }
 
 def get_card_from_string(cardstr: str):
     value = cardstr[:-1]
@@ -20,7 +28,6 @@ def get_card_from_string(cardstr: str):
 
     card = Card(suit=suit, value=value, revealed = False)
     return card
-
 
 
 def interpret_command(input: str, state: State):
@@ -44,6 +51,16 @@ def interpret_command(input: str, state: State):
         return False, valid[1]
 
     command = ast.command
+
+    valid_moves = deepcopy(round_to_move_map[state.round_state])
+
+    if not state.started:
+        valid_moves = ['start']
+
+    valid_moves.append('quit')
+
+    if command not in valid_moves:
+        return False, f"You can't {command} right now"
 
     match command:
         case "start":
@@ -73,7 +90,9 @@ def interpret_command(input: str, state: State):
         case "inspect":
             # Inspect return false because it should be ignored by the enemy 
             # and game
-            return False, "You inspected a card"
+            card = get_card_from_string(ast.target.value)
+            state, success, out = commands.Inspect(state, card)
+            return False, out 
         case "play":
             cards_str = ast.target
             cards = [get_card_from_string(c.value) for c in cards_str]

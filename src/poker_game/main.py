@@ -40,6 +40,11 @@ def run(stdscr):
                 
                 if check_update[1]:
                     game_state = check_update[0]
+
+        if game_state.win_check_available:
+            pattern_out, damage_out = g.check_win(game_state)
+            add_terminal_output(pattern_out)
+            add_terminal_output(damage_out)
             
 
         screen = layout.update_screen(stdscr, screen, game_state)

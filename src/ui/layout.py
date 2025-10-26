@@ -58,6 +58,7 @@ def update_screen(stdscr, screen: Screen, state: State):
     show_terminal_input(screen.terminal)
 
     screen.terminal.noutrefresh()
+    screen.sidebar.noutrefresh()
 
     return screen
 

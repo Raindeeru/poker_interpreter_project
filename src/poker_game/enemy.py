@@ -39,7 +39,7 @@ class Enemy:
             cards = list(play) + community
             current = damage_calculation(cards)
             if best is None or current > highest_damage:
-                best = play
+                best = list(play)
                 highest_damage = current
         return best
 
@@ -59,7 +59,6 @@ class Enemy:
 
         best_play = self.calculate_best_hand(unique, state.community_cards)
 
-        return False, str(best_play)
         state, success, out = Play(state, best_play[0], best_play[1])
         return success, out
 
@@ -67,7 +66,6 @@ class Enemy:
 
     def decide_next_move(self, state: State):
         if state.round_state == 3:
-            # Dito Play lang pwede gawin
             success, out = self.decide_play(state)
             add_terminal_output(out)
             return
@@ -139,12 +137,14 @@ def Play(state: State, card1:Card, card2:Card):
 
     for i, c in enumerate(state.enemy_hand):
         if card1.value == c.value and c.suit == card1.suit:
+            c.revealed = True
             break
         if i == len(state.enemy_hand) - 1:
             return (state, False, "Card is not in Hand!")
 
     for i, c in enumerate(state.enemy_hand):
         if card2.value == c.value and c.suit == card2.suit:
+            c.revealed = True
             break
         if i == len(state.enemy_hand) - 1:
             return (state, False, "Card is not in Hand!")

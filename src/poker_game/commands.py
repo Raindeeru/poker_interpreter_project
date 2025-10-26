@@ -174,6 +174,15 @@ def Buy(state: State, shop_index: int):
     # state.player_deck.append(state.shop_items[shop_index].card)
     pass
 
+def Inspect(state: State, card:Card):
+    for i, c in enumerate(state.player_hand):
+        if card.value == c.value and c.suit == card.suit:
+            state.inspect_target = c
+            return (state, False, f"Inspecting {get_card_string(c)}")
+        if i == len(state.player_hand) - 1:
+            return (state, False, "Can't Inspect a card you don't have")
+    return (state, False, "Empty Hand")
+
 
 def Quit(state: State):
     state.exited = True

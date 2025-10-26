@@ -1,3 +1,6 @@
+from copy import deepcopy
+
+
 def check_same_suit(play_in_hand):
     if all(card.suit == play_in_hand[2].suit for card in play_in_hand):
         return True
@@ -115,6 +118,7 @@ def Find_Best_Pattern(play_in_hand):
         "a": 14
     }
 
+    play_in_hand = deepcopy(play_in_hand)
     for card in play_in_hand:
         if not isinstance(card.value, int):
             card.value = alpha_convert[card.value]

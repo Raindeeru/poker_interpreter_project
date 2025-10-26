@@ -1,5 +1,14 @@
 from poker_game.state import State 
 from poker_game.card import Card
+from poker_game.poker_hands import Find_Best_Pattern
+from poker_game.damage_calculations import damage_calculation
+from poker_game.damage_calculations import update_enemy_damage
+from poker_game.damage_calculations import update_player_damage
+
+
+def reset(state: State):
+    pass
+
 
 def reveal_community(state: State):
     for card in state.community_cards:
@@ -53,25 +62,53 @@ def update_round(state: State):
     elif state.round_state == 2 and \
         state.has_bet and \
             (state.player_last_bet == state.enemy_last_bet or
-                (state.player_all_in and state.enemy_all_in)):
+                (state.player_all_in and state.enemy_all_in) or
+                state.folded > 0):
 
         state.pot += state.player_last_bet + state.enemy_last_bet
         state.player_last_bet, state.enemy_last_bet = 0, 0
 
         state.round_state = 3
         return (state, True)
+    elif state.round_state == 3 and \
+            ((state.folded == 1 and not state.enemy_play) or
+                (state.folded == 2 and not state.player_play) or
+                    (not state.player_play and not state.enemy_play)):
+        state = reveal_community(state)
+        return (state, False)
+    elif state.round_state == 3 and \
+            ((state.folded == 1 and state.enemy_play) or
+                (state.folded == 2 and state.player_play) or
+                    (state.player_play and state.enemy_play)):
+        state.win_check_available = True
+        return (state, True)
     else:
         return (state, False)
 
 
-def update_game(state):
-    match state.round_state:
-        case 0:
-            pass
-        case 1:
-            pass
-        case 2:
-            pass
-        case 3:
-            pass
-    pass
+def check_win(state: State):
+    p_hand = state.player_play + state.community_cards
+    e_hand = state.enemy_play + state.community_cards
+
+    p_pattern = 'a ' + Find_Best_Pattern(p_hand)[0] \
+        if state.folded != 1 else 'Folded'
+    e_pattern = 'a ' + Find_Best_Pattern(e_hand)[0] \
+        if state.folded != 2 else 'Folded'
+    
+    if state.folded != 1:
+        update_player_damage(state)
+    elif state.folded != 2:
+        update_enemy_damage(state)
+
+    total_damage = state.player_damage - state.enemy_damage
+    damage_string = ""
+
+    if total_damage >= 0:
+        damage_string = f"You have damaged {state.enemy.name} for {abs(total_damage)}"
+        state.enemy_health -= abs(total_damage)
+    else:
+        damage_string = f"{state.enemy.name} has Damaged You for {abs(total_damage)}"
+        state.player_health -= abs(total_damage)
+
+    state.win_check_available = False
+    return f"You have {p_pattern} and the enemy has {e_pattern}", damage_string

@@ -152,12 +152,12 @@ def damage_calculation(hand):
 
 
 def update_player_damage(state: State):
-    full_hand = copy.deepcopy(state.player_hand + state.community_cards)
+    full_hand = copy.deepcopy(state.player_play + state.community_cards)
     damage = damage_calculation(full_hand)
     state.player_damage = damage
 
 
 def update_enemy_damage(state: State):
-    full_hand = copy.deepcopy(state.enemy_hand + state.community_cards)
+    full_hand = copy.deepcopy(state.enemy_play + state.community_cards)
     damage = damage_calculation(full_hand)
     state.enemy_damage = damage
