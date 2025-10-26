@@ -92,6 +92,7 @@ def Start(state: State):
     if state.started:
         return (state, False, "You're already in the Game")
     state.started = True
+    state.in_game = True
     state = Give_Cards_Initial(state)
 
     return (state, True, "Started a game of Gayagoy Gamblers! Goodluck")

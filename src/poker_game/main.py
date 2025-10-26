@@ -55,6 +55,7 @@ def run(stdscr):
                 game_state.in_game = False
             elif game_state.started and check_final_win[1] == "lost":
                 add_terminal_output(str(check_final_win[2]))
+                game_state.in_game = False
                 game_state.game_lost = True
             else:
                 pass

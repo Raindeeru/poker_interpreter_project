@@ -19,6 +19,8 @@ special_card_border = None
 card_back = None
 
 start_screen = None
+jr = None
+lose_text = None
 
 count = 0
 
@@ -29,6 +31,8 @@ def load_art():
     global special_card_border
     global start_screen
     global card_back
+    global jr
+    global lose_text
     content = (ART/"borders.txt").read_text(encoding="utf-8")
 
     parts = content.split('#')
@@ -38,6 +42,8 @@ def load_art():
 
     base_card_full = (ART/"faces.txt").read_text(encoding="utf-8")
     base_card_art = base_card_full.split('#')
+    jr = (ART/"jr.txt").read_text(encoding="utf-8")
+    lose_text = (ART/"lose.txt").read_text(encoding="utf-8")
 
     suit_map = {
             "d": "♦",
@@ -280,6 +286,15 @@ def draw_game_screen(pad, state: State):
 
     draw_on_screen(pad, 0, 0, f"Round: {state.round_state}")
 
+def draw_shop_screen(pad, state: State):
+    # Shop Item = (Card, Upgrade, Price)
+    draw_on_game_centered(pad, 0, 4, "Welcome To The Shop")
+    draw_on_game_centered(pad, 0, 3, "Buy Upgrades for Your Cards Here")
+
+def draw_lose_screen(pad, state: State):
+    # Shop Item = (Card, Upgrade, Price)
+    draw_on_game_centered(pad, 20, 0, jr)
+    draw_on_game_centered(pad, -20, 0, lose_text)
 
 
 def update_screen_pad(pad, state: State):
@@ -293,7 +308,12 @@ def update_screen_pad(pad, state: State):
         draw_start_screen(pad)
     else:
         # dito na irerender yung in game stuff
-        draw_game_screen(pad, state)
+        if state.in_game:
+            draw_game_screen(pad, state)
+        elif state.in_shop:
+            draw_shop_screen(pad, state)
+        elif state.game_lost:
+            draw_lose_screen(pad, state)
         pass
 
     # Debug Lines
