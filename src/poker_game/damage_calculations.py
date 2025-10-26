@@ -4,7 +4,7 @@ import copy
 
 
 def calculate_Royal_Flush(cards_held):
-    return 600
+    return 1000
 
 
 def calculate_Straight_Flush(cards_held):
@@ -15,7 +15,7 @@ def calculate_Straight_Flush(cards_held):
     for card in cards_held:
         damage += card.value
 
-    damage *= 9
+    damage += 850
     return damage
 
 
@@ -28,7 +28,7 @@ def calculate_Four_of_a_Kind(cards_held):
     for value in count:
         if count[value] == 4:
             damage += value * 4
-            damage *= 8
+            damage += 680
             break
     return damage
 
@@ -37,7 +37,7 @@ def calculate_Full_House(cards_held):
     damage = 0
     for card in cards_held:
         damage += card.value
-    damage *= 7
+    damage += 520
     return damage
 
 
@@ -45,7 +45,7 @@ def calculate_Flush(cards_held):
     damage = 0
     for card in cards_held:
         damage += card.value
-    damage *= 6
+    damage += 400
     return damage
 
 
@@ -60,7 +60,7 @@ def calculate_Straight(cards_held):
     for card in cards_held:
         damage += card.value
 
-    damage *= 5
+    damage += 300
     return damage
 
 
@@ -73,7 +73,7 @@ def calculate_Three_of_a_kind(cards_held):
     for value in count:
         if count[value] == 3:
             damage += value * 3
-            damage = damage * 4
+            damage += 200
             break
     return damage
 
@@ -89,7 +89,7 @@ def calculate_Two_Pair(cards_held):
         if count[value] == 2:
             pairs.append(value)
     damage += (pairs[0] * 2) + (pairs[1] * 2)
-    damage *= 3
+    damage += 120
     return damage
 
 
@@ -102,13 +102,13 @@ def calculate_Pair(cards_held):
     for value in count:
         if count[value] == 2:
             damage += value * 2
-            damage = damage * 2
+            damage += 40
             break
     return damage
 
 
 def calculate_High_Card(cards_held):
-    damage = cards_held[4].value
+    damage = cards_held[4].value + 20
     return damage
 
 
