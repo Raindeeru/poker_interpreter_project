@@ -88,7 +88,8 @@ def draw_card(state: State, number_of_cards: int):
 def update_round(state: State):
     if state.round_state == 0 and \
         state.has_bet and \
-            state.player_last_bet == state.enemy_last_bet:
+            (state.player_last_bet == state.enemy_last_bet
+             and not state.has_checked):
 
         state.pot = state.player_last_bet + state.enemy_last_bet
         state.player_last_bet, state.enemy_last_bet = 0, 0
@@ -104,7 +105,8 @@ def update_round(state: State):
         return (state, True)
     elif state.round_state == 1 and \
         state.has_bet and \
-            state.player_last_bet == state.enemy_last_bet:
+            (state.player_last_bet == state.enemy_last_bet
+             and not state.has_checked):
 
         state.pot += state.player_last_bet + state.enemy_last_bet
         state.player_last_bet, state.enemy_last_bet = 0, 0
@@ -119,7 +121,8 @@ def update_round(state: State):
 
     elif state.round_state == 2 and \
         state.has_bet and \
-            (state.player_last_bet == state.enemy_last_bet or
+            ((state.player_last_bet == state.enemy_last_bet
+             and not state.has_checked) or
                 (state.player_all_in and state.enemy_all_in) or
                 state.folded > 0):
 

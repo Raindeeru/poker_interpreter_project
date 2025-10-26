@@ -19,7 +19,7 @@ class Enemy:
     base_round_multiplier: int = 10
 
     def do_basic_move(self, aggro: int, state):
-        bet = state.player_last_bet + int(aggro)
+        bet = state.player_last_bet + int(aggro)//10
         if aggro < self.fold_threshold:
             state, success, out = Fold(state)
             return success, out
@@ -117,6 +117,8 @@ def Bet(state: State, bet: int):
     if bet <= state.enemy_chips:
         state.enemy_chips -= bet
         state.enemy_last_bet = bet
+        if bet == 0:
+            state.has_checked = True
         return (state, True, f"{state.enemy.name} bet {bet}")
     else:
         return (state, False, "Insufficient Chips!")
@@ -132,6 +134,7 @@ def Call(state: State):
     if state.enemy_chips >= state.player_last_bet:
         state.enemy_last_bet = state.player_last_bet
         state.enemy_chips -= state.enemy_last_bet
+        state.has_checked = False
         return state, True, f"{state.enemy.name} called"
     else:
         return state, False, "Insufficient Chips!"

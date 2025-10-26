@@ -65,3 +65,5 @@ class State:
     
     win_count:int = 0
     in_shop:bool = False
+
+    has_checked: bool = False

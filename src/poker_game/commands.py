@@ -102,6 +102,8 @@ def Bet(state: State, bet: int):
         state.player_chips -= bet
         state.player_last_bet = bet
         state.has_bet = True
+        if bet == 0:
+            state.has_checked = True
         return (state, True, f"You bet {bet}")
     else:
         return (state, False, "Insufficient Chips!")
