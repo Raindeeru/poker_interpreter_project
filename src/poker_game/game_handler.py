@@ -91,7 +91,7 @@ def update_round(state: State):
             (state.player_last_bet == state.enemy_last_bet
              and not state.has_checked):
 
-        state.pot = state.player_last_bet + state.enemy_last_bet
+        state.pot += state.player_last_bet + state.enemy_last_bet
         state.player_last_bet, state.enemy_last_bet = 0, 0
 
         state = reveal_community(state)

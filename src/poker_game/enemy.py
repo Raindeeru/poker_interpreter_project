@@ -131,9 +131,9 @@ def Fold(state: State):
 
 
 def Call(state: State):
-    if state.enemy_chips >= state.player_last_bet:
+    if state.enemy_chips + state.enemy_last_bet >= state.player_last_bet:
+        state.enemy_chips -= state.player_last_bet - state.enemy_last_bet
         state.enemy_last_bet = state.player_last_bet
-        state.enemy_chips -= state.enemy_last_bet
         state.has_checked = False
         return state, True, f"{state.enemy.name} called"
     else:
