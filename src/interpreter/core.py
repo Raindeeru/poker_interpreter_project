@@ -58,13 +58,12 @@ def interpret_command(input: str, state: State):
         valid_moves = ['start']
 
     valid_moves.append('quit')
-    
+
+    if state.has_bet and "bet" in valid_moves:
+        valid_moves.remove('bet')
 
     if command not in valid_moves:
         return False, f"You can't {command} right now"
-    
-    if state.has_bet and "bet" in valid_moves:
-        valid_moves.remove('bet')
 
     match command:
         case "start":
