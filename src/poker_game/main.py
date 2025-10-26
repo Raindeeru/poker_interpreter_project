@@ -45,7 +45,23 @@ def run(stdscr):
             pattern_out, damage_out = g.check_win(game_state)
             add_terminal_output(pattern_out)
             add_terminal_output(damage_out)
+        
+        
+        if game_state.game_finish_check_available:
+            check_final_win = g.check_if_game_finished(game_state)
+            if game_state.started and check_final_win[1] == "won":
+                print("0")
+                add_terminal_output(str(check_final_win[2]))
+                game_state.win_count += 1
+            elif game_state.started and check_final_win[1] == "lost":
+                print("1")
+                add_terminal_output(str(check_final_win[2]))
+                game_state.game_lost = True
+            else:
+                print("2")
+                pass
             
+            game_state.game_finish_check_available = False
 
         screen = layout.update_screen(stdscr, screen, game_state)
         curses.doupdate()

@@ -34,6 +34,7 @@ def reset(state: State):
 
     for _ in range(3):
         state.community_cards.append(state.community_deck.pop(0))
+        
 
     while len(state.player_hand) != 3:
         if state.player_deck[0] not in state.community_cards:
@@ -94,6 +95,8 @@ def update_round(state: State):
         state = draw_card(state, 4)
 
         state.round_state = 1
+        
+        state.has_bet = False
 
         return (state, True)
     elif state.round_state == 1 and \
@@ -104,6 +107,10 @@ def update_round(state: State):
         state.player_last_bet, state.enemy_last_bet = 0, 0
 
         state.round_state = 2
+        
+        state = draw_card(state, 5)
+        
+        state.has_bet = False
 
         return (state, True)
 
@@ -117,6 +124,7 @@ def update_round(state: State):
         state.player_last_bet, state.enemy_last_bet = 0, 0
 
         state.round_state = 3
+        
         return (state, True)
     elif state.round_state == 3 and \
             ((state.folded == 1 and not state.enemy_play) or
@@ -124,6 +132,7 @@ def update_round(state: State):
                     (not state.player_play and not state.enemy_play)):
         state = reveal_community(state)
         return (state, False)
+    
     elif state.round_state == 3 and \
             ((state.folded == 1 and state.enemy_play) or
                 (state.folded == 2 and state.player_play) or
@@ -154,10 +163,28 @@ def check_win(state: State):
     if total_damage >= 0:
         damage_string = f"You have damaged {state.enemy.name} for {abs(total_damage)}"
         state.enemy_health -= abs(total_damage)
+        state.player_chips += state.pot
     else:
         damage_string = f"{state.enemy.name} has Damaged You for {abs(total_damage)}"
         state.player_health -= abs(total_damage)
+        state.enemy_chips += state.pot
 
+    state.game_finish_check_available = True
     state.win_check_available = False
     reset(state)
     return f"You have {p_pattern} and the enemy has {e_pattern}", damage_string
+
+
+def check_if_game_finished(state: State):
+    if state.player_chips <= 0 or \
+        state.player_health <= 0 :
+        print("talo na dito")
+        return (state,"lost","You Lost the Game!")
+    
+    if state.enemy_chips <=  0 or \
+        state.enemy_health <= 0:
+        print("panalo na dito")
+        return (state,"won","You Won this Match")
+    
+    return (state,"ingame","Still in Game")
+    

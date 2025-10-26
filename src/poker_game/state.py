@@ -58,3 +58,10 @@ class State:
 
     inspect_target: Card = None
     win_check_available: bool = False
+    
+    #Checks if the damage round has passed, use for checking if a game is won/lost after
+    game_finish_check_available:bool = False
+    game_lost:bool = False
+    
+    win_count:int = 0
+    in_shop:bool = False
