@@ -1,7 +1,15 @@
 from poker_game.state import State
 from pathlib import Path
+import ui.layout as layout
 ART = Path(__file__).parent / "art"
 
+
+suit_map = {
+        "d": "♦",
+        "h": "♥",
+        "s": "♠",
+        "c": "♣",
+        }
 
 def draw_art(sidebar, x, y, art):
     for i, line in enumerate(art.splitlines()):
@@ -18,16 +26,35 @@ def draw_inspect(sidebar, state: State):
 
 
 def draw_enemy(sidebar, state: State):
-    enemy_text = f'''
-    Enemy: {state.win_count + 1}: {state.enemy.name}
-    '''
+    enemy_text = f'''Enemy: {state.win_count + 1}: {state.enemy.name}
+---------------------------------
+Health = {state.enemy_health} / 1000 HP
+Chips = {state.enemy_chips}
+Last Bet = {state.enemy_last_bet}
+Aggressiveness = {'Low' if state.enemy.base_aggressiveness < 120
+        else 'High' if state.enemy.base_aggressiveness > 150
+        else 'Normal'}
+'''
     draw_art(sidebar, 1, 1, enemy_text)
-    pass
 
+def get_hand_str(hand):
+    hand_str = ""
+    for card in hand:
+        hand_str += f"{str(card.value).upper()}{suit_map[card.suit]} "
+    return hand_str
 
 def draw_last_win(sidebar, state: State):
-    draw_art(sidebar, 1, 1, "last win")
-    pass
+    line = "-----Last-Win--------------------"
+    draw_art(sidebar, 1, layout.SIDEBAR_H//2, line)
+    if state.last_winner == 0:
+        return
+    draw_art(sidebar, 1, layout.SIDEBAR_H//2 + 1, f"{'You' if state.last_winner == 1 else state.enemy.name}")
+    draw_art(sidebar, 1, layout.SIDEBAR_H//2 + 2 ,f"{get_hand_str(state.last_winning_hand)}")
+    draw_art(sidebar, 1, layout.SIDEBAR_H//2 + 3, "------")
+    draw_art(sidebar, 1, layout.SIDEBAR_H//2 + 4 ,f"Player Hand: {get_hand_str(state.last_player_hand)}")
+    draw_art(sidebar, 1, layout.SIDEBAR_H//2 + 5 ,f"{state.last_player_pattern}")
+    draw_art(sidebar, 1, layout.SIDEBAR_H//2 + 6 ,f"Enemy Hand: {get_hand_str(state.last_enemy_hand)}")
+    draw_art(sidebar, 1, layout.SIDEBAR_H//2 + 7 ,f"{state.last_enemy_pattern}")
 
 
 def update_sidebar(sidebar, state: State):
@@ -39,7 +66,8 @@ def update_sidebar(sidebar, state: State):
             draw_inspect(sidebar, state)
         case 'enemy':
             draw_enemy(sidebar, state)
-        case 'last_win':
-            draw_last_win(sidebar, state)
+
+    if to_view != 'hello':
+        draw_last_win(sidebar, state)
     sidebar.noutrefresh()
     return sidebar
