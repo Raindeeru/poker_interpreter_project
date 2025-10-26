@@ -13,9 +13,9 @@ import poker_game.special_commands as s_commands
 from copy import deepcopy
 
 round_to_move_map ={
-        0: ['start', 'bet', 'all', 'fold'],
-        1: ['start', 'bet', 'all', 'raise', 'fold'],
-        2: ['start', 'bet', 'all', 'raise', 'fold'],
+        0: ['start', 'call','bet', 'all', 'fold'],
+        1: ['start', 'call','bet', 'all', 'raise', 'fold'],
+        2: ['start', 'call','bet', 'all', 'raise', 'fold'],
         3: ['start', 'play'],
         }
 

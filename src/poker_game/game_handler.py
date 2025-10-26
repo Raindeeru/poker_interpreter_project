@@ -155,14 +155,17 @@ def check_win(state: State):
     
     if state.folded != 1:
         update_player_damage(state)
-    elif state.folded != 2:
+        
+    if state.folded != 2:
         update_enemy_damage(state)
 
     total_damage = state.player_damage - state.enemy_damage
     damage_string = ""
+    indiv_damage_string = ""
 
     if total_damage >= 0:
         damage_string = f"You have damaged {state.enemy.name} for {abs(total_damage)}"
+        indiv_damage_string = f"Enemy: {state.enemy_damage} Player{state.player_damage}"
         state.enemy_health -= abs(total_damage)
         state.player_chips += state.pot
     else:
@@ -180,12 +183,10 @@ def check_win(state: State):
 def check_if_game_finished(state: State):
     if state.player_chips <= 0 or \
         state.player_health <= 0 :
-        print("talo na dito")
         return (state,"lost","You Lost the Game!")
     
     if state.enemy_chips <=  0 or \
         state.enemy_health <= 0:
-        print("panalo na dito")
         return (state,"won","You Won this Match")
     
     return (state,"ingame","Still in Game")
