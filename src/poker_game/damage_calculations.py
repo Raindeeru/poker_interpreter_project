@@ -81,8 +81,6 @@ def calculate_Three_of_a_kind(cards_held):
             break
     player_kicker = max(i for i in count if i != trio_val)
     player_kicker += damage
-    print(player_kicker, "kicker")
-    print(damage, "damage")
 
     return damage, player_kicker
 
@@ -104,8 +102,6 @@ def calculate_Two_Pair(cards_held):
     player_kicker = max(i for i in count if i not in pairs)
     player_kicker += damage
     
-    print(player_kicker, "kicker")
-    print(damage, "damage")
     return damage, player_kicker
 
 def calculate_Pair(cards_held):
@@ -125,8 +121,6 @@ def calculate_Pair(cards_held):
 
     player_kicker = max(i for i in count if i != pair_val)
     player_kicker += damage
-    print(player_kicker, "kicker")
-    print(damage, "damage")
     return damage, player_kicker
 
 
@@ -178,11 +172,13 @@ def damage_calculation(hand):
 
 def update_player_damage(state: State):
     full_hand = copy.deepcopy(state.player_play + state.community_cards)
-    damage = damage_calculation(full_hand)
+    damage, kicker = damage_calculation(full_hand)
     state.player_damage = damage
+    return kicker
 
 
 def update_enemy_damage(state: State):
     full_hand = copy.deepcopy(state.enemy_play + state.community_cards)
-    damage = damage_calculation(full_hand)
+    damage, kicker = damage_calculation(full_hand)
     state.enemy_damage = damage
+    return kicker

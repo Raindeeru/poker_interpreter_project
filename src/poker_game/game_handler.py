@@ -148,28 +148,39 @@ def check_win(state: State):
     p_hand = state.player_play + state.community_cards
     e_hand = state.enemy_play + state.community_cards
 
+    p_kicker = 0
+    e_kicker = 0
+
     p_pattern = 'a ' + Find_Best_Pattern(p_hand)[0] \
         if state.folded != 1 else 'Folded'
     e_pattern = 'a ' + Find_Best_Pattern(e_hand)[0] \
         if state.folded != 2 else 'Folded'
     
     if state.folded != 1:
-        update_player_damage(state)
+        p_kicker = update_player_damage(state)
         
     if state.folded != 2:
-        update_enemy_damage(state)
+        e_kicker = update_enemy_damage(state)
 
     total_damage = state.player_damage - state.enemy_damage
+    if total_damage == 0:
+        total_damage = p_kicker - e_kicker
     damage_string = ""
     indiv_damage_string = ""
 
-    if total_damage >= 0:
+    if total_damage == 0:
+        state.player_chips += state.pot//2
+        state.enemy_chips += state.pot//2
+        damage_string = f"You Have Tied! No Damage Dealt"
+        indiv_damage_string = f"Enemy: {state.enemy_damage} Player: {state.player_damage}"
+
+    if total_damage > 0:
         damage_string = f"You have damaged {state.enemy.name} for {abs(total_damage)}"
-        indiv_damage_string = f"Enemy: {state.enemy_damage} Player{state.player_damage}"
+        indiv_damage_string = f"Enemy: {state.enemy_damage} Player: {state.player_damage}"
         state.enemy_health -= abs(total_damage)
         state.player_chips += state.pot
     else:
-        indiv_damage_string = f"Enemy: {state.enemy_damage} Player{state.player_damage}"
+        indiv_damage_string = f"Enemy: {state.enemy_damage} Player: {state.player_damage}"
         damage_string = f"{state.enemy.name} has Damaged You for {abs(total_damage)}"
         state.player_health -= abs(total_damage)
         state.enemy_chips += state.pot

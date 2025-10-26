@@ -14,12 +14,12 @@ class Enemy:
     call_threshold: int = 170
     special_probability: float = 0
 
-    base_hand_multiplier: int = 10
+    base_hand_multiplier: int = 5
     base_pot_multiplier: int = 0.1
     base_round_multiplier: int = 10
 
     def do_basic_move(self, aggro: int, state):
-        bet = state.player_last_bet + aggro
+        bet = state.player_last_bet + int(aggro)
         if aggro < self.fold_threshold:
             state, success, out = Fold(state)
             return success, out
@@ -27,6 +27,8 @@ class Enemy:
             state, success, out = All(state)
             return success, out
         elif aggro > self.call_threshold:
+            if state.player_last_bet >= state.enemy_chips:
+                state, success, out = All(state)
             state, success, out = Raise(state, bet)
             return success, out
         else:
@@ -55,7 +57,7 @@ class Enemy:
         highest_damage = 0
         for play in itertools.combinations(hand, 2):
             cards = list(play) + community
-            current = damage_calculation(cards)
+            current, kicker = damage_calculation(cards)
             if best is None or current > highest_damage:
                 best = list(play)
                 highest_damage = current
@@ -94,12 +96,12 @@ class Enemy:
 
         if len(visible_cards) >= 5:
             best = self.calculate_best_hand(state.enemy_hand, state.community_cards)
-            current_damage += damage_calculation(best +  state.community_cards)
+            current_damage += damage_calculation(best +  state.community_cards)[0]
 
 
         total_aggro = self.base_aggressiveness + current_damage \
-            - state.round_state * self.base_round_multiplier
-            
+            - state.round_state * self.base_round_multiplier \
+            - state.pot * self.base_pot_multiplier
 
         if any(card.special for card in state.enemy_hand):
             special_sample = random.random()
