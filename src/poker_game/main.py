@@ -42,11 +42,10 @@ def run(stdscr):
                     game_state = check_update[0]
 
         if game_state.win_check_available:
-            pattern_out, damage_out = g.check_win(game_state)
+            pattern_out, damage_out, indiv_out = g.check_win(game_state)
             add_terminal_output(pattern_out)
             add_terminal_output(damage_out)
-        
-        
+            add_terminal_output(indiv_out)
         if game_state.game_finish_check_available:
             check_final_win = g.check_if_game_finished(game_state)
             if game_state.started and check_final_win[1] == "won":

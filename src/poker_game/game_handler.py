@@ -166,6 +166,7 @@ def check_win(state: State):
         state.enemy_health -= abs(total_damage)
         state.player_chips += state.pot
     else:
+        indiv_damage_string = f"Enemy: {state.enemy_damage} Player{state.player_damage}"
         damage_string = f"{state.enemy.name} has Damaged You for {abs(total_damage)}"
         state.player_health -= abs(total_damage)
         state.enemy_chips += state.pot
@@ -173,7 +174,7 @@ def check_win(state: State):
     state.game_finish_check_available = True
     state.win_check_available = False
     reset(state)
-    return f"You have {p_pattern} and the enemy has {e_pattern}", damage_string
+    return f"You have {p_pattern} and the enemy has {e_pattern}", damage_string, indiv_damage_string
 
 
 def check_if_game_finished(state: State):
