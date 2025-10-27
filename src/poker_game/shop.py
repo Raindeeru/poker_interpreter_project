@@ -10,7 +10,10 @@ def populate_shop(state: State):
     deck = copy.deepcopy(state.player_deck)
     random.shuffle(deck)
 
-    effects = [("reveal", 10, 400), ("exchange", 5, 500), ("change", 3, 600)]
+    if state.cheats_enabled:
+        effects = [("change", 52, 0), ("change", 52, 0), ("change", 52, 0)]
+    else:
+        effects = [("reveal", 10, 400), ("exchange", 5, 500), ("change", 3, 600)]
 
     for e in effects:
         new_item = Item(effect=e[0], price=e[2])

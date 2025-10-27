@@ -355,6 +355,11 @@ def Change_Value(state: State, card_special: Card, card_target: Card, value=None
 def LoadJeremy(state):
     state.enemy = Enemy(name="Jeremy")
     state.enemy_max_health = 1000
+    if state.cheats_enabled:
+        state.enemy_chips = 10
+        state.enemy_max_health = 10
+        state.enemy_max_health = 10
+
 
 
 def LoadBogart(state: State):
@@ -362,6 +367,10 @@ def LoadBogart(state: State):
     state.enemy_chips = 1000
     state.enemy_health = 1000
     state.enemy_max_health = 1000
+    if state.cheats_enabled:
+        state.enemy_chips = 10
+        state.enemy_max_health = 10
+        state.enemy_max_health = 10
 
 
 def LoadRicardoTolentinoGayagoy(state):
@@ -369,10 +378,18 @@ def LoadRicardoTolentinoGayagoy(state):
     state.enemy_chips = 3000
     state.enemy_health = 2000
     state.enemy_max_health = 2000
+
+    if state.cheats_enabled:
+        state.enemy_chips = 10
+        state.enemy_max_health = 10
+        state.enemy_max_health = 10
+
     initial_cards = [
             Card(value="q", suit="h", revealed=False),
             Card(value="q", suit="s", revealed=False)
             ]
+    if state.cheats_enabled:
+        initial_cards.clear()
 
     state.enemy_deck += state.enemy_hand
     state.enemy_hand.clear()
