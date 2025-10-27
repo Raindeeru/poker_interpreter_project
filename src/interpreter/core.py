@@ -145,13 +145,13 @@ def interpret_command(input: str, state: State):
 
                     state, is_success, out = s_commands.Exchange(
                             state, index, card, special_card)
-                    return is_success, out
+                    return False, out
                 case "reveal":
                     special_card.special = "reveal"
                     index = action_target.num
                     state, is_success, out = s_commands.Reveal(
                             state, index, special_card)
-                    return is_success, out
+                    return False, out
                 case "change":
                     special_card.special = "change"
                     card = action_target.card_id.value
@@ -171,11 +171,11 @@ def interpret_command(input: str, state: State):
                     if action_target.change_key == "suit":
                         state, is_success, out = s_commands.Change_Suit(
                                 state, special_card, card, change_value)
-                        return is_success, out
+                        return False, out
                     else:
                         state, is_success, out = s_commands.Change_Value(
                                 state, special_card, card, change_value)
-                        return is_success, out
+                        return False, out
 
             return False, "You used a special command"
             pass
