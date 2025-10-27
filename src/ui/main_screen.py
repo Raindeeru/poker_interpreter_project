@@ -321,6 +321,8 @@ def draw_lose_screen(pad, state: State):
     # Shop Item = (Card, Upgrade, Price)
     draw_on_game_centered(pad, 20, 0, jr)
     draw_on_game_centered(pad, -20, 0, lose_text)
+    if count % 5000 >= 2500:
+        draw_on_game_centered(pad, -20, -4, "Type \"START\" to restart")
 
 def draw_win_screen(pad, state: State):
     global credits_pos

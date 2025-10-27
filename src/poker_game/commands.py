@@ -95,8 +95,14 @@ def Give_Cards_Initial(state: State):
 
 
 def Start(state: State):
-    if state.started:
+    if state.started and not state.game_lost:
         return (state, False, "You're already in the Game")
+    if state.game_lost:
+        state.win_count = 0
+        state.game_lost = False
+        state.in_game = True
+        return (state, True, "You've Restarted your Game")
+    LoadJeremy(state)
     Give_Cards_Initial(state)
     state.view_prio = 'enemy'
     state.started = True

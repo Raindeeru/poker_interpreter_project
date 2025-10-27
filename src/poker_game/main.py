@@ -91,7 +91,6 @@ def init(stdscr):
 
     stdscr.nodelay(True)
 
-    LoadJeremy(game_state)
     run(stdscr)
 
 
