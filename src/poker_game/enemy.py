@@ -164,7 +164,9 @@ def All(state: State):
         state.player_chips += state.player_last_bet - state.enemy_last_bet
         state.player_last_bet = state.enemy_last_bet
 
-    elif state.enemy_chips + state.enemy_last_bet > state.player_last_bet:
+    elif state.enemy_chips + state.enemy_last_bet > state.player_last_bet or \
+        (state.player_chips == 0 and state.player_last_bet > 0):
+
         state.enemy_chips -= state.player_last_bet - state.enemy_last_bet
         state.enemy_last_bet = state.player_last_bet
     else:
