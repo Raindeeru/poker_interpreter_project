@@ -141,12 +141,13 @@ def Call(state: State):
 
 def All(state: State):
     if state.enemy_last_bet == 0 or \
-            state.player_chips + state.player_last_bet >= state.enemy_last_bet:
+            state.player_chips + state.player_last_bet == state.enemy_last_bet + state.enemy_chips:
         state.player_last_bet += state.player_chips
         state.player_chips = 0
     else:
         state.player_last_bet += state.player_chips
         state.enemy_chips += state.enemy_last_bet - state.player_last_bet
+        state.enemy_last_bet = state.player_last_bet
         state.player_chips = 0
     state.player_all_in = True
     state.round_state = 2
