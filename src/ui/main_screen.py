@@ -300,7 +300,7 @@ def draw_card_stack(pad, x, y, cards: List):
     for i, card in enumerate(cards):  # type: Card
         if i > 10:
             break
-        get_and_draw_card(pad, card, x-offset + len(cards)//2, y)
+        get_and_draw_card(pad, card, x-offset + (len(cards)//2 if len(cards) < 10 else 5), y)
         offset -= 1
 
 def draw_shop_screen(pad, state: State):
