@@ -297,7 +297,9 @@ def draw_game_screen(pad, state: State):
 
 def draw_card_stack(pad, x, y, cards: List):
     offset = len(cards)
-    for card in cards:  # type: Card
+    for i, card in enumerate(cards):  # type: Card
+        if i > 10:
+            break
         get_and_draw_card(pad, card, x-offset + len(cards)//2, y)
         offset -= 1
 

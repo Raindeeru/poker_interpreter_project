@@ -11,7 +11,7 @@ def populate_shop(state: State):
     random.shuffle(deck)
 
     if state.cheats_enabled:
-        effects = [("change", 52, 0), ("change", 52, 0), ("change", 52, 0)]
+        effects = [("change", 50, 0), ("change", 50, 0), ("change", 50, 0)]
     else:
         effects = [("reveal", 10, 400), ("exchange", 5, 500), ("change", 3, 600)]
 
