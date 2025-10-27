@@ -21,6 +21,8 @@ class State:
     player_health: int = 0
     enemy_health: int = 0
 
+    enemy_max_health: int = 0  # for ui
+
     # Betting
     enemy_last_bet: int = 0
     player_last_bet: int = 0

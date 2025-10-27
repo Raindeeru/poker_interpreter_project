@@ -354,18 +354,21 @@ def Change_Value(state: State, card_special: Card, card_target: Card, value=None
 # Enemies
 def LoadJeremy(state):
     state.enemy = Enemy(name="Jeremy")
+    state.enemy_max_health = 1000
 
 
 def LoadBogart(state: State):
     state.enemy = Enemy(name="Bogart", base_aggressiveness=170)
     state.enemy_chips = 1000
     state.enemy_health = 1000
+    state.enemy_max_health = 1000
 
 
 def LoadRicardoTolentinoGayagoy(state):
     state.enemy = Enemy(name="Ricardo Gayagoy", base_aggressiveness=200)
     state.enemy_chips = 3000
     state.enemy_health = 2000
+    state.enemy_max_health = 2000
     initial_cards = [
             Card(value="q", suit="h", revealed=False),
             Card(value="q", suit="s", revealed=False)

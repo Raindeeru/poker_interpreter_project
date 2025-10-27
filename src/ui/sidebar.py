@@ -28,7 +28,7 @@ def draw_inspect(sidebar, state: State):
 def draw_enemy(sidebar, state: State):
     enemy_text = f'''Enemy {state.win_count + 1}: {state.enemy.name}
 ---------------------------------
-Health = {state.enemy_health} / 1000 HP
+Health = {state.enemy_health} / {state.enemy_max_health} HP
 Chips = {state.enemy_chips}
 Last Bet = {state.enemy_last_bet}
 Aggressiveness = {'Low' if state.enemy.base_aggressiveness < 120
