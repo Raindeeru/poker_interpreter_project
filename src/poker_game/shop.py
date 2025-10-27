@@ -6,6 +6,7 @@ import random
 
 
 def populate_shop(state: State):
+    state.shop_items.clear()
     deck = copy.deepcopy(state.player_deck)
     random.shuffle(deck)
 
