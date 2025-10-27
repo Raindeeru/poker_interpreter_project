@@ -11,3 +11,5 @@ class Card:
     revealed_to_enemy: bool = False 
     def __eq__(self, other):
             return isinstance(other, Card) and self.value == other.value and self.suit == other.suit
+    def __hash__(self):
+        return hash((self.value, self.suit))
