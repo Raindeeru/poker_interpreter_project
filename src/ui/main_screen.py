@@ -8,6 +8,7 @@ from poker_game.item import Item
 import math
 import random
 import copy
+from typing import List
 ART = Path(__file__).parent / "art"
 
 OUT_OF_SCREEN_LENGTH = 40
@@ -294,18 +295,27 @@ def draw_game_screen(pad, state: State):
 
     draw_on_screen(pad, 0, 0, f"Round: {state.round_state}")
 
+def draw_card_stack(pad, x, y, cards: List):
+    offset = len(cards)
+    for card in cards:  # type: Card
+        get_and_draw_card(pad, card, x-offset + len(cards)//2, y)
+        offset -= 1
+
 def draw_shop_screen(pad, state: State):
     # Shop Item = (Card, Upgrade, Price)
-    draw_on_game_centered(pad, 0, 7, "Welcome To The Shop")
-    draw_on_game_centered(pad, 0, 6, "Buy Upgrades for Your Cards Here")
     item_start_x = -20
     for i, item in enumerate(state.shop_items): # type: Item
-        item.card.special = item.effect
+        for c in item.cards:
+            c.special = item.effect
         draw_on_game_centered(pad, item_start_x, 4, f"Item {i}")
-        get_and_draw_card(pad, item.card, item_start_x, 0)
-        draw_on_game_centered(pad, item_start_x, -5, f"Effect: {item.effect}")
-        draw_on_game_centered(pad, item_start_x, -6, f"Price: ¢{item.price}")
+        draw_card_stack(pad, item_start_x, 0, item.cards)
+        draw_on_game_centered(pad, item_start_x, -5, f"x{len(item.cards)}")
+        draw_on_game_centered(pad, item_start_x, -6, f"Effect: {item.effect}")
+        draw_on_game_centered(pad, item_start_x, -8, f"Price: ¢{item.price}")
         item_start_x += 20
+
+    draw_on_game_centered(pad, 0, 7, "Welcome To The Shop")
+    draw_on_game_centered(pad, 0, 6, "Buy Upgrades for Your Cards Here")
 
 def draw_lose_screen(pad, state: State):
     # Shop Item = (Card, Upgrade, Price)

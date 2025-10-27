@@ -31,7 +31,7 @@ class Enemy:
                 state, success, out = All(state)
                 return success, out
             if state.lead == 1 and not state.has_bet:
-                state, success, out = Bet(state, int(aggro)/5)
+                state, success, out = Bet(state, int(aggro)//5)
                 return success, out
             state, success, out = Raise(state, bet)
             return success, out

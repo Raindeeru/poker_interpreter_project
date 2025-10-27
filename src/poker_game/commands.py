@@ -2,6 +2,7 @@ from poker_game.state import State
 from poker_game.card import Card
 from poker_game.shop import populate_shop
 from poker_game.game_handler import reset
+from poker_game.enemy import LoadJeremy
 from poker_game.enemy import LoadBogart
 from poker_game.enemy import LoadRicardoTolentinoGayagoy
 
@@ -197,20 +198,22 @@ def Play(state: State, card1:Card, card2:Card):
 def Buy(state: State, item_index: int):
     if item_index >= 3:
         return (state, False, f"Item {item_index} doesn't exist")
+    item = state.shop_items[item_index]
 
-    if state.shop_items[item_index].price <= state.player_chips:
-        state.player_chips -= state.shop_items[item_index].price
-        for card in state.player_deck:
-            if card.value == state.shop_items[item_index].card.value and \
-                card.suit == state.shop_items[item_index].card.suit:
-                    card.special = state.shop_items[item_index].effect
-        
+    if item.price <= state.player_chips:
+        state.player_chips -= item.price
+
+        for item_card in item.cards:
+            for card in state.player_deck:
+                if card.value == item_card.value and card.suit == item_card.suit:
+                    card.special = item.effect
 
         state.in_shop = False
         state.in_game = True
-
         reset(state)
 
+        if state.win_count == 0:
+            LoadJeremy(state)
         if state.win_count == 1:
             LoadBogart(state)
         if state.win_count == 2:

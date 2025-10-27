@@ -50,8 +50,6 @@ def run(stdscr):
             if check_update[1]:
                 game_state = check_update[0]
 
-
-
         if game_state.round_state == 3 and \
             (game_state.folded > 0 or (game_state.player_all_in and game_state.enemy_all_in)):
             g.handle_skip_to_round_3(game_state)
