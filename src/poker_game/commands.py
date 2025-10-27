@@ -152,10 +152,10 @@ def All(state: State):
         state.enemy_last_bet = state.player_last_bet
 
     elif state.player_chips + state.player_last_bet > state.enemy_last_bet:
-        
+        state.player_chips -= state.enemy_last_bet - state.player_last_bet
+        state.player_last_bet = state.enemy_last_bet
     else:
         pass
-        
 
     state.player_all_in = True
     state.round_state = 2
