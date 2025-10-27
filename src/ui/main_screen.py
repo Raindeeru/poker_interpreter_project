@@ -333,7 +333,7 @@ def draw_win_screen(pad, state: State):
     portion = "\n".join(lines[credits_pos: end_line])
     draw_on_screen(pad, 0, 0, portion)
 
-    if credits_pos >= 60:
+    if credits_pos >= 70:
         return
 
     speed = 2000

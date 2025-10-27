@@ -59,6 +59,8 @@ def update_screen(stdscr, screen: Screen, state: State):
     show_terminal_output(screen.terminal)
     show_terminal_input(screen.terminal)
 
+    main_screen_pos = 0
+
     screen.terminal.noutrefresh()
 
     return screen

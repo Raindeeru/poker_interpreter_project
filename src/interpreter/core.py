@@ -11,6 +11,7 @@ from interpreter.parser import AlphabetValue
 from interpreter.parser import Number
 import poker_game.special_commands as s_commands
 from copy import deepcopy
+import curses
 
 round_to_move_map ={
         0: ['start', 'use', 'call','bet', 'all', 'fold'],
@@ -38,16 +39,19 @@ def interpret_command(input: str, state: State):
     ast = parser.parse(input)
 
     if t.error:
+        curses.beep()
         error = t.error
         t.error = None
         return False, str(error)
 
     if not ast:
+        curses.beep()
         return False, "Syntax Error"
 
     valid = s.valid_semantics(ast)
 
     if not valid[0]:
+        curses.beep()
         return False, valid[1]
 
     command = ast.command
@@ -69,6 +73,7 @@ def interpret_command(input: str, state: State):
         valid_moves = ['buy', 'quit']
 
     if command not in valid_moves:
+        curses.beep()
         return False, f"You can't {command} right now"
 
     match command:
