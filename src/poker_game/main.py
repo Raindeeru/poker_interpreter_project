@@ -83,8 +83,6 @@ def init(stdscr):
 
     stdscr.nodelay(True)
 
-    game_state.win_count = 3
-
     LoadJeremy(game_state)
     run(stdscr)
 
