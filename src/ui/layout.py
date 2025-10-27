@@ -30,7 +30,7 @@ class Screen:
 def update_screen(stdscr, screen: Screen, state: State):
     width, height = stdscr.getmaxyx()[1], stdscr.getmaxyx()[0]
 
-    if width < TOTAL_W or height < TOTAL_H + 1:
+    if width < TOTAL_W or height < TOTAL_H + 2:
         stdscr.erase()
         stdscr.attron(curses.color_pair(1))
         stdscr.box()

@@ -47,6 +47,8 @@ class State:
 
     has_bet:bool = False
 
+    lead: int = 0
+
     shop_items = []
     pot: int = 0
     # di ko alam rn pano to, pero probably gagamitin for the ai
@@ -76,3 +78,5 @@ class State:
     last_enemy_pattern = None
 
     view_prio:str = "hello"
+
+    cheats_enabled: bool = False

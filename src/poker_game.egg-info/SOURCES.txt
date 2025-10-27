@@ -4,8 +4,15 @@ src/interpreter/parser.py
 src/interpreter/parsetab.py
 src/interpreter/semantic_analyzer.py
 src/interpreter/tokenizer.py
+src/poker_game/card.py
 src/poker_game/commands.py
+src/poker_game/damage_calculations.py
+src/poker_game/enemy.py
+src/poker_game/game_handler.py
+src/poker_game/item.py
 src/poker_game/main.py
+src/poker_game/poker_hands.py
+src/poker_game/shop.py
 src/poker_game/special_commands.py
 src/poker_game/state.py
 src/poker_game.egg-info/PKG-INFO
@@ -13,6 +20,7 @@ src/poker_game.egg-info/SOURCES.txt
 src/poker_game.egg-info/dependency_links.txt
 src/poker_game.egg-info/entry_points.txt
 src/poker_game.egg-info/top_level.txt
+src/test/test_command.py
 src/test/test_core.py
 src/test/test_parser.py
 src/test/test_semantic.py
@@ -20,4 +28,5 @@ src/test/test_tokenizer_import.py
 src/ui/input.py
 src/ui/layout.py
 src/ui/main_screen.py
+src/ui/sidebar.py
 src/ui/terminal.py

@@ -29,7 +29,7 @@ def run(stdscr):
             pass
         
 
-        if command_success and game_state.has_bet:
+        if command_success and game_state.lead == 0 and game_state.has_bet:
             #check round state if its viable to change
             check_update = g.update_round(game_state)
             if check_update[1]:
@@ -38,10 +38,20 @@ def run(stdscr):
                 # update enemy and game
                 game_state.enemy.decide_next_move(game_state)
                 check_update = g.update_round(game_state)
-                
                 if check_update[1]:
                     game_state = check_update[0]
-            
+
+        if command_success and game_state.lead == 1:
+            check_update = g.update_round(game_state)
+            if check_update[1]:
+                game_state = check_update[0]
+            game_state.enemy.decide_next_move(game_state)
+            check_update = g.update_round(game_state)
+            if check_update[1]:
+                game_state = check_update[0]
+
+
+
         if game_state.round_state == 3 and \
             (game_state.folded > 0 or (game_state.player_all_in and game_state.enemy_all_in)):
             g.handle_skip_to_round_3(game_state)
@@ -90,6 +100,9 @@ def init(stdscr):
 def main():
     wrapper(init)
 
+def main_cheats():
+    game_state.cheats_enabled = True
+    main()
 
 if __name__ == "__main__":
     main()

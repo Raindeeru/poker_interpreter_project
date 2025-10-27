@@ -59,6 +59,9 @@ def reset(state: State):
     state.player_damage = 0
     state.player_last_bet = 0
     state.enemy_last_bet = 0
+    state.lead = 0
+    state.player_play.clear()
+    state.enemy_play.clear()
 
 
 def reveal_community(state: State):
@@ -108,7 +111,6 @@ def handle_skip_to_round_3(state: State):
 def update_round(state: State):
     
     if state.round_state == 0 and \
-        state.has_bet and \
             (state.player_last_bet == state.enemy_last_bet
              and not state.has_checked):
 
@@ -121,10 +123,10 @@ def update_round(state: State):
 
         state.round_state = 1
         state.has_bet = False
+        state.has_checked = False
 
         return (state, True)
     elif state.round_state == 1 and \
-        state.has_bet and \
             (state.player_last_bet == state.enemy_last_bet
              and not state.has_checked):
 
@@ -134,11 +136,11 @@ def update_round(state: State):
         state.round_state = 2
         state = draw_card(state, 5)
         state.has_bet = False
+        state.has_checked = False
 
         return (state, True)
 
     elif state.round_state == 2 and \
-        state.has_bet and \
             ((state.player_last_bet == state.enemy_last_bet
              and not state.has_checked) or
                 (state.player_all_in and state.enemy_all_in) or
@@ -148,6 +150,7 @@ def update_round(state: State):
         state.player_last_bet, state.enemy_last_bet = 0, 0
 
         state.round_state = 3
+        state.has_checked = False
         
         return (state, True)
     elif state.round_state == 3 and \
@@ -155,6 +158,7 @@ def update_round(state: State):
                 (state.folded == 2 and not state.player_play) or
                     (not state.player_play and not state.enemy_play)):
         state = reveal_community(state)
+        state.has_checked = False
         return (state, False)
     
     elif state.round_state == 3 and \
@@ -162,6 +166,7 @@ def update_round(state: State):
                 (state.folded == 2 and state.player_play) or
                     (state.player_play and state.enemy_play)):
         state.win_check_available = True
+        state.has_checked = False
         return (state, True)
     else:
         return (state, False)
@@ -197,17 +202,17 @@ def check_win(state: State):
         damage_string = f"You Have Tied! No Damage Dealt"
         indiv_damage_string = f"Enemy: {state.enemy_damage} Player: {state.player_damage}"
 
-    if total_damage > 0:
-        damage_string = f"You have damaged {state.enemy.name} for {abs(total_damage)}"
+    elif total_damage > 0:
+        damage_string = f"You have damaged {state.enemy.name} for {abs(state.player_damage)}"
         indiv_damage_string = f"Enemy: {state.enemy_damage} Player: {state.player_damage}"
-        state.enemy_health -= abs(total_damage)
+        state.enemy_health -= abs(state.player_damage)
         state.player_chips += state.pot
         state.last_winner = 1
         state.last_winning_hand = p_hand
     else:
         indiv_damage_string = f"Enemy: {state.enemy_damage} Player: {state.player_damage}"
-        damage_string = f"{state.enemy.name} has Damaged You for {abs(total_damage)}"
-        state.player_health -= abs(total_damage)
+        damage_string = f"{state.enemy.name} has Damaged You for {abs(state.enemy_damage)}"
+        state.player_health -= abs(state.enemy_damage)
         state.enemy_chips += state.pot
         state.last_winner = 2
         state.last_winning_hand = e_hand

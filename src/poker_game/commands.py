@@ -72,9 +72,10 @@ def Give_Cards_Initial(state: State):
             state.player_deck.append(state.player_deck.pop(0))
 
     #Special Test
-    state.player_hand[0].special = "exchange"
-    state.player_hand[1].special = "reveal"
-    state.player_hand[2].special = "change"
+    if state.cheats_enabled:
+        state.player_hand[0].special = "exchange"
+        state.player_hand[1].special = "reveal"
+        state.player_hand[2].special = "change"
 
     # Gives the enemy 3 random cards
     while len(state.enemy_hand) != 3:
@@ -131,6 +132,8 @@ def Call(state: State):
     if state.player_chips + state.player_last_bet >= state.enemy_last_bet:
         state.player_chips -= state.enemy_last_bet - state.player_last_bet 
         state.player_last_bet = state.enemy_last_bet
+        state.lead = 1
+        state.has_bet = False
         return (state, True, "Call Successful")
     else:
         return (state, False, "Insufficient Chips!")

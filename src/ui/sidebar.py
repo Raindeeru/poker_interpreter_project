@@ -26,7 +26,7 @@ def draw_inspect(sidebar, state: State):
 
 
 def draw_enemy(sidebar, state: State):
-    enemy_text = f'''Enemy: {state.win_count + 1}: {state.enemy.name}
+    enemy_text = f'''Enemy {state.win_count + 1}: {state.enemy.name}
 ---------------------------------
 Health = {state.enemy_health} / 1000 HP
 Chips = {state.enemy_chips}

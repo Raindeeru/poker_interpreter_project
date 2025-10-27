@@ -21,17 +21,28 @@ class Enemy:
     def do_basic_move(self, aggro: int, state):
         bet = state.player_last_bet + int(aggro)//10
         if aggro < self.fold_threshold:
+            print("cock     ")
             state, success, out = Fold(state)
             return success, out
         elif state.player_all_in:
+            print("balls     ")
             state, success, out = All(state)
             return success, out
         elif aggro > self.call_threshold:
+            print(f"lead: {state.lead} plb: {state.player_last_bet} elb: {state.enemy_last_bet} hb:{state.has_bet}         ")
             if state.player_last_bet >= state.enemy_chips:
                 state, success, out = All(state)
+                return success, out
+            if state.lead == 1 and not state.has_bet:
+                state, success, out = Bet(state, bet - state.player_last_bet)
+                return success, out
             state, success, out = Raise(state, bet)
             return success, out
         else:
+            print("cum    ")
+            if state.lead == 1:
+                state, success, out = Bet(state, 0)
+                return success, out
             state, success, out = Call(state)
             return success, out
 
@@ -117,8 +128,11 @@ def Bet(state: State, bet: int):
     if bet <= state.enemy_chips:
         state.enemy_chips -= bet
         state.enemy_last_bet = bet
+        state.has_bet = True
         if bet == 0:
             state.has_checked = True
+        else:
+            state.has_checked = False
         return (state, True, f"{state.enemy.name} bet {bet}")
     else:
         return (state, False, "Insufficient Chips!")
@@ -135,6 +149,7 @@ def Call(state: State):
         state.enemy_chips -= state.player_last_bet - state.enemy_last_bet
         state.enemy_last_bet = state.player_last_bet
         state.has_checked = False
+        state.lead = 0
         return state, True, f"{state.enemy.name} called"
     else:
         return state, False, "Insufficient Chips!"
@@ -172,20 +187,18 @@ def Play(state: State, card1:Card, card2:Card):
 
     for i, c in enumerate(state.enemy_hand):
         if card1.value == c.value and c.suit == card1.suit:
-            c.revealed = True
             break
         if i == len(state.enemy_hand) - 1:
             return (state, False, "Card is not in Hand!")
 
     for i, c in enumerate(state.enemy_hand):
         if card2.value == c.value and c.suit == card2.suit:
-            c.revealed = True
             break
         if i == len(state.enemy_hand) - 1:
             return (state, False, "Card is not in Hand!")
 
     state.enemy_play = [card1, card2]
-    return state, True, f"{state.enemy.name} played {get_card_string(card1)} and {get_card_string(card2)}"
+    return state, True, f"{state.enemy.name} played his hand"
 
 
 def get_card_string(card: Card):
@@ -343,12 +356,12 @@ def LoadBogart(state: State):
 
 
 def LoadRicardoTolentinoGayagoy(state):
-    state.enemy = Enemy(name="Ricardo Tolentino Gayagoy", base_aggressiveness=200)
-    state.enemy_chips = 1000
-    state.enemy_health = 3000
+    state.enemy = Enemy(name="Ricardo Gayagoy", base_aggressiveness=200)
+    state.enemy_chips = 3000
+    state.enemy_health = 2000
     initial_cards = [
-            Card("q", "h", False),
-            Card("q", "s", False)
+            Card(value="q", suit="h", revealed=False),
+            Card(value="q", suit="s", revealed=False)
             ]
 
     state.enemy_deck += state.enemy_hand
