@@ -104,8 +104,8 @@ def Start(state: State):
         state.game_lost = False
         state.in_game = True
         return (state, True, "You've Restarted your Game")
-    LoadJeremy(state)
     Give_Cards_Initial(state)
+    LoadJeremy(state)
     state.view_prio = 'enemy'
     state.started = True
     state.in_game = True
