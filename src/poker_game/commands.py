@@ -134,6 +134,7 @@ def Call(state: State):
         state.player_last_bet = state.enemy_last_bet
         state.lead = 1
         state.has_bet = False
+        state.has_checked = False
         return (state, True, "Call Successful")
     else:
         return (state, False, "Insufficient Chips!")

@@ -21,25 +21,21 @@ class Enemy:
     def do_basic_move(self, aggro: int, state):
         bet = state.player_last_bet + int(aggro)//10
         if aggro < self.fold_threshold:
-            print("cock     ")
             state, success, out = Fold(state)
             return success, out
         elif state.player_all_in:
-            print("balls     ")
             state, success, out = All(state)
             return success, out
         elif aggro > self.call_threshold:
-            print(f"lead: {state.lead} plb: {state.player_last_bet} elb: {state.enemy_last_bet} hb:{state.has_bet}         ")
             if state.player_last_bet >= state.enemy_chips:
                 state, success, out = All(state)
                 return success, out
             if state.lead == 1 and not state.has_bet:
-                state, success, out = Bet(state, bet - state.player_last_bet)
+                state, success, out = Bet(state, int(aggro)/5)
                 return success, out
             state, success, out = Raise(state, bet)
             return success, out
         else:
-            print("cum    ")
             if state.lead == 1:
                 state, success, out = Bet(state, 0)
                 return success, out
@@ -146,8 +142,10 @@ def Fold(state: State):
 
 def Call(state: State):
     if state.enemy_chips + state.enemy_last_bet >= state.player_last_bet:
+
         state.enemy_chips -= state.player_last_bet - state.enemy_last_bet
         state.enemy_last_bet = state.player_last_bet
+        state.has_bet = False
         state.has_checked = False
         state.lead = 0
         return state, True, f"{state.enemy.name} called"
