@@ -34,7 +34,6 @@ def reset(state: State):
 
     for _ in range(3):
         state.community_cards.append(state.community_deck.pop(0))
-        
 
     while len(state.player_hand) != 3:
         if state.player_deck[0] not in state.community_cards:
