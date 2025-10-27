@@ -357,7 +357,7 @@ def LoadJeremy(state):
     state.enemy_max_health = 1000
     if state.cheats_enabled:
         state.enemy_chips = 10
-        state.enemy_max_health = 10
+        state.enemy_health = 10
         state.enemy_max_health = 10
 
 
@@ -369,7 +369,7 @@ def LoadBogart(state: State):
     state.enemy_max_health = 1000
     if state.cheats_enabled:
         state.enemy_chips = 10
-        state.enemy_max_health = 10
+        state.enemy_health = 10
         state.enemy_max_health = 10
 
 
@@ -381,7 +381,7 @@ def LoadRicardoTolentinoGayagoy(state):
 
     if state.cheats_enabled:
         state.enemy_chips = 10
-        state.enemy_max_health = 10
+        state.enemy_health = 10
         state.enemy_max_health = 10
 
     initial_cards = [
