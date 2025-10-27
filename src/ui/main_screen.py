@@ -4,6 +4,7 @@ from pathlib import Path
 import interpreter.parser as p
 from poker_game.state import State
 from poker_game.card import Card
+from poker_game.item import Item
 import math
 import random
 import copy
@@ -21,8 +22,12 @@ card_back = None
 start_screen = None
 jr = None
 lose_text = None
+win_text = None
 
 count = 0
+in_win_count = 0
+
+credits_pos = 0
 
 cards = {}
 
@@ -33,6 +38,7 @@ def load_art():
     global card_back
     global jr
     global lose_text
+    global win_text
     content = (ART/"borders.txt").read_text(encoding="utf-8")
 
     parts = content.split('#')
@@ -44,6 +50,7 @@ def load_art():
     base_card_art = base_card_full.split('#')
     jr = (ART/"jr.txt").read_text(encoding="utf-8")
     lose_text = (ART/"lose.txt").read_text(encoding="utf-8")
+    win_text = (ART/"win.txt").read_text(encoding="utf-8")
 
     suit_map = {
             "d": "♦",
@@ -289,18 +296,44 @@ def draw_game_screen(pad, state: State):
 
 def draw_shop_screen(pad, state: State):
     # Shop Item = (Card, Upgrade, Price)
-    draw_on_game_centered(pad, 0, 4, "Welcome To The Shop")
-    draw_on_game_centered(pad, 0, 3, "Buy Upgrades for Your Cards Here")
+    draw_on_game_centered(pad, 0, 7, "Welcome To The Shop")
+    draw_on_game_centered(pad, 0, 6, "Buy Upgrades for Your Cards Here")
+    item_start_x = -20
+    for i, item in enumerate(state.shop_items): # type: Item
+        item.card.special = item.effect
+        draw_on_game_centered(pad, item_start_x, 4, f"Item {i}")
+        get_and_draw_card(pad, item.card, item_start_x, 0)
+        draw_on_game_centered(pad, item_start_x, -5, f"Effect: {item.effect}")
+        draw_on_game_centered(pad, item_start_x, -6, f"Price: ¢{item.price}")
+        item_start_x += 20
 
 def draw_lose_screen(pad, state: State):
     # Shop Item = (Card, Upgrade, Price)
     draw_on_game_centered(pad, 20, 0, jr)
     draw_on_game_centered(pad, -20, 0, lose_text)
 
+def draw_win_screen(pad, state: State):
+    global credits_pos
+    end_line = credits_pos + 19
+
+    lines = win_text.splitlines()
+
+    portion = "\n".join(lines[credits_pos: end_line])
+    draw_on_screen(pad, 0, 0, portion)
+
+    if credits_pos >= 60:
+        return
+
+    speed = 2000
+    if ((in_win_count - 1)//speed) != ((in_win_count)//speed):
+        credits_pos += 1
+
+
 
 def update_screen_pad(pad, state: State):
     global count
     global card_border
+    global in_win_count
     count += 1
     pad.erase()
 
@@ -309,13 +342,15 @@ def update_screen_pad(pad, state: State):
         draw_start_screen(pad)
     else:
         # dito na irerender yung in game stuff
-        if state.in_game:
+        if state.win_count >= 3:
+            in_win_count += 1
+            draw_win_screen(pad, state)
+        elif state.game_lost:
+            draw_lose_screen(pad, state)
+        elif state.in_game:
             draw_game_screen(pad, state)
         elif state.in_shop:
             draw_shop_screen(pad, state)
-        elif state.game_lost:
-            draw_lose_screen(pad, state)
-        pass
 
     # Debug Lines
     # draw_cartesian_plane(pad)

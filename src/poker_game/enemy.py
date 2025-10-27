@@ -329,3 +329,40 @@ def Change_Value(state: State, card_special: Card, card_target: Card, value=None
                 state.enemy_hand[index].value = value
                 
         return (state, True, f"Changed {card_target}'s suit into {value}")
+
+
+# Enemies
+def LoadJeremy(state):
+    state.enemy = Enemy(name="Jeremy")
+
+
+def LoadBogart(state: State):
+    state.enemy = Enemy(name="Bogart", base_aggressiveness=170)
+    state.enemy_chips = 1000
+    state.enemy_health = 1000
+
+
+def LoadRicardoTolentinoGayagoy(state):
+    state.enemy = Enemy(name="Ricardo Tolentino Gayagoy", base_aggressiveness=200)
+    state.enemy_chips = 1000
+    state.enemy_health = 3000
+    initial_cards = [
+            Card("q", "h", False),
+            Card("q", "s", False)
+            ]
+
+    state.enemy_deck += state.enemy_hand
+    state.enemy_hand.clear()
+
+    for card in initial_cards:
+        card.revealed_to_enemy = True
+
+    state.enemy_deck = [card for card in state.enemy_deck if card not in initial_cards]
+
+    state.enemy_hand = initial_cards.copy()
+
+    while len(state.enemy_hand) < 3:
+        if state.enemy_deck[0] not in state.community_cards and state.enemy_deck[0] not in state.enemy_hand:
+            state.enemy_hand.append(state.enemy_deck.pop(0))
+        else:
+            state.enemy_deck.append(state.enemy_deck.pop(0))

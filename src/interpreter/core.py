@@ -62,6 +62,12 @@ def interpret_command(input: str, state: State):
     if state.has_bet and "bet" in valid_moves:
         valid_moves.remove('bet')
 
+    if not state.has_bet and "raise" in valid_moves:
+        valid_moves.remove('raise')
+
+    if state.in_shop:
+        valid_moves = ['buy', 'quit']
+
     if command not in valid_moves:
         return False, f"You can't {command} right now"
 
@@ -88,7 +94,8 @@ def interpret_command(input: str, state: State):
             return is_success, out
         case "buy":
             item_index = int(ast.target.item[1])
-            return True, f"You bought Item {item_index}"
+            state, is_success, out = commands.Buy(state, item_index)
+            return is_success, out
             pass
         case "inspect":
             # Inspect return false because it should be ignored by the enemy 

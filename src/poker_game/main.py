@@ -4,7 +4,8 @@ import ui.layout as layout
 import ui.input as input
 import poker_game.state
 import poker_game.game_handler as g
-from poker_game.enemy import Enemy
+from poker_game.enemy import LoadJeremy
+from poker_game.shop import populate_shop
 from ui.terminal import add_terminal_output
 
 # gagawa tayo gamestate class, sa init mag iinit tayo ng object nun
@@ -56,8 +57,10 @@ def run(stdscr):
             if game_state.started and check_final_win[1] == "won":
                 add_terminal_output(str(check_final_win[2]))
                 game_state.win_count += 1
-                game_state.in_shop = True
-                game_state.in_game = False
+                if game_state.win_count < 3:
+                    game_state.in_shop = True
+                    game_state.in_game = False
+                    populate_shop(game_state)
             elif game_state.started and check_final_win[1] == "lost":
                 add_terminal_output(str(check_final_win[2]))
                 game_state.in_game = False
@@ -79,8 +82,10 @@ def init(stdscr):
     curses.init_pair(1, curses.COLOR_WHITE, -1)
 
     stdscr.nodelay(True)
-    game_state.enemy = Enemy(name="Jeremy")
 
+    game_state.win_count = 3
+
+    LoadJeremy(game_state)
     run(stdscr)
 
 

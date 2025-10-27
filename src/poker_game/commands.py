@@ -1,5 +1,9 @@
 from poker_game.state import State
 from poker_game.card import Card
+from poker_game.shop import populate_shop
+from poker_game.game_handler import reset
+from poker_game.enemy import LoadBogart
+from poker_game.enemy import LoadRicardoTolentinoGayagoy
 
 import copy
 import random
@@ -91,10 +95,15 @@ def Give_Cards_Initial(state: State):
 def Start(state: State):
     if state.started:
         return (state, False, "You're already in the Game")
-    state.started = True
-    state.in_game = True
     Give_Cards_Initial(state)
     state.view_prio = 'enemy'
+    state.started = True
+    state.in_game = True
+
+    # Shop Development
+    # state.in_game = False
+    # state.in_shop = True
+    # populate_shop(state)
 
     return (state, True, "Started a game of Gayagoy Gamblers! Goodluck")
 
@@ -174,17 +183,30 @@ def Play(state: State, card1:Card, card2:Card):
 
 
 def Buy(state: State, item_index: int):
+    if item_index >= 3:
+        return (state, False, f"Item {item_index} doesn't exist")
+
     if state.shop_items[item_index].price <= state.player_chips:
         state.player_chips -= state.shop_items[item_index].price
         for card in state.player_deck:
             if card.value == state.shop_items[item_index].card.value and \
                 card.suit == state.shop_items[item_index].card.suit:
                     card.special = state.shop_items[item_index].effect
-                    
+        
+
+        state.in_shop = False
+        state.in_game = True
+
+        reset(state)
+
+        if state.win_count == 1:
+            LoadBogart(state)
+        if state.win_count == 2:
+            LoadRicardoTolentinoGayagoy(state)
+
         return (state, True, f"You have bought an Item")
     else:
         return (state, False, "Insufficient Chips to Buy This Item")
-        
 
 
 def Inspect(state: State, card: Card):
