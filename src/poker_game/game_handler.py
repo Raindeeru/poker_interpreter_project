@@ -140,18 +140,22 @@ def update_round(state: State):
         return (state, True)
 
     elif state.round_state == 2 and \
-            ((state.player_last_bet == state.enemy_last_bet
-             and not state.has_checked) or
-                (state.player_all_in and state.enemy_all_in) or
-                state.folded > 0):
+        ((state.player_last_bet == state.enemy_last_bet
+         and not state.has_checked) or
+            (state.player_all_in and state.enemy_all_in) or
+            state.folded > 0):
 
         state.pot += state.player_last_bet + state.enemy_last_bet
         state.player_last_bet, state.enemy_last_bet = 0, 0
 
+        state = draw_card(state, 5)
+        state = reveal_community(state)
+
         state.round_state = 3
         state.has_checked = False
-        
+
         return (state, True)
+
     elif state.round_state == 3 and \
             ((state.folded == 1 and not state.enemy_play) or
                 (state.folded == 2 and not state.player_play) or
