@@ -1,0 +1,7 @@
+ply
+
+[dev]
+jupyter
+
+[dev:platform_system == "Windows"]
+windows-curses

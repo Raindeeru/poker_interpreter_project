@@ -1,7 +1,21 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "poker_game"
 version = "0.0.0"
+dependencies = [
+    "ply",
+]
+
+[project.optional-dependencies]
+dev = [
+    "jupyter",
+    "windows-curses; platform_system == 'Windows'",
+]
 
 [project.scripts]
 poker = "poker_game.main:main"
 poker_cheats = "poker_game.main:main_cheats"
+
