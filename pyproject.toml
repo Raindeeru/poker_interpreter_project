@@ -19,3 +19,5 @@ dev = [
 poker = "poker_game.main:main"
 poker_cheats = "poker_game.main:main_cheats"
 
+[tool.setuptools.package-data]
+"ui" = ["art/*.txt"]
