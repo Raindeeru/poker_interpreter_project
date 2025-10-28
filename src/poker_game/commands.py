@@ -295,8 +295,7 @@ def Help(state, command:str):
             >use [card identifier] to reveal [int(0-4)] 
             >use [card identifier] to exchange [int(0-4)] with [card identifier]
             >use [card identifier] to exchange [card identifier] with  [int(0-4)]:
-            These commands use special card effects to modify cards within the game.
-            '''
+            These commands use special card effects to modify cards within the game.'''
         case _:
             help_string = '''
             Multiline Test
