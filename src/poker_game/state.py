@@ -82,3 +82,5 @@ class State:
     view_prio:str = "hello"
 
     cheats_enabled: bool = False
+
+    valid_moves = []
