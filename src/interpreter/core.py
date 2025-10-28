@@ -14,7 +14,7 @@ from copy import deepcopy
 import curses
 
 round_to_move_map ={
-        0: ['start', 'use', 'call','bet', 'all', 'fold'],
+        0: ['start', 'use', 'call', 'bet', 'all', 'fold'],
         1: ['start', 'use', 'call','bet', 'all', 'raise', 'fold'],
         2: ['start', 'use', 'call','bet', 'all', 'raise', 'fold'],
         3: ['start', 'use', 'play'],
@@ -63,6 +63,9 @@ def interpret_command(input: str, state: State):
 
     valid_moves.append('quit')
     valid_moves.append('help')
+
+    if not state.has_bet and "call" in valid_moves:
+        valid_moves.remove('call')
 
     if state.has_bet and "bet" in valid_moves:
         valid_moves.remove('bet')
