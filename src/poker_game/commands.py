@@ -289,14 +289,14 @@ def Help(state, command:str):
         case 'quit':
             help_string = ">quit: This command ends the program/game."
         case 'use':
-            help_string = """
+            help_string = '''
             >use [card identifier] to change suit of [card identifier] to [(H,D,S,C)]
             >use [card identifier] to change value of  [card identifier] to [(1-10)|(J,Q,K,A)]
             >use [card identifier] to reveal [int(0-4)] 
             >use [card identifier] to exchange [int(0-4)] with [card identifier]
             >use [card identifier] to exchange [card identifier] with  [int(0-4)]:
             These commands use special card effects to modify cards within the game.
-            """
+            '''
         case _:
             help_string = '''
             Multiline Test
