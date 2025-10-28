@@ -374,7 +374,7 @@ def LoadBogart(state: State):
 
 
 def LoadRicardoTolentinoGayagoy(state):
-    state.enemy = Enemy(name="Ricardo Gayagoy", base_aggressiveness=200)
+    state.enemy = Enemy(name="Ricardo Gayagoy", base_aggressiveness=300)
     state.enemy_chips = 3000
     state.enemy_health = 2000
     state.enemy_max_health = 2000

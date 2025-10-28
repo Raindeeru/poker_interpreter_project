@@ -103,6 +103,7 @@ def Start(state: State):
         state.win_count = 0
         state.game_lost = False
         state.in_game = True
+        Give_Cards_Initial(state)
         return (state, True, "You've Restarted your Game")
     Give_Cards_Initial(state)
     LoadJeremy(state)
@@ -260,3 +261,17 @@ def Quit(state: State):
     return state, True, "Goodbye!"
 
 
+def Help(state, command:str):
+    help_string = ""
+    match command:
+        case 'start':
+            help_string = "start: This command starts the game"
+        case 'help':
+            help_string = "Use help command to find out what this means"
+        case _:
+            help_string = '''
+            Multiline Test
+            Hello
+            '''
+
+    return state, False, help_string

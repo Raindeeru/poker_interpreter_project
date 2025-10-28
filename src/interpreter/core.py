@@ -62,6 +62,7 @@ def interpret_command(input: str, state: State):
         valid_moves = ['start']
 
     valid_moves.append('quit')
+    valid_moves.append('help')
 
     if state.has_bet and "bet" in valid_moves:
         valid_moves.remove('bet')
@@ -179,6 +180,9 @@ def interpret_command(input: str, state: State):
 
             return False, "You used a special command"
             pass
+        case 'help':
+            state, is_success, out = commands.Help(state, ast.target.value)
+            return is_success, out
         case _:
             # if tapos na lahat ng commands, dapat unreachble toh
             return False, "Unknown Valid Command"

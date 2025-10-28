@@ -69,6 +69,12 @@ def check_inspect_valid(target):
     else:
         return (False, "Invalid inspect Command!")
 
+def check_help_valid(target):
+    if isinstance(target, p.CommandStr):
+        return (True, "Valid Help Command")
+    else:
+        return (False, "Not a Help Command")
+
 #####################################################################################################################
 #Error checks for the commands
 #use [card identifier] to change suit of [card identifier] to [{random} | specific suit(H,D,S,C)]
@@ -190,6 +196,8 @@ def valid_semantics(ast):
         return check_start_valid(ast.target)
     elif ast.command == "quit":
         return check_quit_valid(ast.target)
+    elif ast.command == "help":
+        return check_help_valid(ast.target)
     else:
         return (False, "Not a Valid Command")
 

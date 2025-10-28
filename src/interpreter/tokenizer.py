@@ -27,7 +27,7 @@ tokens = (
 t_ignore = ' \t'
 
 def t_COMMAND(t):
-    r'\b(start|bet|fold|call|all|raise|buy|inspect|play|quit|use)\b'
+    r'\b(start|bet|fold|call|all|raise|buy|inspect|play|quit|use|help)\b'
     return t
 
 def t_NUMBER(t):
