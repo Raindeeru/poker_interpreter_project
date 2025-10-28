@@ -39,19 +39,19 @@ def interpret_command(input: str, state: State):
     ast = parser.parse(input)
 
     if t.error:
-        curses.beep()
+        
         error = t.error
         t.error = None
         return False, str(error)
 
     if not ast:
-        curses.beep()
+        
         return False, "Syntax Error"
 
     valid = s.valid_semantics(ast)
 
     if not valid[0]:
-        curses.beep()
+        
         return False, valid[1]
 
     command = ast.command
@@ -74,7 +74,7 @@ def interpret_command(input: str, state: State):
         valid_moves = ['buy', 'quit']
 
     if command not in valid_moves:
-        curses.beep()
+        
         return False, f"You can't {command} right now"
 
     match command:
