@@ -123,3 +123,5 @@ def show_terminal_input(terminal):
     terminal.hline(TERMINAL_H - 3, 1, ord("-"), TERMINAL_W-2)
     terminal.move(TERMINAL_H - 2, 1)
     terminal.addstr(f"> {input.input_str}")
+    y, x = terminal.getyx()
+    terminal.move(y, x + input.cursor_pos)
