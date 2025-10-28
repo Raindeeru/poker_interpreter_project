@@ -103,6 +103,7 @@ def Start(state: State):
         state.win_count = 0
         state.game_lost = False
         state.in_game = True
+        LoadJeremy(state)
         Give_Cards_Initial(state)
         return (state, True, "You've Restarted your Game")
     Give_Cards_Initial(state)

@@ -76,6 +76,9 @@ def interpret_command(input: str, state: State):
     if state.in_shop:
         valid_moves = ['buy', 'quit']
 
+    if state.game_lost:
+        valid_moves = ['start', 'quit']
+
     state.valid_moves = valid_moves
 
     if command not in valid_moves:

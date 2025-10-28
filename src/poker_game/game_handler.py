@@ -238,6 +238,12 @@ def check_win(state: State):
 def check_if_game_finished(state: State):
     if state.player_chips <= 0 or \
         state.player_health <= 0 :
+        state.player_hand.clear()
+        state.enemy_hand.clear()
+        state.community_cards.clear()
+        state.player_deck.clear()
+        state.enemy_deck.clear()
+        state.community_deck.clear()
         return (state,"lost","You Lost the Game!")
 
     if state.enemy_chips <= 0 or \
