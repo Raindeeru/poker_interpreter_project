@@ -97,7 +97,7 @@ def Give_Cards_Initial(state: State):
 
 def Start(state: State):
     if state.started and not state.game_lost:
-        curses.beep()
+        
         return (state, False, "You're already in the Game")
     if state.game_lost:
         state.win_count = 0
@@ -127,7 +127,7 @@ def Bet(state: State, bet: int):
             state.has_checked = True
         return (state, True, f"You bet {bet}")
     else:
-        curses.beep()
+        
         return (state, False, "Insufficient Chips!")
 
 
@@ -147,7 +147,7 @@ def Call(state: State):
         state.has_checked = False
         return (state, True, "Call Successful")
     else:
-        curses.beep()
+        
         return (state, False, "Insufficient Chips!")
 
 
@@ -183,29 +183,29 @@ def Raise(state: State, raise_val: int):
         state.player_last_bet = raise_val
         return (state, True, f"You raised by {raise_val}")
     elif raise_val <= state.enemy_last_bet:
-        curses.beep()
+        
         return (state, False, f"Raise Commad Invalid! must be above {state.enemy_last_bet}")
     else:
-        curses.beep()
+        
         return (state, False, "Insufficient funds to raise")
 
 def Play(state: State, card1:Card, card2:Card):
     if card1 == card2:
-        curses.beep()
+        
         return state, False, "You played two same cards"
 
     for i, c in enumerate(state.player_hand):
         if card1.value == c.value and c.suit == card1.suit:
             break
         if i == len(state.player_hand) - 1:
-            curses.beep()
+            
             return (state, False, "Card is not in Hand!")
 
     for i, c in enumerate(state.player_hand):
         if card2.value == c.value and c.suit == card2.suit:
             break
         if i == len(state.player_hand) - 1:
-            curses.beep()
+            
             return (state, False, "Card is not in Hand!")
 
     state.player_play = [card1, card2]
@@ -214,7 +214,7 @@ def Play(state: State, card1:Card, card2:Card):
 
 def Buy(state: State, item_index: int):
     if item_index >= 3:
-        curses.beep()
+        
         return (state, False, f"Item {item_index} doesn't exist")
     item = state.shop_items[item_index]
 
@@ -239,7 +239,7 @@ def Buy(state: State, item_index: int):
 
         return (state, True, f"You have bought an Item")
     else:
-        curses.beep()
+        
         return (state, False, "Insufficient Chips to Buy This Item")
 
 
@@ -251,7 +251,7 @@ def Inspect(state: State, card: Card):
             return (state, False, f"Inspecting {get_card_string(c)}")
         if i == len(state.player_hand) - 1:
             return (state, False, "Can't Inspect a card you don't have")
-    curses.beep()
+    
     return (state, False, "Empty Hand")
 
 
