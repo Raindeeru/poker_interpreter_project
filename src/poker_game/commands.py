@@ -265,9 +265,38 @@ def Help(state, command:str):
     help_string = ""
     match command:
         case 'start':
-            help_string = "start: This command starts the game"
+            help_string = ">start: This command starts the game."
         case 'help':
-            help_string = "Use help command to find out what this means"
+            help_string = ">help: Use help command to find out what this means."
+        case 'bet':
+            help_string = ">bet [value of chips to bet in int]: This commands bets a select number of chips."
+        case 'fold':
+            help_string = ">fold: This commands forfeits your hand for the round."
+        case 'call':
+            help_string = '''>call [value of chips to bet in int]: This commands matches the 
+                             current bet of your opponent.'''
+        case 'all':
+            help_string = ">all: This commands bets all of your chips."
+        case 'raise':
+            help_string = '''>raise [value of chips to bet in int]: This command raise the value 
+                             of your current bet.'''
+        case 'buy':
+            help_string = '''>buy [id of item in shop]: This command is used to purchase items 
+                              within the shop menu.'''
+        case 'play':
+            help_string = '''>play [card identifier] [card identifier]: This command is used to play 2 
+                              cards within your hand for the showdown of hands.'''
+        case 'quit':
+            help_string = ">quit: This command ends the program/game."
+        case 'use':
+            help_string = """
+            >use [card identifier] to change suit of [card identifier] to [(H,D,S,C)]
+            >use [card identifier] to change value of  [card identifier] to [(1-10)|(J,Q,K,A)]
+            >use [card identifier] to reveal [int(0-4)] 
+            >use [card identifier] to exchange [int(0-4)] with [card identifier]
+            >use [card identifier] to exchange [card identifier] with  [int(0-4)]:
+            These commands use special card effects to modify cards within the game.
+            """
         case _:
             help_string = '''
             Multiline Test
