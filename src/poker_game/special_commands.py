@@ -109,14 +109,14 @@ def Change_Suit(state: State, card_special: Card, card_target: Card, suit=None):
                 random.shuffle(suits_temp)
                 state.player_hand[index].suit = str(suits_temp[0])
                 
-        return (state, True, f"Changed {card_target}'s suit into a random suit '{suits_temp[0]}'")
+        return (state, True, f"Changed {get_card_string(card_target)}'s suit into a random suit '{suits_temp[0]}'")
     
     else:
         for index, card in enumerate(state.player_hand):
             if card.value == card_target.value and card.suit == card_target.suit:
                 state.player_hand[index].suit = str(suit)
                 
-        return (state, True, f"Changed {card_target}'s suit into {suit}")
+        return (state, True, f"Changed {get_card_string(card_target)}'s suit into {suit}")
                 
 
 def Change_Value(state: State, card_special: Card, card_target: Card, value=None):
@@ -144,11 +144,11 @@ def Change_Value(state: State, card_special: Card, card_target: Card, value=None
                 random.shuffle(value_temp)
                 state.player_hand[index].value = value_temp[0]
                 
-        return (state, True, f"Changed {card_target}'s suit into a random value '{value_temp[0]}'")
+        return (state, True, f"Changed {get_card_string(card_target)}'s suit into a random value '{value_temp[0]}'")
     
     else:
         for index, card in enumerate(state.player_hand):
             if card.value == card_target.value and card.suit == card_target.suit:
                 state.player_hand[index].value = value
                 
-        return (state, True, f"Changed {card_target}'s suit into {value}")
+        return (state, True, f"Changed {get_card_string(card_target)}'s suit into {value}")
