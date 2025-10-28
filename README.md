@@ -12,7 +12,7 @@ run
 ```
 pip install git+https://github.com/Raindeeru/poker_interpreter_project.git
 ```
-
+## Running 
 After that simply run the command
 ```
 poker
